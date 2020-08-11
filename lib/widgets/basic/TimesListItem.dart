@@ -50,9 +50,21 @@ class _TimesListItemState extends State<TimesListItem> {
       color: _theme.primaryColor.withAlpha(200),
     );
 
-    var _progressIcon = CircularProgressIndicator(
-      backgroundColor: _theme.textTheme.subtitle2.color.withAlpha(25),
-      value: this.widget.habit.timesProgress / this.widget.habit.timesTarget,
+    var _progressIcon = Stack(
+      alignment: Alignment.center,
+      children: [
+        timesProgress == timesTarget
+            ? Icon(Icons.check_circle, color: _theme.accentColor)
+            : Icon(
+                Icons.panorama_fish_eye,
+                color: _theme.textTheme.subtitle2.color.withAlpha(75),
+              ),
+        CircularProgressIndicator(
+          strokeWidth: 2.5,
+          backgroundColor: _theme.textTheme.subtitle2.color.withAlpha(25),
+          value: timesProgress / timesTarget,
+        )
+      ],
     );
 
     return Container(
