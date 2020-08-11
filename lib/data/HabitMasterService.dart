@@ -6,44 +6,65 @@ import 'package:flutter/material.dart';
 class HabitMasterService {
   //
   Future<List<Habit>> list(DateTime target) async {
-    var habits = new List<Habit>();
-    habits.add(Habit.newYNHabit(
-      id: 1,
-      title: "Morning Job",
-      reminder: "06:00 AM",
-      completed: false,
-    ));
-    habits.add(Habit.newYNHabit(
-      id: 2,
-      title: "Eat Healthy",
-      reminder: "08:00 AM",
-      completed: false,
-    ));
-    habits.add(Habit.newYNHabit(
-      id: 3,
-      title: "Get Up Early",
-      reminder: "06:00 AM",
-      completed: true,
-    ));
-    habits.add(Habit.newTimesHabit(
-      id: 4,
-      title: "Read 20 Pages",
-      reminder: "06:00 AM",
-      completed: 14,
-      target: 20,
-      targetType: "Pages",
-    ));
-    habits.add(Habit.newYNHabit(
-      id: 5,
-      title: "Learn A New Word",
-      reminder: "09:00 AM",
-      completed: true,
-    ));
+    if (target.difference(DateTime.now()).inDays < 0) {
+      var habits = new List<Habit>();
+      habits.add(Habit.newYNHabit(
+        id: 1,
+        title: "Morning Job",
+        reminder: "06:00 AM",
+        completed: false,
+      ));
+      habits.add(Habit.newYNHabit(
+        id: 2,
+        title: "Eat Healthy",
+        reminder: "08:00 AM",
+        completed: false,
+      ));
 
-    return new Future.delayed(
-      const Duration(seconds: 3),
-      () => habits,
-    );
+      return new Future.delayed(
+        const Duration(seconds: 3),
+        () => habits,
+      );
+    } else {
+      var habits = new List<Habit>();
+      habits.add(Habit.newYNHabit(
+        id: 1,
+        title: "Morning Job",
+        reminder: "06:00 AM",
+        completed: false,
+      ));
+      habits.add(Habit.newYNHabit(
+        id: 2,
+        title: "Eat Healthy",
+        reminder: "08:00 AM",
+        completed: false,
+      ));
+      habits.add(Habit.newYNHabit(
+        id: 3,
+        title: "Get Up Early",
+        reminder: "06:00 AM",
+        completed: true,
+      ));
+      habits.add(Habit.newTimesHabit(
+        id: 4,
+        title: "Read 20 Pages",
+        reminder: "06:00 AM",
+        completed: 14,
+        target: 20,
+        targetType: "Pages",
+      ));
+      habits.add(Habit.newYNHabit(
+        id: 5,
+        title: "Learn A New Word",
+        reminder: "09:00 AM",
+        completed: true,
+      ));
+
+      return new Future.delayed(
+        const Duration(seconds: 3),
+        () => habits,
+      );
+    }
   }
 
   Future<bool> create({

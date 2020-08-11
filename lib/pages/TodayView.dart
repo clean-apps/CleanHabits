@@ -1,3 +1,5 @@
+import 'package:CleanHabits/data/HabitMasterService.dart';
+import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BottomNavBar.dart';
 import 'package:CleanHabits/widgets/today/HCalDayWidget.dart';
 import 'package:CleanHabits/widgets/today/HabitsList.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TodayView extends StatefulWidget {
+  final HabitMasterService habitMaster = new HabitMasterService();
   //
   @override
   _TodayViewState createState() => _TodayViewState();
@@ -14,6 +17,23 @@ class _TodayViewState extends State<TodayView> {
   //
   final DateFormat dFormat = new DateFormat("dd MMM yyyy");
   var _selectedDate = DateTime.now();
+  List<Habit> _habits = new List();
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() {
+    widget.habitMaster.list(_selectedDate).then(
+          (data) => setState(() {
+            this._habits = data;
+            loading = false;
+          }),
+        );
+  }
 
   AppBar _getAppBar(selectedDate, context) {
     var index = DateTime.now().difference(selectedDate).inDays;
@@ -48,6 +68,21 @@ class _TodayViewState extends State<TodayView> {
     );
   }
 
+  Widget showLoading() {
+    return SliverList(
+      delegate: new SliverChildListDelegate(
+        [
+          Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 50.0),
+              child: CircularProgressIndicator(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     //
@@ -61,13 +96,18 @@ class _TodayViewState extends State<TodayView> {
       body: CustomScrollView(
         slivers: <Widget>[
           new HCalDayWidget(
-            height: dateBarHeight,
-            date: _selectedDate,
-            onChange: (dt) => this.setState(() {
-              _selectedDate = dt;
-            }),
-          ),
-          new HabitsList(date: _selectedDate)
+              height: dateBarHeight,
+              date: _selectedDate,
+              onChange: (dt) => {
+                    this.setState(() {
+                      _selectedDate = dt;
+                      loading = true;
+                    }),
+                    _loadData(),
+                  }),
+          loading
+              ? showLoading()
+              : new HabitsList(habits: _habits, date: _selectedDate)
         ],
       ),
       bottomNavigationBar: BottomNavBar(index: _selectedNavIndex),
