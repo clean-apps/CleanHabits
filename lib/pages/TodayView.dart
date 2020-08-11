@@ -67,9 +67,7 @@ class _TodayViewState extends State<TodayView> {
               _selectedDate = dt;
             }),
           ),
-          new HabitsList(
-            date: _selectedDate,
-          )
+          new HabitsList(date: _selectedDate)
         ],
       ),
       bottomNavigationBar: BottomNavBar(index: _selectedNavIndex),

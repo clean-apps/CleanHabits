@@ -1,3 +1,4 @@
+import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BooleanListItem.dart';
 import 'package:CleanHabits/widgets/basic/TimesListItem.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 class HabitsList extends StatefulWidget {
   //
   final DateTime date;
+  final HabitMasterService habitMaster = new HabitMasterService();
   HabitsList({this.date});
 
   @override
@@ -14,56 +16,48 @@ class HabitsList extends StatefulWidget {
 }
 
 class _HabitsListState extends State<HabitsList> {
-  List<Habit> habits = List();
+  //
+  final GlobalKey<SliverAnimatedListState> _listKey =
+      GlobalKey<SliverAnimatedListState>();
+  //
+  List<Habit> habits = new List();
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
     //
-    habits = _getData();
+    widget.habitMaster.list(widget.date).then(
+          (data) => setState(() {
+            habits = data;
+            loading = false;
+          }),
+        );
   }
 
-  List<Habit> _getData() {
-    var habits = new List<Habit>();
-    habits.add(Habit.newYNHabit(
-      id: 1,
-      title: "Morning Job",
-      reminder: "06:00 AM",
-      completed: false,
-    ));
-    habits.add(Habit.newYNHabit(
-      id: 2,
-      title: "Eat Healthy",
-      reminder: "08:00 AM",
-      completed: false,
-    ));
-    habits.add(Habit.newYNHabit(
-      id: 3,
-      title: "Get Up Early",
-      reminder: "06:00 AM",
-      completed: true,
-    ));
-    habits.add(Habit.newTimesHabit(
-      id: 4,
-      title: "Read 20 Pages",
-      reminder: "06:00 AM",
-      completed: 14,
-      target: 20,
-      targetType: "Pages",
-    ));
-    habits.add(Habit.newYNHabit(
-      id: 5,
-      title: "Learn A New Word",
-      reminder: "09:00 AM",
-      completed: true,
-    ));
-
-    return habits;
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget showLoading() {
     return SliverAnimatedList(
+      key: _listKey,
+      initialItemCount: 1,
+      itemBuilder: (context, index, anim) =>
+          AnimationConfiguration.staggeredList(
+        position: index,
+        duration: const Duration(milliseconds: 1000),
+        child: FadeInAnimation(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(top: 50.0),
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildWithData() {
+    return SliverAnimatedList(
+      key: _listKey,
       initialItemCount: habits.length,
       itemBuilder: (context, index, anim) =>
           AnimationConfiguration.staggeredList(
@@ -76,5 +70,16 @@ class _HabitsListState extends State<HabitsList> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!loading) {
+      List<int>.generate(habits.length - 1, (i) => i + 1).forEach((id) {
+        _listKey.currentState.insertItem(id);
+      });
+    }
+    //
+    return loading ? showLoading() : buildWithData();
   }
 }

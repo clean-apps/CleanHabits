@@ -1,3 +1,4 @@
+import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/widgets/new/SelectChecklistType.dart';
 import 'package:CleanHabits/widgets/new/SelectFromDate.dart';
 import 'package:CleanHabits/widgets/new/SelectReminder.dart';
@@ -6,6 +7,8 @@ import 'package:CleanHabits/widgets/new/SelectTimeOfDay.dart';
 import 'package:flutter/material.dart';
 
 class NewHabit extends StatefulWidget {
+  final HabitMasterService habitMaster = new HabitMasterService();
+  //
   @override
   _NewHabitState createState() => _NewHabitState();
 }
@@ -17,6 +20,9 @@ class _NewHabitState extends State<NewHabit> {
   ChecklistType type;
   TimeOfDay reminder;
   String timeOfDay;
+  bool loading;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -31,7 +37,30 @@ class _NewHabitState extends State<NewHabit> {
       timesType: null,
     );
     reminder = null;
-    timeOfDay = null;
+    timeOfDay = "All Day";
+    loading = false;
+  }
+
+  void _saveHabit() {
+    setState(() {
+      loading = true;
+    });
+    //
+    widget.habitMaster
+        .create(
+          title: title,
+          repeat: repeat,
+          fromDate: fromDate,
+          type: type,
+          reminder: reminder,
+          timeOfDay: timeOfDay,
+        )
+        .then((sts) => {
+              setState(() {
+                loading = false;
+              }),
+              Navigator.pop(context),
+            });
   }
 
   AppBar _getAppBar(context) {
@@ -55,12 +84,14 @@ class _NewHabitState extends State<NewHabit> {
       ),
       actions: <Widget>[
         FlatButton(
-          onPressed: () => debugPrint('creating new habit now'),
+          onPressed: () => this.title == null
+              ? _scaffoldKey.currentState.showSnackBar(SnackBar(
+                  content: Text("please enter a title for the Habbit"),
+                ))
+              : _saveHabit(),
           child: Text(
             'Save',
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-            ),
+            style: TextStyle(color: Theme.of(context).accentColor),
           ),
         ),
       ],
@@ -109,46 +140,53 @@ class _NewHabitState extends State<NewHabit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: _getAppBar(context),
       body: Container(
         color: Colors.grey.withOpacity(0.05),
-        child: ListView(
-          children: <Widget>[
-            _nameTile(context),
-            SelectRepeat(
-              value: repeat,
-              onChange: (val) => {
-                setState(() {
-                  repeat = val;
-                })
-              },
-            ),
-            SelectFromDate(
-              value: fromDate,
-              onChange: (val) => setState(() {
-                fromDate = val;
-              }),
-            ),
-            SelectChecklistType(
-              value: type,
-              onChange: (val) => setState(() {
-                type = val;
-              }),
-            ),
-            SelectReminder(
-              value: reminder,
-              onChange: (val) => setState(() {
-                reminder = val;
-              }),
-            ),
-            SelectTimeOfDay(
-              value: timeOfDay,
-              onChange: (val) => setState(() {
-                timeOfDay = val;
-              }),
-            ),
-          ],
-        ),
+        child: loading
+            ? Center(
+                child: Padding(
+                padding: EdgeInsets.only(top: 100.0),
+                child: CircularProgressIndicator(),
+              ))
+            : ListView(
+                children: <Widget>[
+                  _nameTile(context),
+                  SelectRepeat(
+                    value: repeat,
+                    onChange: (val) => {
+                      setState(() {
+                        repeat = val;
+                      })
+                    },
+                  ),
+                  SelectFromDate(
+                    value: fromDate,
+                    onChange: (val) => setState(() {
+                      fromDate = val;
+                    }),
+                  ),
+                  SelectChecklistType(
+                    value: type,
+                    onChange: (val) => setState(() {
+                      type = val;
+                    }),
+                  ),
+                  SelectReminder(
+                    value: reminder,
+                    onChange: (val) => setState(() {
+                      reminder = val;
+                    }),
+                  ),
+                  SelectTimeOfDay(
+                    value: timeOfDay,
+                    onChange: (val) => setState(() {
+                      timeOfDay = val;
+                    }),
+                  ),
+                ],
+              ),
       ),
     );
   }

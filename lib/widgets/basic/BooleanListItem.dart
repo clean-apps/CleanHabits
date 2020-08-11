@@ -1,25 +1,41 @@
+import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:flutter/material.dart';
 
-class BooleanListItem extends StatelessWidget {
+class BooleanListItem extends StatefulWidget {
   final Habit habit;
   final DateTime date;
+  final HabitMasterService habitMaster = new HabitMasterService();
   BooleanListItem({this.habit, this.date});
+
+  @override
+  _BooleanListItemState createState() => _BooleanListItemState();
+}
+
+class _BooleanListItemState extends State<BooleanListItem> {
+  Habit habit;
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    habit = widget.habit;
+  }
 
   @override
   Widget build(BuildContext context) {
     //
     var subtitleStyle = Theme.of(context).textTheme.subtitle2;
 
-    var backgroundColor = this.habit.ynCompleted
+    var backgroundColor = this.habit == null || this.habit.ynCompleted
         ? Theme.of(context).primaryColor.withAlpha(10)
         : Theme.of(context).scaffoldBackgroundColor;
 
-    var borderColor = this.habit.ynCompleted
+    var borderColor = this.habit == null || this.habit.ynCompleted
         ? Theme.of(context).primaryColor.withAlpha(80)
         : Theme.of(context).textTheme.subtitle2.color.withAlpha(50);
 
-    var _icon = this.habit.ynCompleted
+    var _icon = this.habit == null || this.habit.ynCompleted
         ? Icon(Icons.check_circle, color: Theme.of(context).accentColor)
         : Icon(
             Icons.panorama_fish_eye,
@@ -37,21 +53,35 @@ class BooleanListItem extends StatelessWidget {
       child: ListTile(
         dense: true,
         title: Hero(
-          tag: 'habit-title-' + this.habit.id.toString(),
+          tag: 'habit-title-' + this.widget.habit.id.toString(),
           child: Text(
-            this.habit.title,
+            this.widget.habit.title,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        subtitle: Text(this.habit.reminder, style: subtitleStyle),
-        trailing: IconButton(
-          icon: _icon,
-          onPressed: () => debugPrint('habbit marked completed'),
-        ),
+        subtitle: Text(this.widget.habit.reminder, style: subtitleStyle),
+        trailing: loading
+            ? CircularProgressIndicator()
+            : IconButton(
+                icon: _icon,
+                onPressed: () => {
+                  setState(() {
+                    loading = true;
+                    habit.ynCompleted = !habit.ynCompleted;
+                  }),
+                  widget.habitMaster
+                      .updateStatus(habit: habit, dateTime: widget.date)
+                      .then(
+                        (sts) => setState(() {
+                          loading = false;
+                        }),
+                      )
+                },
+              ),
         onTap: () => Navigator.pushNamed(
           context,
           '/habit/progress',
-          arguments: this.habit,
+          arguments: this.widget.habit,
         ),
       ),
     );

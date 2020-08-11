@@ -1,10 +1,26 @@
+import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:flutter/material.dart';
 
-class TimesListItem extends StatelessWidget {
+class TimesListItem extends StatefulWidget {
   final Habit habit;
   final DateTime date;
+  final HabitMasterService habitMaster = new HabitMasterService();
   TimesListItem({this.habit, this.date});
+
+  @override
+  _TimesListItemState createState() => _TimesListItemState();
+}
+
+class _TimesListItemState extends State<TimesListItem> {
+  Habit habit;
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    habit = widget.habit;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +28,9 @@ class TimesListItem extends StatelessWidget {
     var _theme = Theme.of(context);
     var subtitleStyle = _theme.textTheme.subtitle2;
 
-    var timesProgress = this.habit.timesProgress;
-    var timesTarget = this.habit.timesTarget;
-    var timesTargetType = this.habit.timesTargetType;
+    var timesProgress = this.habit == null ? 0 : this.habit.timesProgress;
+    var timesTarget = this.habit == null ? 0 : this.habit.timesTarget;
+    var timesTargetType = this.habit == null ? 0 : this.habit.timesTargetType;
 
     var backgroundColor = timesProgress == timesTarget
         ? _theme.primaryColor.withAlpha(10)
@@ -36,7 +52,7 @@ class TimesListItem extends StatelessWidget {
 
     var _progressIcon = CircularProgressIndicator(
       backgroundColor: _theme.textTheme.subtitle2.color.withAlpha(25),
-      value: this.habit.timesProgress / this.habit.timesTarget,
+      value: this.widget.habit.timesProgress / this.widget.habit.timesTarget,
     );
 
     return Container(
@@ -51,8 +67,8 @@ class TimesListItem extends StatelessWidget {
         dense: false,
         isThreeLine: true,
         title: Hero(
-          tag: 'habit-title-' + this.habit.id.toString(),
-          child: Text(this.habit.title,
+          tag: 'habit-title-' + this.widget.habit.id.toString(),
+          child: Text(this.widget.habit.title,
               style: Theme.of(context).textTheme.headline6),
         ),
         subtitle: Column(
@@ -61,29 +77,67 @@ class TimesListItem extends StatelessWidget {
             Text(
                 "${timesProgress.toString()}/${timesTarget.toString()} $timesTargetType Completed",
                 style: subtitleStyle),
-            Text(this.habit.reminder, style: subtitleStyle),
+            Text(this.widget.habit.reminder, style: subtitleStyle),
           ],
         ),
-        trailing: Wrap(
-          children: <Widget>[
-            IconButton(
-              icon: _addIcon,
-              onPressed: () => debugPrint('habbit marked completed'),
-            ),
-            IconButton(
-              icon: _minusIcon,
-              onPressed: () => debugPrint('habbit marked completed'),
-            ),
-            IconButton(
-              icon: _progressIcon,
-              onPressed: () => null,
-            ),
-          ],
-        ),
+        trailing: loading
+            ? CircularProgressIndicator()
+            : Wrap(
+                children: <Widget>[
+                  IconButton(
+                    icon: habit.timesProgress < habit.timesTarget
+                        ? _addIcon
+                        : Container(),
+                    onPressed: () => habit.timesProgress < habit.timesTarget
+                        ? {
+                            setState(() {
+                              loading = true;
+                              habit.timesProgress++;
+                            }),
+                            widget.habitMaster
+                                .updateStatus(
+                                  habit: habit,
+                                  dateTime: widget.date,
+                                )
+                                .then(
+                                  (sts) => setState(() {
+                                    loading = false;
+                                  }),
+                                ),
+                          }
+                        : {},
+                  ),
+                  IconButton(
+                    icon: habit.timesProgress > 0 ? _minusIcon : Container(),
+                    onPressed: () => habit.timesProgress > 0
+                        ? {
+                            setState(() {
+                              loading = true;
+                              habit.timesProgress--;
+                            }),
+                            widget.habitMaster
+                                .updateStatus(
+                                  habit: habit,
+                                  dateTime: widget.date,
+                                )
+                                .then(
+                                  (sts) => setState(() {
+                                    loading = false;
+                                  }),
+                                )
+                          }
+                        : {},
+                  ),
+                  IconButton(
+                    icon: _progressIcon,
+                    onPressed: () => null,
+                  ),
+                ],
+              ),
         onTap: () => Navigator.pushNamed(
           context,
           '/habit/progress',
-          arguments: this.habit,
+          arguments: this.widget.habit,
         ),
       ),
     );
