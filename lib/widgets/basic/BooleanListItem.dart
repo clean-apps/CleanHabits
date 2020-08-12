@@ -46,7 +46,7 @@ class _BooleanListItemState extends State<BooleanListItem> {
 
     return Container(
       margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.only(top: 5.0, left: 5.0, bottom: 5.0),
       decoration: BoxDecoration(
         border: Border.all(color: borderColor),
         color: backgroundColor,
@@ -63,9 +63,13 @@ class _BooleanListItemState extends State<BooleanListItem> {
         ),
         subtitle: Text(this.widget.habit.reminder, style: subtitleStyle),
         trailing: loading
-            ? CircularProgressIndicator()
+            ? IconButton(
+                icon: CircularProgressIndicator(),
+                onPressed: () => {},
+              )
             : IconButton(
                 icon: _icon,
+                padding: EdgeInsets.all(0.0),
                 onPressed: () => {
                   setState(() {
                     loading = true;
