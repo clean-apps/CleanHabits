@@ -1,11 +1,11 @@
-import 'dart:math';
-
+import 'package:CleanHabits/data/HabitStatsService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:flutter/material.dart';
 
 class HabitCompletionRate extends StatefulWidget {
   final Habit habit;
+  final HabitStatsService habitStats = new HabitStatsService();
   HabitCompletionRate({this.habit});
 
   @override
@@ -15,40 +15,32 @@ class HabitCompletionRate extends StatefulWidget {
 class _HabitCompletionRateState extends State<HabitCompletionRate> {
   //
   List<ChartData> data = List();
-  String type = "Weekly";
+  bool loading = true;
   //
-  double completedThisWeek = 0;
-  double completedAllTime = 0;
-
+  String type = "Weekly";
   @override
   void initState() {
     super.initState();
     //
-    data = _getData();
     type = "Weekly";
+    _loadData();
+  }
 
-    completedThisWeek = 0.5;
-    completedAllTime = 0.85;
+  void _loadData() {
+    widget.habitStats
+        .getCompletionRate(widget.habit, type)
+        .then((value) => setState(() {
+              data = value;
+              loading = false;
+            }));
   }
 
   onFilter(changed) {
-    debugPrint('filter changed for habit completion rate');
-  }
-
-  List<ChartData> _getData() {
-    var rng = new Random();
-    return [
-      new ChartData('W21', rng.nextInt(25)),
-      new ChartData('W22', rng.nextInt(25)),
-      new ChartData('W23', rng.nextInt(25)),
-      new ChartData('W24', rng.nextInt(25)),
-      new ChartData('W25', rng.nextInt(25)),
-      new ChartData('W26', rng.nextInt(25)),
-      new ChartData('W27', rng.nextInt(25)),
-      new ChartData('W28', rng.nextInt(25)),
-      new ChartData('W29', rng.nextInt(25)),
-      new ChartData('W30', rng.nextInt(25)),
-    ];
+    setState(() {
+      type = changed;
+      loading = true;
+    });
+    _loadData();
   }
 
   Widget _typeDropDown() {
@@ -76,11 +68,26 @@ class _HabitCompletionRateState extends State<HabitCompletionRate> {
           'Completion Rate',
           style: Theme.of(context).textTheme.headline6,
         ),
-        trailing: _typeDropDown(),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator(),
+              )
+            : _typeDropDown(),
       ),
       ConstrainedBox(
         constraints: BoxConstraints.expand(height: 225.0),
-        child: BarChart.withData('Weekly Progress', data, context),
+        child: loading
+            ? Container()
+            : data.length == 0
+                ? Center(
+                    child: Text(
+                    'Not Enough Information',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.subtitle2.color,
+                    ),
+                  ))
+                : BarChart.withData('Weekly Progress', data, context),
       )
     ];
 

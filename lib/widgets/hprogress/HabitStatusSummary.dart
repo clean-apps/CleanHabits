@@ -1,9 +1,11 @@
+import 'package:CleanHabits/data/HabitStatsService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BasicTile.dart';
 import 'package:flutter/material.dart';
 
 class HabitStatusSummary extends StatefulWidget {
   final Habit habit;
+  final HabitStatsService habitStats = new HabitStatsService();
   HabitStatusSummary({this.habit});
 
   @override
@@ -11,17 +13,19 @@ class HabitStatusSummary extends StatefulWidget {
 }
 
 class _HabitStatusSummaryState extends State<HabitStatusSummary> {
-  var currentStreak = 0;
-  var weekProgress = 0;
-  var weekTarget = 0;
+  HabitStatus status = HabitStatus();
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
     //
-    currentStreak = 5;
-    weekProgress = 2;
-    weekTarget = 7;
+    widget.habitStats
+        .getStatusSummary(widget.habit)
+        .then((value) => setState(() {
+              status = value;
+              loading = false;
+            }));
   }
 
   @override
@@ -29,16 +33,26 @@ class _HabitStatusSummaryState extends State<HabitStatusSummary> {
     return Row(
       children: <Widget>[
         BasicTile(
-          title: '${currentStreak.toString()}',
+          title: loading ? '0' : '${status.currentStreak.toString()}',
           subtitle1: 'Current Streak',
           subtitle2: 'cool streak description',
         ),
         BasicTile(
-          title: '${weekProgress.toString()}/${weekTarget.toString()}',
+          title: loading
+              ? '0'
+              : '${status.weekProgress.toString()}/${status.weekTarget.toString()}',
           subtitle1: 'Weekly Goal',
           subtitle2: 'cool goal description',
         )
       ],
     );
   }
+}
+
+class HabitStatus {
+  final int currentStreak;
+  final int weekProgress;
+  final int weekTarget;
+  HabitStatus(
+      {this.currentStreak = 0, this.weekProgress = 0, this.weekTarget = 0});
 }

@@ -1,10 +1,11 @@
+import 'package:CleanHabits/data/HabitStatsService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/StackedBarChart.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class HabitStreaks extends StatefulWidget {
   final Habit habit;
+  final HabitStatsService habitStats = new HabitStatsService();
   HabitStreaks({this.habit});
 
   @override
@@ -13,22 +14,17 @@ class HabitStreaks extends StatefulWidget {
 
 class _HabitStreaksState extends State<HabitStreaks> {
   List<StackData> data = List();
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
-    data = _getData();
-  }
-
-  List<StackData> _getData() {
-    var rng = new Random();
-    return [
-      new StackData('Nov 11', 'Nov 12', rng.nextInt(25)),
-      new StackData('Nov 12', 'Nov 13', rng.nextInt(25)),
-      new StackData('Nov 13', 'Nov 14', rng.nextInt(25)),
-      new StackData('Nov 14', 'Nov 15', rng.nextInt(25)),
-      new StackData('Nov 15', 'Nov 16', rng.nextInt(25)),
-    ];
+    widget.habitStats.getStreaks(widget.habit).then(
+          (value) => setState(() {
+            data = value;
+            loading = false;
+          }),
+        );
   }
 
   @override
@@ -39,8 +35,29 @@ class _HabitStreaksState extends State<HabitStreaks> {
           'Best Streaks',
           style: Theme.of(context).textTheme.headline6,
         ),
+        trailing: ConstrainedBox(
+          constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+          child: loading ? CircularProgressIndicator() : Container(),
+        ),
       ),
-      StackedBarChart(data: data)
+      loading
+          ? ConstrainedBox(
+              constraints: BoxConstraints.expand(height: 225.0),
+              child: Container(),
+            )
+          : data.length == 0
+              ? ConstrainedBox(
+                  constraints: BoxConstraints.expand(height: 225.0),
+                  child: Center(
+                    child: Text(
+                      'Not Enough Information',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.subtitle2.color,
+                      ),
+                    ),
+                  ),
+                )
+              : StackedBarChart(data: data)
     ];
 
     return Card(

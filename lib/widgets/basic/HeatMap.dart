@@ -6,9 +6,10 @@ import 'package:heatmap_calendar/heatmap_calendar.dart';
 class HeatMap extends StatelessWidget {
   final Map<DateTime, int> data;
   final String type;
+  final bool loading;
   final ValueChanged<String> onFilter;
 
-  HeatMap({this.data, this.type, this.onFilter});
+  HeatMap({this.data, this.type, this.onFilter, this.loading = false});
 
   Widget _typeDropDown() {
     return DropdownButtonHideUnderline(
@@ -44,10 +45,11 @@ class HeatMap extends StatelessWidget {
       "Dec",
     ];
 
-    var minThreshold = data.values.reduce(min);
-    var avgThreshold =
-        data.values.reduce((a, b) => a + b) ~/ data.values.length;
-    var maxThreshold = data.values.reduce(max);
+    var minThreshold = data.length == 0 ? 0 : data.values.reduce(min);
+    var avgThreshold = data.length == 0
+        ? 0
+        : data.values.reduce((a, b) => a + b) ~/ data.values.length;
+    var maxThreshold = data.length == 0 ? 0 : data.values.reduce(max);
     var _colorThresholds = {
       minThreshold == 0 ? 1 : minThreshold: accentColor.withAlpha(75),
       ((avgThreshold - minThreshold) / 2 + minThreshold).toInt():
@@ -65,19 +67,41 @@ class HeatMap extends StatelessWidget {
           'Daily Tracker',
           style: Theme.of(context).textTheme.headline6,
         ),
-        trailing: _typeDropDown(),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator(),
+              )
+            : _typeDropDown(),
       ),
       Padding(
         padding: EdgeInsets.all(10),
-        child: HeatMapCalendar(
-          input: data,
-          colorThresholds: _colorThresholds,
-          weekDaysLabels: _weekDaysLabels,
-          monthsLabels: _monthsLabels,
-          squareSize: 24.0,
-          textOpacity: 0.3,
-          labelTextColor: Colors.blueGrey,
-        ),
+        child: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(height: 225.0),
+                child: Container(),
+              )
+            : data.length == 0
+                ? ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 225.0),
+                    child: Center(
+                      child: Text(
+                        'Not Enough Information',
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.subtitle2.color,
+                        ),
+                      ),
+                    ),
+                  )
+                : HeatMapCalendar(
+                    input: data,
+                    colorThresholds: _colorThresholds,
+                    weekDaysLabels: _weekDaysLabels,
+                    monthsLabels: _monthsLabels,
+                    squareSize: 24.0,
+                    textOpacity: 0.3,
+                    labelTextColor: Colors.blueGrey,
+                  ),
       )
     ];
     return Card(
