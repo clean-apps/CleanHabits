@@ -22,6 +22,66 @@ class _TimesListItemState extends State<TimesListItem> {
     habit = widget.habit;
   }
 
+  IconButton _addIcon(_theme) {
+    var _icon = Icon(
+      Icons.add_circle_outline,
+      size: 40,
+      color: _theme.primaryColor.withAlpha(200),
+    );
+
+    return IconButton(
+      icon: habit.timesProgress < habit.timesTarget ? _icon : Container(),
+      onPressed: () => habit.timesProgress < habit.timesTarget
+          ? {
+              setState(() {
+                loading = true;
+                habit.timesProgress++;
+              }),
+              widget.habitMaster
+                  .updateStatus(
+                    habit: habit,
+                    dateTime: widget.date,
+                  )
+                  .then(
+                    (sts) => setState(() {
+                      loading = false;
+                    }),
+                  ),
+            }
+          : {},
+    );
+  }
+
+  IconButton _minusIcon(_theme) {
+    var _icon = Icon(
+      Icons.remove_circle_outline,
+      size: 40,
+      color: _theme.primaryColor.withAlpha(200),
+    );
+
+    return IconButton(
+      icon: habit.timesProgress > 0 ? _icon : Container(),
+      onPressed: () => habit.timesProgress > 0
+          ? {
+              setState(() {
+                loading = true;
+                habit.timesProgress--;
+              }),
+              widget.habitMaster
+                  .updateStatus(
+                    habit: habit,
+                    dateTime: widget.date,
+                  )
+                  .then(
+                    (sts) => setState(() {
+                      loading = false;
+                    }),
+                  )
+            }
+          : {},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     //
@@ -40,116 +100,82 @@ class _TimesListItemState extends State<TimesListItem> {
         ? _theme.primaryColor.withAlpha(80)
         : _theme.textTheme.subtitle2.color.withAlpha(50);
 
-    var _addIcon = Icon(
-      Icons.keyboard_arrow_up,
-      color: _theme.primaryColor.withAlpha(200),
+    var _border = BoxDecoration(
+      border: Border.all(color: borderColor),
+      color: backgroundColor,
+      borderRadius: BorderRadius.all(Radius.circular(7)),
     );
 
-    var _minusIcon = Icon(
-      Icons.keyboard_arrow_down,
-      color: _theme.primaryColor.withAlpha(200),
-    );
-
-    var _progressIcon = Stack(
-      alignment: Alignment.center,
-      children: [
-        timesProgress == timesTarget
-            ? Icon(Icons.check_circle, color: _theme.accentColor)
-            : Icon(
-                Icons.panorama_fish_eye,
-                color: _theme.textTheme.subtitle2.color.withAlpha(75),
-              ),
-        CircularProgressIndicator(
-          strokeWidth: 2.5,
-          backgroundColor: _theme.textTheme.subtitle2.color.withAlpha(25),
-          value: timesProgress / timesTarget,
-        )
-      ],
-    );
+    var _progressTxt =
+        "${timesProgress.toString()} / ${timesTarget.toString()} $timesTargetType Completed";
 
     return Container(
       margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-      padding: const EdgeInsets.all(5.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: borderColor),
-        color: backgroundColor,
-        borderRadius: BorderRadius.all(Radius.circular(7)),
-      ),
-      child: ListTile(
-        dense: false,
-        isThreeLine: true,
-        title: Hero(
-          tag: 'habit-title-' + this.widget.habit.id.toString(),
-          child: Text(this.widget.habit.title,
-              style: Theme.of(context).textTheme.headline6),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-                "${timesProgress.toString()}/${timesTarget.toString()} $timesTargetType Completed",
-                style: subtitleStyle),
-            Text(this.widget.habit.reminder, style: subtitleStyle),
-          ],
-        ),
-        trailing: loading
-            ? CircularProgressIndicator()
-            : Wrap(
-                children: <Widget>[
-                  IconButton(
-                    icon: habit.timesProgress < habit.timesTarget
-                        ? _addIcon
-                        : Container(),
-                    onPressed: () => habit.timesProgress < habit.timesTarget
-                        ? {
-                            setState(() {
-                              loading = true;
-                              habit.timesProgress++;
-                            }),
-                            widget.habitMaster
-                                .updateStatus(
-                                  habit: habit,
-                                  dateTime: widget.date,
-                                )
-                                .then(
-                                  (sts) => setState(() {
-                                    loading = false;
-                                  }),
-                                ),
-                          }
-                        : {},
-                  ),
-                  IconButton(
-                    icon: habit.timesProgress > 0 ? _minusIcon : Container(),
-                    onPressed: () => habit.timesProgress > 0
-                        ? {
-                            setState(() {
-                              loading = true;
-                              habit.timesProgress--;
-                            }),
-                            widget.habitMaster
-                                .updateStatus(
-                                  habit: habit,
-                                  dateTime: widget.date,
-                                )
-                                .then(
-                                  (sts) => setState(() {
-                                    loading = false;
-                                  }),
-                                )
-                          }
-                        : {},
-                  ),
-                  IconButton(
-                    icon: _progressIcon,
-                    onPressed: () => null,
-                  ),
-                ],
-              ),
+      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
+      decoration: _border,
+      child: InkWell(
         onTap: () => Navigator.pushNamed(
           context,
           '/habit/progress',
           arguments: this.widget.habit,
+        ),
+        child: Card(
+          elevation: 0.0,
+          color: backgroundColor.withOpacity(0.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Hero(
+                        tag: 'habit-title-' + this.widget.habit.id.toString(),
+                        child: Text(this.widget.habit.title,
+                            style: Theme.of(context).textTheme.headline6),
+                      ),
+                      Text(this.widget.habit.reminder, style: subtitleStyle),
+                    ],
+                  ),
+                  Spacer(),
+                  loading
+                      ? IconButton(
+                          icon: CircularProgressIndicator(),
+                          onPressed: () => {},
+                        )
+                      : Container(),
+                  loading ? Container() : _minusIcon(_theme),
+                  loading ? Container() : _addIcon(_theme),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child: Text(_progressTxt, style: subtitleStyle),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5),
+                height: 10,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: LinearProgressIndicator(
+                    value: timesProgress / timesTarget,
+                  ),
+                ),
+              ),
+              // ButtonBar(
+              //   children: loading
+              //       ? [
+              //           Padding(
+              //             child: Text('.. updating ..'),
+              //             padding: EdgeInsets.all(16.0),
+              //           )
+              //         ]
+              //       : [_addIcon(_theme), _minusIcon(_theme)],
+              //   buttonPadding: EdgeInsets.zero,
+              // )
+            ],
+          ),
         ),
       ),
     );
