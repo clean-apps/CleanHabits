@@ -106,14 +106,15 @@ class _SelectChecklistTypeState extends State<SelectChecklistType> {
     return BaseSelectionRadioTile(
       value: this.isSimple,
       icon: Icon(Icons.check),
-      title:
-          this.isSimple == null || this.isSimple ? 'Simple Type' : 'Times Type',
+      title: this.isSimple == null || this.isSimple
+          ? 'Simple Habit'
+          : 'Countable Habit',
       subtitle: this.isSimple == null ||
               this.isSimple ||
               times == null ||
               timesType == null
           ? null
-          : '$times $timesType',
+          : 'Target $times $timesType',
       onTap: () => this.isSimple ? {} : _showDialog(context),
       onChange: (val) => {
         setState(() {

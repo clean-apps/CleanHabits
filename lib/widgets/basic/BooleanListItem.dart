@@ -36,9 +36,11 @@ class _BooleanListItemState extends State<BooleanListItem> {
         : Theme.of(context).textTheme.subtitle2.color.withAlpha(50);
 
     var _icon = this.habit == null || this.habit.ynCompleted
-        ? Icon(Icons.check_circle, color: Theme.of(context).accentColor)
+        ? Icon(Icons.check_circle,
+            size: 40.0, color: Theme.of(context).accentColor)
         : Icon(
             Icons.panorama_fish_eye,
+            size: 40.0,
             color: Theme.of(context).primaryColor.withAlpha(200),
           );
 
