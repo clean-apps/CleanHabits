@@ -46,6 +46,7 @@ class _TodayViewState extends State<TodayView> {
     var title = index == 0 ? 'Today' : dFormat.format(thisDate);
 
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Text(
         title,
         style: TextStyle(

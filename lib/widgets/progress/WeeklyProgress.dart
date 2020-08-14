@@ -1,55 +1,37 @@
+import 'package:CleanHabits/data/ProgressStatsService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:flutter/material.dart';
 
 class WeeklyProgress extends StatefulWidget {
+  //
+  final ProgressStatsService statsService = ProgressStatsService();
   @override
   _WeeklyProgressState createState() => _WeeklyProgressState();
 }
 
 class _WeeklyProgressState extends State<WeeklyProgress> {
   List<Habit> weeklyData = List();
+  var weeksProgress = 0;
+  var weeksTarget = 0;
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
     //
-    weeklyData = _getData();
+    _loadData();
   }
 
-  List<Habit> _getData() {
-    var weeklyData = new List<Habit>();
-    weeklyData.add(Habit.newTimesHabit(
-      id: 1,
-      title: "Morning Job",
-      completed: 14,
-      target: 20,
-    ));
-    weeklyData.add(Habit.newTimesHabit(
-      id: 2,
-      title: "Eat Healthy",
-      completed: 14,
-      target: 20,
-    ));
-    weeklyData.add(Habit.newTimesHabit(
-      id: 3,
-      title: "Get Up Early",
-      completed: 14,
-      target: 20,
-    ));
-    // weeklyData.add(Habit.newTimesHabit(
-    //   id: 4,
-    //   title: "Read 20 Pages",
-    //   completed: 14,
-    //   target: 20,
-    // ));
-    // weeklyData.add(Habit.newTimesHabit(
-    //   id: 5,
-    //   title: "Learn A New Word",
-    //   completed: 14,
-    //   target: 20,
-    // ));
-
-    return weeklyData;
+  void _loadData() {
+    var sum = (int a, int b) => a + b;
+    widget.statsService.getWeeklyProgressData().then(
+          (value) => setState(() {
+            weeklyData = value;
+            weeksProgress = weeklyData.map((e) => e.timesProgress).reduce(sum);
+            weeksTarget = weeklyData.map((e) => e.timesTarget).reduce(sum);
+            loading = false;
+          }),
+        );
   }
 
   ListTile _weeklyTile(BuildContext context, Habit data) {
@@ -80,29 +62,50 @@ class _WeeklyProgressState extends State<WeeklyProgress> {
   @override
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
-    var sum = (int a, int b) => a + b;
-    var weeksProgress = weeklyData.map((e) => e.timesProgress).reduce(sum);
-    var weeksTarget = weeklyData.map((e) => e.timesTarget).reduce(sum);
     //
     var widgetList = <Widget>[
       ListTile(
         title: Text('This Week', style: _theme.textTheme.headline6),
         dense: true,
-        trailing: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 50),
-          child: LinearProgressIndicator(value: weeksProgress / weeksTarget),
-        ),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator(),
+              )
+            : ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 50),
+                child: LinearProgressIndicator(
+                  value: weeksTarget == 0 ? 0 : weeksProgress / weeksTarget,
+                ),
+              ),
       ),
-      ListView.separated(
-        shrinkWrap: true,
-        separatorBuilder: (_, __) => const Divider(),
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: weeklyData.length,
-        itemBuilder: (context, index) => _weeklyTile(
-          context,
-          weeklyData[index],
-        ),
-      )
+      loading
+          ? ConstrainedBox(
+              constraints: BoxConstraints.expand(height: 225.0),
+              child: Container(),
+            )
+          : weeklyData.length == 0
+              ? ConstrainedBox(
+                  constraints: BoxConstraints.expand(height: 225.0),
+                  child: Center(
+                    child: Text(
+                      'Not Enough Information',
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.subtitle2.color,
+                      ),
+                    ),
+                  ),
+                )
+              : ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: (_, __) => const Divider(),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: weeklyData.length,
+                  itemBuilder: (context, index) => _weeklyTile(
+                    context,
+                    weeklyData[index],
+                  ),
+                )
     ];
 
     return Card(

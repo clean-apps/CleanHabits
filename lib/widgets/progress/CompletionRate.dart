@@ -1,9 +1,9 @@
-import 'dart:math';
-
+import 'package:CleanHabits/data/ProgressStatsService.dart';
 import 'package:CleanHabits/widgets/basic/LineChart.dart';
 import 'package:flutter/material.dart';
 
 class CompletionRate extends StatefulWidget {
+  final ProgressStatsService statsService = ProgressStatsService();
   @override
   _CompletionRateState createState() => _CompletionRateState();
 }
@@ -11,38 +11,32 @@ class CompletionRate extends StatefulWidget {
 class _CompletionRateState extends State<CompletionRate> {
   //
   List<LinearData> data = List();
+  bool loading = true;
   String type = "Weekly";
-  double completedThisWeek = 0;
-  double completedAllTime = 0;
 
   @override
   void initState() {
     super.initState();
     //
-    data = _getData();
     type = "Weekly";
-    completedThisWeek = 0.5;
-    completedAllTime = 0.85;
+    _loadData();
   }
 
-  List<LinearData> _getData() {
-    var rng = new Random();
-    return [
-      new LinearData('W21', 1, rng.nextInt(25)),
-      new LinearData('W22', 2, rng.nextInt(25)),
-      new LinearData('W23', 3, rng.nextInt(25)),
-      new LinearData('W24', 4, rng.nextInt(25)),
-      new LinearData('W25', 5, rng.nextInt(25)),
-      new LinearData('W26', 6, rng.nextInt(25)),
-      new LinearData('W27', 7, rng.nextInt(25)),
-      new LinearData('W28', 8, rng.nextInt(25)),
-      new LinearData('W29', 9, rng.nextInt(25)),
-      new LinearData('W30', 10, rng.nextInt(25)),
-    ];
+  void _loadData() {
+    widget.statsService
+        .getCompletionRateData(type)
+        .then((value) => setState(() {
+              data = value;
+              loading = false;
+            }));
   }
 
-  onFilter(type) {
-    debugPrint('completion rate changed to type $type');
+  onFilter(changed) {
+    setState(() {
+      type = changed;
+      loading = true;
+    });
+    _loadData();
   }
 
   Widget _typeDropDown() {
@@ -70,11 +64,26 @@ class _CompletionRateState extends State<CompletionRate> {
           'Completion Rate',
           style: Theme.of(context).textTheme.headline6,
         ),
-        trailing: _typeDropDown(),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator(),
+              )
+            : _typeDropDown(),
       ),
       ConstrainedBox(
         constraints: BoxConstraints.expand(height: 225.0),
-        child: LineChart.withData('Weekly Progress', this.data, context),
+        child: loading
+            ? Container()
+            : data.length == 0
+                ? Center(
+                    child: Text(
+                    'Not Enough Information',
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.subtitle2.color,
+                    ),
+                  ))
+                : LineChart.withData('Weekly Progress', this.data, context),
       )
     ];
 
