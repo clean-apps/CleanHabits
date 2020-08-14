@@ -13,6 +13,7 @@ dependencies:
   charts_flutter: ^0.9.0
   flutter_calendar_carousel: ^1.4.12
   heatmap_calendar: ^1.2.8
+  flutter_local_notifications: ^1.4.4+3
   flutter:
     sdk: flutter
 

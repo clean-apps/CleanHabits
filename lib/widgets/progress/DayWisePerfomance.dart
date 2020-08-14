@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:CleanHabits/data/ProgressStatsService.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/HorizontalBarChart.dart';
