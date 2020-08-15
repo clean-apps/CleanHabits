@@ -1,9 +1,13 @@
-import 'package:CleanHabits/domain/Habit.dart';
+import 'package:CleanHabits/data/domain/HabitMaster.dart';
+import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/widgets/new/SelectChecklistType.dart';
 import 'package:CleanHabits/widgets/new/SelectRepeat.dart';
+import 'package:CleanHabits/domain/Habit.dart';
 import 'package:flutter/material.dart';
 
 class HabitMasterService {
+  //
+  var hmp = ProviderFactory.habitMasterProvider;
   //
   Future<List<Habit>> list(DateTime target) async {
     if (target.difference(DateTime.now()).inDays < 0) {
@@ -67,7 +71,7 @@ class HabitMasterService {
     }
   }
 
-  Future<bool> create({
+  Future<Habit> create({
     String title,
     Repeats repeat,
     DateTime fromDate,
@@ -76,10 +80,15 @@ class HabitMasterService {
     String timeOfDay,
   }) async {
     //
-    return new Future.delayed(
-      const Duration(seconds: 3),
-      () => true,
+    var data = HabitMaster.fromDomain(
+      title,
+      repeat,
+      fromDate,
+      type,
+      reminder,
+      timeOfDay,
     );
+    return await this.hmp.insert(data).then((data) => data.toDomain());
   }
 
   Future<bool> updateStatus({Habit habit, DateTime dateTime}) async {

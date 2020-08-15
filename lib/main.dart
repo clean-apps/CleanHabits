@@ -1,53 +1,50 @@
+import 'package:CleanHabits/data/provider/NotificationProvider.dart';
+import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/pages/HabitProgress.dart';
-import 'package:CleanHabits/pages/NewHabit.dart';
+import 'package:CleanHabits/pages/LoadingScreen.dart';
 import 'package:CleanHabits/pages/ProgressMain.dart';
-import 'package:flutter/material.dart';
 import 'package:CleanHabits/pages/TodayView.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:CleanHabits/pages/NewHabit.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  //
-  Future selectNotification(String payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
+class MyApp extends StatefulWidget {
+  final providerFactory = ProviderFactory();
+  final notificationProvider = NotificationProvider();
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var loading = true;
+
+  var notificationInit = false;
+  var notificationTest = false;
+
+  @override
+  initState() {
+    super.initState();
+
+    widget.notificationProvider.init().then(
+          (sts) => setState(() {
+            notificationInit = true;
+          }),
+        );
+
+    ProviderFactory.init().then(
+      (sts) => setState(() {
+        loading = false;
+      }),
+    );
   }
 
-  showNotificiation() async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_stat_name');
-    var initializationSettings =
-        InitializationSettings(initializationSettingsAndroid, null);
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onSelectNotification: selectNotification,
-    );
-
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      'your channel description',
-      importance: Importance.Max,
-      priority: Priority.High,
-      ticker: 'ticker',
-    );
-    var platformChannelSpecifics = NotificationDetails(
-      androidPlatformChannelSpecifics,
-      null,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'sample title',
-      'sample body',
-      platformChannelSpecifics,
-      payload: 'item x',
-    );
+  @override
+  void dispose() async {
+    await ProviderFactory.close();
+    super.dispose();
   }
 
   @override
@@ -55,29 +52,42 @@ class MyApp extends StatelessWidget {
     var themeColor = const Color(0xFF085da4);
     //var themeColor = Colors.red;
 
-    // Notifications
-    showNotificiation();
+    // Demo Notifications
+    if (notificationInit && !notificationTest)
+      widget.notificationProvider
+          .showNotificiation(
+            title: 'Habit Reminder',
+            body: 'Read 20 Pages',
+            payload: 'habit-id-1',
+          )
+          .then(
+            (sts) => setState(() {
+              notificationTest = true;
+            }),
+          );
     //
 
-    return MaterialApp(
-      theme: ThemeData(
-        accentColor: themeColor,
-        primaryColor: themeColor,
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: TextTheme(
-          subtitle2: TextStyle(
-            color: Colors.black.withAlpha(130),
-          ),
-        ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => TodayView(),
-        '/habit/progress': (context) => HabitProgress(),
-        '/progress': (context) => ProgressMain(),
-        '/new': (context) => NewHabit(),
-      },
-    );
+    return loading
+        ? Loading()
+        : MaterialApp(
+            theme: ThemeData(
+              accentColor: themeColor,
+              primaryColor: themeColor,
+              scaffoldBackgroundColor: Colors.white,
+              textTheme: TextTheme(
+                subtitle2: TextStyle(
+                  color: Colors.black.withAlpha(130),
+                ),
+              ),
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            initialRoute: '/',
+            routes: {
+              '/': (context) => TodayView(),
+              '/habit/progress': (context) => HabitProgress(),
+              '/progress': (context) => ProgressMain(),
+              '/new': (context) => NewHabit(),
+            },
+          );
   }
 }
