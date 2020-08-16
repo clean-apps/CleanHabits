@@ -26,3 +26,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/app-logo.png
+    - assets/no-habits.png
