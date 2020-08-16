@@ -30,7 +30,6 @@ class HabitMasterService {
 
   Future<Habit> _getHabitData(HabitRunData pRunData) async {
     var habitMaster = await hmp.getData(pRunData.habitId);
-    var habit = pRunData.toDomain(habitMaster.toDomain());
     return pRunData.toDomain(habitMaster.toDomain());
   }
 

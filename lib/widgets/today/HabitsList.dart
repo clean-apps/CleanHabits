@@ -1,4 +1,3 @@
-import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BooleanListItem.dart';
 import 'package:CleanHabits/widgets/basic/TimesListItem.dart';
