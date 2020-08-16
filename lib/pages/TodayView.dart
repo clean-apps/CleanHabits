@@ -49,7 +49,10 @@ class _TodayViewState extends State<TodayView> {
     var areas = ['Morning', 'Afternoon', 'Evening', 'Night', 'All Day'];
     var areaOptions = DropdownButton<String>(
       value: selectedArea,
-      icon: Icon(Icons.keyboard_arrow_down),
+      icon: Icon(
+        Icons.keyboard_arrow_down,
+        color: Theme.of(context).accentColor,
+      ),
       iconSize: 24,
       elevation: 16,
       style: TextStyle(color: Theme.of(context).accentColor),
