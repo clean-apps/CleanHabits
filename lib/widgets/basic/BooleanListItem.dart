@@ -61,13 +61,23 @@ class _BooleanListItemState extends State<BooleanListItem> {
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        subtitle: Text(
-            this.widget.habit.reminder == null
-                ? this.widget.habit.timeOfDay == null
-                    ? ''
-                    : this.widget.habit.timeOfDay
-                : this.widget.habit.reminder,
-            style: subtitleStyle),
+        subtitle: this.widget.habit.reminder == null
+            ? Text(
+                this.widget.habit.timeOfDay == null
+                    ? 'All Day'
+                    : this.widget.habit.timeOfDay,
+                style: subtitleStyle,
+              )
+            : Row(
+                children: [
+                  Icon(
+                    Icons.alarm,
+                    color: subtitleStyle.color,
+                    size: subtitleStyle.fontSize,
+                  ),
+                  Text(this.widget.habit.reminder, style: subtitleStyle)
+                ],
+              ),
         trailing: loading
             ? IconButton(
                 icon: CircularProgressIndicator(),
