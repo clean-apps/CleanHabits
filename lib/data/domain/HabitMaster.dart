@@ -179,13 +179,13 @@ class HabitMaster {
 
     isNone = map[columnRepIsNone] == 1;
     isWeekly = map[columnRepIsWeekly] == 1;
-    hasSun = map[hasSun] == 1;
-    hasMon = map[hasMon] == 1;
-    hasTue = map[hasTue] == 1;
-    hasWed = map[hasWed] == 1;
-    hasThu = map[hasThu] == 1;
-    hasFri = map[hasFri] == 1;
-    hasSat = map[hasSat] == 1;
+    hasSun = map[columnRepInSun] == 1;
+    hasMon = map[columnRepInMon] == 1;
+    hasTue = map[columnRepInTue] == 1;
+    hasWed = map[columnRepInWed] == 1;
+    hasThu = map[columnRepInThu] == 1;
+    hasFri = map[columnRepInFri] == 1;
+    hasSat = map[columnRepInSat] == 1;
     repDuation = map[columnRepDuration];
     //
     isYNType = map[columnISYNType] == 1;

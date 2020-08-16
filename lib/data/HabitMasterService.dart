@@ -71,6 +71,70 @@ class HabitMasterService {
     return habit;
   }
 
+  Future<Habit> update({
+    int id,
+    String title,
+    Repeats repeat,
+    DateTime fromDate,
+    ChecklistType type,
+    TimeOfDay reminder,
+    String timeOfDay,
+  }) async {
+    //
+    var habitMaster = HabitMaster.fromDomain(
+      title,
+      repeat,
+      DateTime(fromDate.year, fromDate.month, fromDate.day),
+      type,
+      reminder,
+      timeOfDay,
+    );
+    habitMaster.id = id;
+    await this.hmp.update(habitMaster);
+    var habit = habitMaster.toDomain();
+
+    var nowDate = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
+    var tomDate = DateTime(
+      DateTime.now().add(Duration(days: 1)).year,
+      DateTime.now().add(Duration(days: 1)).month,
+      DateTime.now().add(Duration(days: 1)).day,
+    );
+
+    var lastRun = await this.lrdp.getHabitData(habitMaster.id);
+
+    if (lastRun.lastUpdated.isAtSameMomentAs(nowDate)) {
+      //today
+      await this.rdp.deleteDataFor(habitMaster.id, nowDate);
+      await scheduleHabit(
+        habit: habitMaster,
+        forDate: nowDate,
+      );
+    }
+
+    if (lastRun.lastUpdated.isAtSameMomentAs(tomDate)) {
+      //today
+      await this.rdp.deleteDataFor(habitMaster.id, nowDate);
+      await scheduleHabit(
+        habit: habitMaster,
+        forDate: nowDate,
+      );
+
+      //tomorrow
+      await this.rdp.deleteDataFor(habitMaster.id, tomDate);
+      await scheduleHabit(
+        habit: habitMaster,
+        forDate: tomDate,
+      );
+    }
+
+    return habit;
+  }
+
   Future<ServiceLastRun> schedule({DateTime forDate}) async {
     if (forDate == null) {
       forDate = DateTime.now().add(
@@ -247,5 +311,12 @@ class HabitMasterService {
         return false;
       }
     }
+  }
+
+  Future<bool> deleteHabit(int habitId) async {
+    await this.hmp.delete(habitId);
+    await this.rdp.deleteData(habitId);
+    await this.lrdp.deleteData(habitId);
+    return true;
   }
 }

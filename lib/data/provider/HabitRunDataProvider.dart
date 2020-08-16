@@ -64,6 +64,22 @@ class HabitRunDataProvider {
     );
   }
 
+  Future<int> deleteData(int habitId) async {
+    return await db.delete(
+      tableHabitRunData,
+      where: '$columnHabitId = ?',
+      whereArgs: [habitId],
+    );
+  }
+
+  Future<int> deleteDataFor(int habitId, DateTime forDate) async {
+    return await db.delete(
+      tableHabitRunData,
+      where: '$columnTargetDate = ? and $columnHabitId = ?',
+      whereArgs: [forDate.millisecondsSinceEpoch, habitId],
+    );
+  }
+
   Future<int> update(HabitRunData runData) async {
     return await db.update(
       tableHabitRunData,

@@ -1,5 +1,6 @@
 import 'package:CleanHabits/data/provider/NotificationProvider.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
+import 'package:CleanHabits/pages/EditHabit.dart';
 import 'package:CleanHabits/pages/HabitProgress.dart';
 import 'package:CleanHabits/pages/LoadingScreen.dart';
 import 'package:CleanHabits/pages/ProgressMain.dart';
@@ -87,6 +88,7 @@ class _MyAppState extends State<MyApp> {
               '/habit/progress': (context) => HabitProgress(),
               '/progress': (context) => ProgressMain(),
               '/new': (context) => NewHabit(),
+              '/edit': (context) => EditHabit(),
             },
           );
   }

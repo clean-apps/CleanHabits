@@ -1,3 +1,5 @@
+import 'package:CleanHabits/data/HabitMasterService.dart';
+import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitCompletionRate.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitHeatMap.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
@@ -7,8 +9,17 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class HabitProgress extends StatelessWidget {
+enum HabitOptions { edit, delete }
+
+class HabitProgress extends StatefulWidget {
+  final HabitMasterService habitMaster = new HabitMasterService();
+  @override
+  _HabitProgressState createState() => _HabitProgressState();
+}
+
+class _HabitProgressState extends State<HabitProgress> {
   final int index = 1;
+  var loading = false;
 
   AppBar _appBar(BuildContext context, Habit habit) {
     var _theme = Theme.of(context);
@@ -24,6 +35,42 @@ class HabitProgress extends StatelessWidget {
           style: TextStyle(color: Colors.black),
         ),
       ),
+      actions: [
+        loading
+            ? IconButton(
+                icon: CircularProgressIndicator(),
+                onPressed: null,
+              )
+            : PopupMenuButton<HabitOptions>(
+                onSelected: (HabitOptions result) {
+                  if (result == HabitOptions.delete) {
+                    setState(() {
+                      loading = true;
+                    });
+                    widget.habitMaster.deleteHabit(habit.id).then(
+                          (value) => Navigator.pushNamed(context, '/'),
+                        );
+                  } else if (result == HabitOptions.edit) {
+                    Navigator.pushNamed(
+                      context,
+                      '/edit',
+                      arguments: habit,
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<HabitOptions>>[
+                  const PopupMenuItem<HabitOptions>(
+                    value: HabitOptions.edit,
+                    child: Text('Edit'),
+                  ),
+                  const PopupMenuItem<HabitOptions>(
+                    value: HabitOptions.delete,
+                    child: Text('Delete'),
+                  ),
+                ],
+              )
+      ],
       backgroundColor: Colors.white,
       elevation: 0.0,
     );

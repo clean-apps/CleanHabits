@@ -66,6 +66,14 @@ class HabitLastRunDataProvider {
     );
   }
 
+  Future<int> deleteData(int habitId) async {
+    return await db.delete(
+      tableHabitLastRunData,
+      where: '$columnHabitId = ?',
+      whereArgs: [habitId],
+    );
+  }
+
   Future<int> update(HabitLastRunData lastRunData) async {
     return await db.update(
       tableHabitLastRunData,
