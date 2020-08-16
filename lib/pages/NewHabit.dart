@@ -59,7 +59,7 @@ class _NewHabitState extends State<NewHabit> {
               setState(() {
                 loading = false;
               }),
-              Navigator.pop(context),
+              Navigator.pushNamed(context, '/'),
             });
   }
 
@@ -137,6 +137,50 @@ class _NewHabitState extends State<NewHabit> {
     );
   }
 
+  Widget _chip(text) {
+    return Padding(
+      padding: EdgeInsets.only(left: 3.0, right: 3.0),
+      child: InputChip(
+        backgroundColor: Colors.grey.withOpacity(0.25),
+        label: Text(text),
+        onPressed: () => setState(() {
+          title = text;
+        }),
+      ),
+    );
+  }
+
+  Widget _suggestionsTile(context) {
+    var suggestions = [
+      '📖 Read Book',
+      '🧘 Meditate',
+      '💤 Sleep Early',
+      '🏃 Go Running',
+      '🏋️ Hit The Gym',
+      '🚰 Drink Water',
+      '🙇 Yoga',
+      '📕 Learn a Langage',
+    ];
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        border: Border(
+          top: BorderSide(color: Colors.grey.withOpacity(0.5)),
+          bottom: BorderSide(color: Colors.grey.withOpacity(0.5)),
+        ),
+      ),
+      margin: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+      padding: EdgeInsets.all(5),
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: Wrap(
+          children: suggestions.map((e) => _chip(e)).toList(),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,6 +197,7 @@ class _NewHabitState extends State<NewHabit> {
             : ListView(
                 children: <Widget>[
                   _nameTile(context),
+                  _suggestionsTile(context),
                   SelectRepeat(
                     value: repeat,
                     onChange: (val) => {

@@ -61,7 +61,11 @@ class _BooleanListItemState extends State<BooleanListItem> {
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        subtitle: Text(this.widget.habit.reminder, style: subtitleStyle),
+        subtitle: Text(
+            this.widget.habit.reminder == null
+                ? ''
+                : this.widget.habit.reminder,
+            style: subtitleStyle),
         trailing: loading
             ? IconButton(
                 icon: CircularProgressIndicator(),
