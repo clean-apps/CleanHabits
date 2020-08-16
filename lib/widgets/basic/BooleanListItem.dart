@@ -63,7 +63,9 @@ class _BooleanListItemState extends State<BooleanListItem> {
         ),
         subtitle: Text(
             this.widget.habit.reminder == null
-                ? ''
+                ? this.widget.habit.timeOfDay == null
+                    ? ''
+                    : this.widget.habit.timeOfDay
                 : this.widget.habit.reminder,
             style: subtitleStyle),
         trailing: loading

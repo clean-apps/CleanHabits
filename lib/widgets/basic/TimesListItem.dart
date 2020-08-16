@@ -135,7 +135,13 @@ class _TimesListItemState extends State<TimesListItem> {
                         child: Text(this.widget.habit.title,
                             style: Theme.of(context).textTheme.headline6),
                       ),
-                      Text(this.widget.habit.reminder, style: subtitleStyle),
+                      Text(
+                          this.widget.habit.reminder == null
+                              ? this.widget.habit.timeOfDay == null
+                                  ? ''
+                                  : this.widget.habit.timeOfDay
+                              : this.widget.habit.reminder,
+                          style: subtitleStyle),
                     ],
                   ),
                   Spacer(),

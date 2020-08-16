@@ -18,6 +18,7 @@ class _TodayViewState extends State<TodayView> {
   final DateFormat dFormat = new DateFormat("dd MMM yyyy");
   var _selectedDate = DateTime.now();
   List<Habit> _habits = new List();
+  var selectedArea = "All Day";
   bool loading = true;
 
   @override
@@ -45,6 +46,27 @@ class _TodayViewState extends State<TodayView> {
 
     var title = index == 0 ? 'Today' : dFormat.format(thisDate);
 
+    var areas = ['Morning', 'Afternoon', 'Evening', 'Night', 'All Day'];
+    var areaOptions = DropdownButton<String>(
+      value: selectedArea,
+      icon: Icon(Icons.keyboard_arrow_down),
+      iconSize: 24,
+      elevation: 16,
+      style: TextStyle(color: Theme.of(context).accentColor),
+      underline: Container(),
+      onChanged: (String newValue) {
+        setState(() {
+          selectedArea = newValue;
+        });
+      },
+      items: areas.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+
     return AppBar(
       automaticallyImplyLeading: false,
       title: Text(
@@ -53,6 +75,7 @@ class _TodayViewState extends State<TodayView> {
           color: Theme.of(context).textTheme.headline6.color,
         ),
       ),
+      actions: [areaOptions],
       elevation: 0.0,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     );
@@ -84,6 +107,14 @@ class _TodayViewState extends State<TodayView> {
     );
   }
 
+  List<Habit> _filter() {
+    if (selectedArea == "All Day")
+      return _habits;
+    else {
+      return _habits.where((i) => i.timeOfDay == selectedArea).toList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //
@@ -108,7 +139,7 @@ class _TodayViewState extends State<TodayView> {
                   }),
           loading
               ? showLoading()
-              : new HabitsList(habits: _habits, date: _selectedDate)
+              : new HabitsList(habits: _filter(), date: _selectedDate)
         ],
       ),
       bottomNavigationBar: BottomNavBar(index: _selectedNavIndex),

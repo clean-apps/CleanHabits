@@ -94,6 +94,7 @@ class HabitMaster {
     data.isYNType = this.isYNType;
     data.timesTarget = this.isYNType ? 1 : this.timesTarget;
     data.timesTargetType = this.timesTargetType;
+    data.timeOfDay = this.timeOfDay;
 
     return data;
   }

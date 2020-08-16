@@ -110,6 +110,7 @@ class HabitMasterService {
     if (lastRun.lastUpdated.isAtSameMomentAs(nowDate)) {
       //today
       await this.rdp.deleteDataFor(habitMaster.id, nowDate);
+      await this.lrdp.deleteData(habitMaster.id);
       await scheduleHabit(
         habit: habitMaster,
         forDate: nowDate,
@@ -119,6 +120,7 @@ class HabitMasterService {
     if (lastRun.lastUpdated.isAtSameMomentAs(tomDate)) {
       //today
       await this.rdp.deleteDataFor(habitMaster.id, nowDate);
+      await this.lrdp.deleteData(habitMaster.id);
       await scheduleHabit(
         habit: habitMaster,
         forDate: nowDate,

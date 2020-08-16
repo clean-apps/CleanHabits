@@ -10,11 +10,14 @@ class Habit {
   int timesProgress;
   String timesTargetType;
 
+  String timeOfDay;
+
   static Habit newYNHabit({
     int id,
     String title,
     String reminder,
     bool completed,
+    String timeOfDay,
   }) {
     Habit newHabit = new Habit();
     newHabit.id = id;
@@ -25,6 +28,7 @@ class Habit {
     newHabit.timesTarget = 1;
     newHabit.timesProgress = completed ? 1 : 0;
     newHabit.timesTargetType = null;
+    newHabit.timeOfDay = timeOfDay;
 
     return newHabit;
   }
@@ -36,6 +40,7 @@ class Habit {
     int target,
     int completed,
     String targetType,
+    String timeOfDay,
   }) {
     Habit newHabit = new Habit();
     newHabit.id = id;
@@ -46,6 +51,7 @@ class Habit {
     newHabit.timesTarget = target;
     newHabit.timesProgress = completed;
     newHabit.timesTargetType = targetType;
+    newHabit.timeOfDay = timeOfDay;
 
     return newHabit;
   }
