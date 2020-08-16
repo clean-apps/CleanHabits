@@ -27,11 +27,12 @@ class HabitLastRunData {
 
   HabitLastRunData.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
+    habitId = map[columnHabitId];
     lastUpdated = map[columnLastUpdated] == null
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             map[columnLastUpdated],
-            isUtc: true,
+            isUtc: false,
           );
   }
 }

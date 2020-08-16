@@ -1,74 +1,37 @@
+import 'package:CleanHabits/data/domain/HabitLastRunData.dart';
 import 'package:CleanHabits/data/domain/HabitMaster.dart';
+import 'package:CleanHabits/data/domain/HabitRunData.dart';
+import 'package:CleanHabits/data/domain/ServiceLastRun.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/widgets/new/SelectChecklistType.dart';
 import 'package:CleanHabits/widgets/new/SelectRepeat.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HabitMasterService {
   //
   var hmp = ProviderFactory.habitMasterProvider;
+  var lrdp = ProviderFactory.habitLastRunDataProvider;
+  var rdp = ProviderFactory.habitRunDataProvider;
+  var slrp = ProviderFactory.serviceLastRunProvider;
   //
   Future<List<Habit>> list(DateTime target) async {
-    if (target.difference(DateTime.now()).inDays < 0) {
-      var habits = new List<Habit>();
-      habits.add(Habit.newYNHabit(
-        id: 1,
-        title: "Morning Job",
-        reminder: "06:00 AM",
-        completed: false,
-      ));
-      habits.add(Habit.newYNHabit(
-        id: 2,
-        title: "Eat Healthy",
-        reminder: "08:00 AM",
-        completed: false,
-      ));
+    var habitRunDatas = await this.rdp.listForDate(DateTime(
+          target.year,
+          target.month,
+          target.day,
+        ));
 
-      return new Future.delayed(
-        const Duration(seconds: 3),
-        () => habits,
-      );
-    } else {
-      var habits = new List<Habit>();
-      habits.add(Habit.newYNHabit(
-        id: 1,
-        title: "Morning Job",
-        reminder: "06:00 AM",
-        completed: false,
-      ));
-      habits.add(Habit.newYNHabit(
-        id: 2,
-        title: "Eat Healthy",
-        reminder: "08:00 AM",
-        completed: false,
-      ));
-      habits.add(Habit.newYNHabit(
-        id: 3,
-        title: "Get Up Early",
-        reminder: "06:00 AM",
-        completed: true,
-      ));
-      habits.add(Habit.newTimesHabit(
-        id: 4,
-        title: "Read 20 Pages",
-        reminder: "06:00 AM",
-        completed: 14,
-        target: 20,
-        targetType: "Pages",
-      ));
-      habits.add(Habit.newYNHabit(
-        id: 5,
-        title: "Learn A New Word",
-        reminder: "09:00 AM",
-        completed: true,
-      ));
+    return await Future.wait(
+      habitRunDatas.map((rd) async => _getHabitData(rd)).toList(),
+    );
+  }
 
-      return new Future.delayed(
-        const Duration(seconds: 3),
-        () => habits,
-      );
-    }
+  Future<Habit> _getHabitData(HabitRunData pRunData) async {
+    var habitMaster = await hmp.getData(pRunData.habitId);
+    var habit = pRunData.toDomain(habitMaster.toDomain());
+    return pRunData.toDomain(habitMaster.toDomain());
   }
 
   Future<Habit> create({
@@ -83,19 +46,207 @@ class HabitMasterService {
     var data = HabitMaster.fromDomain(
       title,
       repeat,
-      fromDate,
+      DateTime(fromDate.year, fromDate.month, fromDate.day),
       type,
       reminder,
       timeOfDay,
     );
-    return await this.hmp.insert(data).then((data) => data.toDomain());
+    var habitMaster = await this.hmp.insert(data);
+    var habit = habitMaster.toDomain();
+
+    if (fromDate.isBefore(DateTime.now())) {
+      var checkDate = DateTime.fromMillisecondsSinceEpoch(
+        fromDate.millisecondsSinceEpoch,
+        isUtc: false,
+      );
+      while (checkDate.isBefore(DateTime.now().add(Duration(days: 1)))) {
+        await scheduleHabit(
+          habit: habitMaster,
+          forDate: DateTime(checkDate.year, checkDate.month, checkDate.day),
+        );
+
+        checkDate = checkDate.add(Duration(days: 1));
+      }
+    }
+
+    return habit;
+  }
+
+  Future<ServiceLastRun> schedule({DateTime forDate}) async {
+    if (forDate == null) {
+      forDate = DateTime.now().add(
+        Duration(days: 1),
+      );
+    }
+
+    // remove hour minutes
+    var runForDate = DateTime(forDate.year, forDate.month, forDate.day);
+
+    // run schedule for each habits
+    var habits = await this.hmp.list();
+    if (habits != null) {
+      await Future.wait(
+        habits.map((hbt) async {
+          return await scheduleHabit(habit: hbt, forDate: runForDate);
+        }),
+      );
+    }
+
+    // update service last run
+    var lastRun = await this.slrp.list();
+    if (lastRun == null || lastRun.length == 0) {
+      var lastRunDataMap = {
+        'last_updated': DateTime(
+          runForDate.year,
+          runForDate.month,
+          runForDate.day,
+        ).millisecondsSinceEpoch,
+      };
+      var sLastRunData = ServiceLastRun.fromMap(lastRunDataMap);
+      return this.slrp.insert(sLastRunData);
+      //
+    } else {
+      lastRun[0].lastUpdated = DateTime(
+        runForDate.year,
+        runForDate.month,
+        runForDate.day,
+      );
+      await this.slrp.update(lastRun[0]);
+      return lastRun[0];
+    }
+  }
+
+  Future<HabitMaster> scheduleHabit({
+    HabitMaster habit,
+    DateTime forDate,
+  }) async {
+    var applicable = await isApplicable(
+      habit,
+      DateTime(forDate.year, forDate.month, forDate.day),
+    );
+
+    var lastRunData = await this.lrdp.getHabitData(habit.id);
+    var alreadyPresent = lastRunData != null &&
+        (lastRunData.lastUpdated.isAtSameMomentAs(
+                DateTime(forDate.year, forDate.month, forDate.day)) ||
+            lastRunData.lastUpdated
+                .isAfter(DateTime(forDate.year, forDate.month, forDate.day)));
+
+    if (applicable && !alreadyPresent) {
+      // insert run data
+      var runDataMap = {
+        '_habit_id': habit.id,
+        columnTargetDate: DateTime(forDate.year, forDate.month, forDate.day)
+            .millisecondsSinceEpoch,
+        columnTarget: habit.isYNType ? 1 : habit.timesTarget,
+        columnProgress: 0,
+      };
+      var runData = HabitRunData.fromMap(runDataMap);
+      this.rdp.insert(runData);
+
+      // update last run data
+      var lastRunData = await this.lrdp.getHabitData(habit.id);
+      if (lastRunData == null) {
+        var lrData = {
+          '_habit_id': habit.id,
+          'last_updated': DateTime(forDate.year, forDate.month, forDate.day)
+              .millisecondsSinceEpoch,
+        };
+        lastRunData = HabitLastRunData.fromMap(lrData);
+        await this.lrdp.insert(lastRunData);
+      } else {
+        lastRunData.lastUpdated = DateTime(
+          forDate.year,
+          forDate.month,
+          forDate.day,
+        );
+        await this.lrdp.update(lastRunData);
+      }
+    }
+
+    return habit;
   }
 
   Future<bool> updateStatus({Habit habit, DateTime dateTime}) async {
     //
-    return new Future.delayed(
-      const Duration(seconds: 3),
-      () => true,
+    var forDate = DateTime(
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
     );
+    var runData = await this.rdp.getData(forDate, habit.id);
+    if (runData != null) {
+      runData.progress =
+          habit.isYNType ? (habit.ynCompleted ? 1 : 0) : habit.timesProgress;
+
+      return (await this.rdp.update(runData)) == 1;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> isApplicable(HabitMaster habit, DateTime forDate) async {
+    var today = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
+    var checkFor = DateTime(
+      forDate.year,
+      forDate.month,
+      forDate.day,
+    );
+
+    if (habit.isNone) {
+      // no repetations present, repeat everyday
+      return true;
+      //
+    } else if (habit.isWeekly) {
+      // check for day of week
+      var checkDay = DateFormat("E").format(checkFor);
+      if (checkDay == "Sun" && habit.hasSun) {
+        return true;
+      } else if (checkDay == "Mon" && habit.hasMon) {
+        return true;
+      } else if (checkDay == "Tue" && habit.hasTue) {
+        return true;
+      } else if (checkDay == "Wed" && habit.hasWed) {
+        return true;
+      } else if (checkDay == "Thu" && habit.hasThu) {
+        return true;
+      } else if (checkDay == "Fri" && habit.hasFri) {
+        return true;
+      } else if (checkDay == "Sat" && habit.hasSat) {
+        return true;
+      } else {
+        return false;
+      }
+      //
+    } else {
+      //interval repeats
+      var lastRunData = await this.lrdp.getHabitData(habit.id);
+      if (lastRunData != null) {
+        //last run data is present, use that
+        var days = checkFor.difference(lastRunData.lastUpdated);
+        return (days.inDays >= habit.repDuation);
+        //
+      } else {
+        //last run data is absent, calculate from fromDate
+        var checkDate = DateTime.fromMillisecondsSinceEpoch(
+          habit.fromDate.millisecondsSinceEpoch,
+          isUtc: false,
+        );
+        while (!checkDate.isAfter(today.add(Duration(days: 1)))) {
+          if (checkDate.isAtSameMomentAs(checkFor)) {
+            return true;
+          }
+
+          checkDate = checkDate.add(Duration(days: habit.repDuation));
+        }
+
+        return false;
+      }
+    }
   }
 }

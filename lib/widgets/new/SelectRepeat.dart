@@ -40,7 +40,7 @@ class _SelectRepeatState extends State<SelectRepeat> {
       value: selected.none ? null : selected.displayString(),
       icon: Icon(Icons.repeat),
       title: 'Repeat',
-      emptyText: 'No Repetitions',
+      emptyText: 'Repeat Everyday',
       onTap: () => _showDialog(context),
       onClear: () => {
         setState(() {

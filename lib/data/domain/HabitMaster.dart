@@ -165,7 +165,7 @@ class HabitMaster {
         : TimeOfDay.fromDateTime(
             DateTime.fromMillisecondsSinceEpoch(
               map[columnReminder],
-              isUtc: true,
+              isUtc: false,
             ),
           );
     //
@@ -173,7 +173,7 @@ class HabitMaster {
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             map[columnFromDate],
-            isUtc: true,
+            isUtc: false,
           );
     timeOfDay = map[columnTimeOfDay];
 

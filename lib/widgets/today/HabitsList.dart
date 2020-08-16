@@ -9,7 +9,6 @@ class HabitsList extends StatelessWidget {
   //
   final List<Habit> habits;
   final DateTime date;
-  final HabitMasterService habitMaster = new HabitMasterService();
   HabitsList({this.habits, this.date});
 
   @override

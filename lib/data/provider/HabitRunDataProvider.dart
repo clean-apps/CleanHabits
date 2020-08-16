@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
@@ -18,7 +19,7 @@ class HabitRunDataProvider {
 
           $columnTargetDate integer not null,
           $columnTargetWeekInYear text not null,
-          columnTargetDayInWeek text not null,
+          $columnTargetDayInWeek text not null,
           
           $columnTarget integer not null,
           $columnProgress integer not null
@@ -36,7 +37,7 @@ class HabitRunDataProvider {
     return runData;
   }
 
-  Future<HabitRunData> getData(int id) async {
+  Future<HabitRunData> getData(DateTime formDate, int habitId) async {
     List<Map> maps = await db.query(
       tableHabitRunData,
       columns: [
@@ -46,8 +47,8 @@ class HabitRunDataProvider {
         columnTarget,
         columnProgress
       ],
-      where: '$columnId = ?',
-      whereArgs: [id],
+      where: '$columnTargetDate = ? and $columnHabitId = ?',
+      whereArgs: [formDate.millisecondsSinceEpoch, habitId],
     );
 
     if (maps.length > 0) {
@@ -81,22 +82,25 @@ class HabitRunDataProvider {
   }
 
   Future<List<HabitRunData>> list() async {
-    return await db.query(
-      tableHabitRunData,
-      columns: [
-        columnId,
-        columnHabitId,
-        columnTargetDate,
-        columnTarget,
-        columnProgress
-      ],
-    ).then(
-      (data) => data
-          .map(
-            (m) => HabitRunData.fromMap(m),
-          )
-          .toList(),
-    );
+    return await db
+        .query(
+          tableHabitRunData,
+          columns: [
+            columnId,
+            columnHabitId,
+            columnTargetDate,
+            columnTarget,
+            columnProgress
+          ],
+          orderBy: '$columnHabitId asc',
+        )
+        .then(
+          (data) => data
+              .map(
+                (m) => HabitRunData.fromMap(m),
+              )
+              .toList(),
+        );
   }
 
   Future<List<HabitRunData>> listForDate(DateTime forDate) async {
@@ -112,6 +116,7 @@ class HabitRunDataProvider {
           ],
           where: '$columnTargetDate = ?',
           whereArgs: [forDate.millisecondsSinceEpoch],
+          orderBy: '$columnHabitId asc',
         )
         .then(
           (data) => data
@@ -141,6 +146,7 @@ class HabitRunDataProvider {
             fromDate.millisecondsSinceEpoch,
             toDate.millisecondsSinceEpoch
           ],
+          orderBy: '$columnHabitId asc',
         )
         .then(
           (data) => data

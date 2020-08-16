@@ -94,18 +94,10 @@ class HabitRunData {
         ? null
         : DateTime.fromMillisecondsSinceEpoch(
             map[columnTargetDate],
-            isUtc: true,
+            isUtc: false,
           );
 
-    target = map[columnTarget] == null
-        ? null
-        : int.parse(
-            map[columnTarget],
-          );
-    progress = map[columnProgress] == null
-        ? null
-        : int.parse(
-            map[columnProgress],
-          );
+    target = map[columnTarget] == null ? null : map[columnTarget];
+    progress = map[columnProgress] == null ? null : map[columnProgress];
   }
 }
