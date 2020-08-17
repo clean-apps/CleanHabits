@@ -205,6 +205,10 @@ class HabitMasterService {
             .millisecondsSinceEpoch,
         columnTarget: habit.isYNType ? 1 : habit.timesTarget,
         columnProgress: 0,
+        columnCurrentStreak: 0,
+        columnStreakStartDate:
+            DateTime(forDate.year, forDate.month, forDate.day)
+                .millisecondsSinceEpoch,
       };
       var runData = HabitRunData.fromMap(runDataMap);
       this.rdp.insert(runData);
@@ -239,12 +243,91 @@ class HabitMasterService {
       dateTime.month,
       dateTime.day,
     );
+
+    // -1 day run data
+    var prevDate = DateTime(
+      forDate.subtract(Duration(days: 1)).year,
+      forDate.subtract(Duration(days: 1)).month,
+      forDate.subtract(Duration(days: 1)).day,
+    );
+    var prevRunData = await this.rdp.getData(prevDate, habit.id);
+
     var runData = await this.rdp.getData(forDate, habit.id);
     if (runData != null) {
-      runData.progress =
-          habit.isYNType ? (habit.ynCompleted ? 1 : 0) : habit.timesProgress;
+      if (habit.isYNType) {
+        if (habit.ynCompleted) {
+          runData.progress = 1;
+          if (prevRunData != null && prevRunData.progress == 1) {
+            runData.currentStreak = prevRunData.currentStreak + 1;
+            runData.streakStartDate = prevRunData.streakStartDate;
+            runData.hasStreakEnded = false;
 
-      return (await this.rdp.update(runData)) == 1;
+            await this.rdp.update(runData);
+            //
+          } else if (prevRunData != null) {
+            runData.currentStreak = 1;
+            runData.streakStartDate = forDate;
+            runData.hasStreakEnded = false;
+
+            prevRunData.currentStreak = 0;
+            prevRunData.hasStreakEnded = true;
+
+            await this.rdp.update(runData);
+            await this.rdp.update(prevRunData);
+          } else {
+            runData.currentStreak = 1;
+            runData.streakStartDate = forDate;
+            runData.hasStreakEnded = false;
+
+            await this.rdp.update(runData);
+          }
+        } else {
+          runData.currentStreak = 0;
+          runData.streakStartDate = null;
+          runData.hasStreakEnded = true;
+
+          await this.rdp.update(runData);
+          //
+        }
+      } else {
+        if (habit.timesProgress == habit.timesTarget) {
+          runData.progress = habit.timesProgress;
+          if (prevRunData != null &&
+              prevRunData.progress == habit.timesTarget) {
+            runData.currentStreak = prevRunData.currentStreak + 1;
+            runData.streakStartDate = prevRunData.streakStartDate;
+            runData.hasStreakEnded = false;
+
+            await this.rdp.update(runData);
+            //
+          } else if (prevRunData != null) {
+            runData.currentStreak = 1;
+            runData.streakStartDate = forDate;
+            runData.hasStreakEnded = false;
+
+            prevRunData.currentStreak = 0;
+            prevRunData.hasStreakEnded = true;
+
+            await this.rdp.update(runData);
+            await this.rdp.update(prevRunData);
+          } else {
+            runData.currentStreak = 1;
+            runData.streakStartDate = forDate;
+            runData.hasStreakEnded = false;
+
+            await this.rdp.update(runData);
+          }
+        } else {
+          runData.currentStreak = 0;
+          runData.streakStartDate = null;
+          runData.hasStreakEnded = true;
+
+          await this.rdp.update(runData);
+          //
+        }
+      }
+
+      return true;
     } else {
       return false;
     }

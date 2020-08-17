@@ -1,6 +1,6 @@
 # CleanHabits
 
-A new Flutter project.
+The Minimal, Clean, Habit Tracker
 
 ## Getting Started
 

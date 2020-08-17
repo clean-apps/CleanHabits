@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/StackedBarChart.dart';
@@ -7,15 +8,36 @@ import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
 import 'package:heatmap_calendar/time_utils.dart';
 
 class HabitStatsService {
-  Future<HabitStatus> getStatusSummary(Habit habit) {
+  //
+  var hmp = ProviderFactory.habitMasterProvider;
+  var lrdp = ProviderFactory.habitLastRunDataProvider;
+  var rdp = ProviderFactory.habitRunDataProvider;
+  var slrp = ProviderFactory.serviceLastRunProvider;
+  //
+
+  Future<HabitStatus> getStatusSummary(Habit habit) async {
+    var now = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+    var todayRunData = await this.rdp.getData(now, habit.id);
+
+    var startWeek = now.subtract(Duration(days: 7 - now.weekday));
+
+    var habitData = await this.rdp.listBetweenFor(startWeek, now, habit.id);
+
+    var weeklyProgress = habitData.map((e) => e.progress).reduce(
+          (a, b) => a + b,
+        );
+
+    var weeklyTarget =
+        habitData.length * (habit.isYNType ? 1 : habit.timesTarget);
     //
-    return new Future.delayed(
-      const Duration(seconds: 3),
-      () => HabitStatus(
-        currentStreak: 5,
-        weekProgress: 2,
-        weekTarget: 7,
-      ),
+    return HabitStatus(
+      currentStreak: todayRunData.currentStreak,
+      weekProgress: weeklyProgress,
+      weekTarget: weeklyTarget,
     );
   }
 

@@ -28,7 +28,7 @@ class ProviderFactory {
     String path4 = join(documentsDirectory.path, 'clean_habits-4.db');
     await serviceLastRunProvider.open(path4);
 
-    await MockDataFactory.create(daysToMock: 0);
+    await MockDataFactory.create(daysToMock: 15);
     return Future<bool>(() => true);
   }
 

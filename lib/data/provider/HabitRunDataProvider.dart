@@ -21,7 +21,11 @@ class HabitRunDataProvider {
           $columnTargetDayInWeek text not null,
           
           $columnTarget integer not null,
-          $columnProgress integer not null
+          $columnProgress integer not null,
+
+          $columnCurrentStreak integer not null,
+          $columnStreakStartDate integer null,
+          $columnHasStreakEnded integer null
         )
         ''');
       },
@@ -160,6 +164,38 @@ class HabitRunDataProvider {
           whereArgs: [
             fromDate.millisecondsSinceEpoch,
             toDate.millisecondsSinceEpoch
+          ],
+          orderBy: '$columnHabitId asc',
+        )
+        .then(
+          (data) => data
+              .map(
+                (m) => HabitRunData.fromMap(m),
+              )
+              .toList(),
+        );
+  }
+
+  Future<List<HabitRunData>> listBetweenFor(
+    DateTime fromDate,
+    DateTime toDate,
+    int habitId,
+  ) async {
+    return await db
+        .query(
+          tableHabitRunData,
+          columns: [
+            columnId,
+            columnHabitId,
+            columnTargetDate,
+            columnTarget,
+            columnProgress
+          ],
+          where: '$columnTargetDate between ? and ? and $columnHabitId = ?',
+          whereArgs: [
+            fromDate.millisecondsSinceEpoch,
+            toDate.millisecondsSinceEpoch,
+            habitId
           ],
           orderBy: '$columnHabitId asc',
         )

@@ -1,5 +1,4 @@
 import 'package:CleanHabits/data/HabitMasterService.dart';
-import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitCompletionRate.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitHeatMap.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
