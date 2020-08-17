@@ -206,9 +206,6 @@ class HabitMasterService {
         columnTarget: habit.isYNType ? 1 : habit.timesTarget,
         columnProgress: 0,
         columnCurrentStreak: 0,
-        columnStreakStartDate:
-            DateTime(forDate.year, forDate.month, forDate.day)
-                .millisecondsSinceEpoch,
       };
       var runData = HabitRunData.fromMap(runDataMap);
       this.rdp.insert(runData);

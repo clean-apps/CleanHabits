@@ -1,10 +1,13 @@
 import 'dart:math';
 
+import 'package:CleanHabits/data/HabitMasterService.dart';
+import 'package:CleanHabits/data/domain/HabitMaster.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/StackedBarChart.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
+import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/time_utils.dart';
 
 class HabitStatsService {
@@ -14,6 +17,7 @@ class HabitStatsService {
   var rdp = ProviderFactory.habitRunDataProvider;
   var slrp = ProviderFactory.serviceLastRunProvider;
   //
+  var hms = HabitMasterService();
 
   Future<HabitStatus> getStatusSummary(Habit habit) async {
     var now = DateTime(
@@ -23,9 +27,12 @@ class HabitStatsService {
     );
     var todayRunData = await this.rdp.getData(now, habit.id);
 
-    var startWeek = now.subtract(Duration(days: 7 - now.weekday));
+    var startWeek = now.subtract(Duration(days: now.weekday - 1));
 
     var habitData = await this.rdp.listBetweenFor(startWeek, now, habit.id);
+
+    var currentStreak =
+        todayRunData.currentStreak == null ? 0 : todayRunData.currentStreak;
 
     var weeklyProgress = habitData.map((e) => e.progress).reduce(
           (a, b) => a + b,
@@ -33,9 +40,24 @@ class HabitStatsService {
 
     var weeklyTarget =
         habitData.length * (habit.isYNType ? 1 : habit.timesTarget);
+
+    var habitMaster = await this.hmp.getData(habit.id);
+    for (int cnt = now.weekday; cnt < 7; cnt++) {
+      var nextDay = now.add(Duration(days: cnt));
+      var isApplicable = await this.hms.isApplicable(habitMaster, nextDay);
+      if (isApplicable) {
+        weeklyTarget += (habit.isYNType ? 1 : habit.timesTarget);
+      }
+    }
+
+    debugPrint('startWeek = ${startWeek.toIso8601String()}');
+    habitData.forEach((i) => debugPrint(
+        '[${i.targetDate.toIso8601String()}] progress: ${i.progress}'));
+    debugPrint('weeklyProgress = $weeklyProgress');
+    debugPrint('weeklyTarget = $weeklyTarget');
     //
     return HabitStatus(
-      currentStreak: todayRunData.currentStreak,
+      currentStreak: currentStreak,
       weekProgress: weeklyProgress,
       weekTarget: weeklyTarget,
     );

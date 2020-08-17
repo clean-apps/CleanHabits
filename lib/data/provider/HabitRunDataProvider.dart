@@ -48,7 +48,10 @@ class HabitRunDataProvider {
         columnHabitId,
         columnTargetDate,
         columnTarget,
-        columnProgress
+        columnProgress,
+        columnCurrentStreak,
+        columnStreakStartDate,
+        columnHasStreakEnded,
       ],
       where: '$columnTargetDate = ? and $columnHabitId = ?',
       whereArgs: [formDate.millisecondsSinceEpoch, habitId],
@@ -109,7 +112,10 @@ class HabitRunDataProvider {
             columnHabitId,
             columnTargetDate,
             columnTarget,
-            columnProgress
+            columnProgress,
+            columnCurrentStreak,
+            columnStreakStartDate,
+            columnHasStreakEnded,
           ],
           orderBy: '$columnHabitId asc',
         )
@@ -131,7 +137,10 @@ class HabitRunDataProvider {
             columnHabitId,
             columnTargetDate,
             columnTarget,
-            columnProgress
+            columnProgress,
+            columnCurrentStreak,
+            columnStreakStartDate,
+            columnHasStreakEnded,
           ],
           where: '$columnTargetDate = ?',
           whereArgs: [forDate.millisecondsSinceEpoch],
@@ -158,7 +167,10 @@ class HabitRunDataProvider {
             columnHabitId,
             columnTargetDate,
             columnTarget,
-            columnProgress
+            columnProgress,
+            columnCurrentStreak,
+            columnStreakStartDate,
+            columnHasStreakEnded,
           ],
           where: '$columnTargetDate between ? and ?',
           whereArgs: [
@@ -189,7 +201,10 @@ class HabitRunDataProvider {
             columnHabitId,
             columnTargetDate,
             columnTarget,
-            columnProgress
+            columnProgress,
+            columnCurrentStreak,
+            columnStreakStartDate,
+            columnHasStreakEnded,
           ],
           where: '$columnTargetDate between ? and ? and $columnHabitId = ?',
           whereArgs: [
