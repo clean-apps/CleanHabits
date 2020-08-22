@@ -62,4 +62,9 @@ class Habit {
 
     return newHabit;
   }
+
+  @override
+  String toString() {
+    return '[$id] $title -> isSimple: $isYNType -> progress: $timesProgress -> ynCompleted: $ynCompleted';
+  }
 }

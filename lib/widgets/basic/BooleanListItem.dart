@@ -13,29 +13,28 @@ class BooleanListItem extends StatefulWidget {
 }
 
 class _BooleanListItemState extends State<BooleanListItem> {
-  Habit habit;
   bool loading = false;
 
   @override
   void initState() {
     super.initState();
-    habit = widget.habit;
   }
 
   @override
   Widget build(BuildContext context) {
     //
+
     var subtitleStyle = Theme.of(context).textTheme.subtitle2;
 
-    var backgroundColor = this.habit == null || this.habit.ynCompleted
+    var backgroundColor = widget.habit == null || widget.habit.ynCompleted
         ? Theme.of(context).primaryColor.withAlpha(10)
         : Theme.of(context).scaffoldBackgroundColor;
 
-    var borderColor = this.habit == null || this.habit.ynCompleted
+    var borderColor = widget.habit == null || widget.habit.ynCompleted
         ? Theme.of(context).primaryColor.withAlpha(80)
         : Theme.of(context).textTheme.subtitle2.color.withAlpha(50);
 
-    var _icon = this.habit == null || this.habit.ynCompleted
+    var _icon = widget.habit == null || widget.habit.ynCompleted
         ? Icon(Icons.check_circle,
             size: 40.0, color: Theme.of(context).accentColor)
         : Icon(
@@ -89,10 +88,10 @@ class _BooleanListItemState extends State<BooleanListItem> {
                 onPressed: () => {
                   setState(() {
                     loading = true;
-                    habit.ynCompleted = !habit.ynCompleted;
+                    widget.habit.ynCompleted = !widget.habit.ynCompleted;
                   }),
                   widget.habitMaster
-                      .updateStatus(habit: habit, dateTime: widget.date)
+                      .updateStatus(habit: widget.habit, dateTime: widget.date)
                       .then(
                         (sts) => setState(() {
                           loading = false;

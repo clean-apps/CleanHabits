@@ -16,10 +16,17 @@ class TodayView extends StatefulWidget {
 class _TodayViewState extends State<TodayView> {
   //
   final DateFormat dFormat = new DateFormat("dd MMM yyyy");
-  var _selectedDate = DateTime.now();
+  var _selectedDate = DateTime.utc(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+
   List<Habit> _habits = new List();
   var selectedArea = "All Day";
   bool loading = true;
+
+  var _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -30,7 +37,8 @@ class _TodayViewState extends State<TodayView> {
   void _loadData() {
     widget.habitMaster.list(_selectedDate).then(
           (data) => setState(() {
-            this._habits = data;
+            this._habits.clear();
+            this._habits.addAll(data);
             loading = false;
           }),
         );
@@ -110,12 +118,21 @@ class _TodayViewState extends State<TodayView> {
     );
   }
 
-  List<Habit> _filter() {
+  List<Habit> _filterHabits() {
     if (selectedArea == "All Day")
-      return _habits;
+      return this._habits;
     else {
-      return _habits.where((i) => i.timeOfDay == selectedArea).toList();
+      return this._habits.where((i) => i.timeOfDay == selectedArea).toList();
     }
+  }
+
+  _onDateChange(DateTime newDate) {
+    this.setState(() {
+      _selectedDate = newDate;
+      _habits.clear();
+      loading = true;
+    });
+    _loadData();
   }
 
   @override
@@ -129,20 +146,19 @@ class _TodayViewState extends State<TodayView> {
     return Scaffold(
       appBar: _appBar,
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: <Widget>[
-          new HCalDayWidget(
-              height: dateBarHeight,
-              date: _selectedDate,
-              onChange: (dt) => {
-                    this.setState(() {
-                      _selectedDate = dt;
-                      loading = true;
-                    }),
-                    _loadData(),
-                  }),
+          HCalDayWidget(
+            height: dateBarHeight,
+            date: _selectedDate,
+            onChange: _onDateChange,
+          ),
           loading
               ? showLoading()
-              : new HabitsList(habits: _filter(), date: _selectedDate)
+              : HabitsList(
+                  habits: _filterHabits(),
+                  date: _selectedDate,
+                )
         ],
       ),
       bottomNavigationBar: BottomNavBar(index: _selectedNavIndex),

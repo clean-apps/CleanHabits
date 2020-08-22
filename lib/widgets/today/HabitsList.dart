@@ -44,6 +44,7 @@ class HabitsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('[HabitList] $habits');
     return habits.length == 0
         ? SliverList(
             delegate: new SliverChildListDelegate(
@@ -61,9 +62,13 @@ class HabitsList extends StatelessWidget {
                       child: FadeInAnimation(
                         child: entry.value.isYNType
                             ? BooleanListItem(
-                                habit: entry.value, date: this.date)
+                                habit: entry.value,
+                                date: this.date,
+                              )
                             : TimesListItem(
-                                habit: entry.value, date: this.date),
+                                habit: entry.value,
+                                date: this.date,
+                              ),
                       ),
                     ),
                   )

@@ -1,6 +1,5 @@
 import 'package:CleanHabits/data/domain/HabitMaster.dart';
 import 'package:CleanHabits/domain/Habit.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 final String tableHabitRunData = 'habit_run_data';

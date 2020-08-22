@@ -13,13 +13,11 @@ class TimesListItem extends StatefulWidget {
 }
 
 class _TimesListItemState extends State<TimesListItem> {
-  Habit habit;
   bool loading = false;
 
   @override
   void initState() {
     super.initState();
-    habit = widget.habit;
   }
 
   IconButton _addIcon(_theme) {
@@ -30,16 +28,18 @@ class _TimesListItemState extends State<TimesListItem> {
     );
 
     return IconButton(
-      icon: habit.timesProgress < habit.timesTarget ? _icon : Container(),
-      onPressed: () => habit.timesProgress < habit.timesTarget
+      icon: widget.habit.timesProgress < widget.habit.timesTarget
+          ? _icon
+          : Container(),
+      onPressed: () => widget.habit.timesProgress < widget.habit.timesTarget
           ? {
               setState(() {
                 loading = true;
-                habit.timesProgress++;
+                widget.habit.timesProgress++;
               }),
               widget.habitMaster
                   .updateStatus(
-                    habit: habit,
+                    habit: widget.habit,
                     dateTime: widget.date,
                   )
                   .then(
@@ -60,16 +60,16 @@ class _TimesListItemState extends State<TimesListItem> {
     );
 
     return IconButton(
-      icon: habit.timesProgress > 0 ? _icon : Container(),
-      onPressed: () => habit.timesProgress > 0
+      icon: widget.habit.timesProgress > 0 ? _icon : Container(),
+      onPressed: () => widget.habit.timesProgress > 0
           ? {
               setState(() {
                 loading = true;
-                habit.timesProgress--;
+                widget.habit.timesProgress--;
               }),
               widget.habitMaster
                   .updateStatus(
-                    habit: habit,
+                    habit: widget.habit,
                     dateTime: widget.date,
                   )
                   .then(
@@ -88,9 +88,10 @@ class _TimesListItemState extends State<TimesListItem> {
     var _theme = Theme.of(context);
     var subtitleStyle = _theme.textTheme.subtitle2;
 
-    var timesProgress = this.habit == null ? 0 : this.habit.timesProgress;
-    var timesTarget = this.habit == null ? 0 : this.habit.timesTarget;
-    var timesTargetType = this.habit == null ? 0 : this.habit.timesTargetType;
+    var timesProgress = widget.habit == null ? 0 : widget.habit.timesProgress;
+    var timesTarget = widget.habit == null ? 0 : widget.habit.timesTarget;
+    var timesTargetType =
+        widget.habit == null ? 0 : widget.habit.timesTargetType;
 
     var backgroundColor = timesProgress == timesTarget
         ? _theme.primaryColor.withAlpha(10)
