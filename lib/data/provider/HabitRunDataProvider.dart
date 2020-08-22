@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
@@ -27,7 +26,8 @@ class HabitRunDataProvider {
 
           $columnCurrentStreak integer not null,
           $columnStreakStartDate integer null,
-          $columnHasStreakEnded integer null
+          $columnHasStreakEnded integer null,
+          $columnPrevRunDate integer null
         )
         ''');
       },
@@ -57,6 +57,7 @@ class HabitRunDataProvider {
         columnCurrentStreak,
         columnStreakStartDate,
         columnHasStreakEnded,
+        columnPrevRunDate,
       ],
       where: '$columnTargetDate = ? and $columnHabitId = ?',
       whereArgs: [formDate.millisecondsSinceEpoch, habitId],
@@ -126,6 +127,7 @@ class HabitRunDataProvider {
             columnCurrentStreak,
             columnStreakStartDate,
             columnHasStreakEnded,
+            columnPrevRunDate,
           ],
           orderBy: '$columnHabitId asc',
         )
@@ -154,6 +156,7 @@ class HabitRunDataProvider {
             columnCurrentStreak,
             columnStreakStartDate,
             columnHasStreakEnded,
+            columnPrevRunDate,
           ],
           where: '$columnTargetDate = ?',
           whereArgs: [forDate.millisecondsSinceEpoch],
@@ -187,6 +190,7 @@ class HabitRunDataProvider {
             columnCurrentStreak,
             columnStreakStartDate,
             columnHasStreakEnded,
+            columnPrevRunDate,
           ],
           where: '$columnTargetDate between ? and ?',
           whereArgs: [
@@ -224,6 +228,7 @@ class HabitRunDataProvider {
             columnCurrentStreak,
             columnStreakStartDate,
             columnHasStreakEnded,
+            columnPrevRunDate,
           ],
           where: '$columnTargetDate between ? and ? and $columnHabitId = ?',
           whereArgs: [
@@ -295,6 +300,7 @@ class HabitRunDataProvider {
             columnCurrentStreak,
             columnStreakStartDate,
             columnHasStreakEnded,
+            columnPrevRunDate,
           ],
           where:
               '$columnHabitId = ? and $columnHasStreakEnded = ? and $columnCurrentStreak is not null and $columnCurrentStreak <> 0',

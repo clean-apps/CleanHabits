@@ -20,6 +20,8 @@ final String columnCurrentStreak = '_current_streak';
 final String columnStreakStartDate = '_streak_start_date';
 final String columnHasStreakEnded = '_has_streak_ended';
 
+final String columnPrevRunDate = 'prev_run_date'; // unix epoch
+
 var fmtDay = DateFormat("D");
 var fmMonth = DateFormat("MMM");
 var fmtDayOfWeek = DateFormat("E");
@@ -49,6 +51,7 @@ class HabitRunData {
   int currentStreak = 0;
   DateTime streakStartDate;
   bool hasStreakEnded;
+  DateTime prevRunDate;
 
   static HabitRunData withSimpleHabit(
     HabitMaster habit,
@@ -66,6 +69,7 @@ class HabitRunData {
     data.currentStreak = streak;
     data.streakStartDate = streakStartDate;
     data.hasStreakEnded = hasStreakEnded;
+    data.prevRunDate = null;
     return data;
   }
 
@@ -85,6 +89,7 @@ class HabitRunData {
     data.currentStreak = streak;
     data.streakStartDate = streakStartDate;
     data.hasStreakEnded = hasStreakEnded;
+    data.prevRunDate = null;
     return data;
   }
 
@@ -113,7 +118,9 @@ class HabitRunData {
           ? null
           : streakStartDate.millisecondsSinceEpoch,
       columnHasStreakEnded:
-          hasStreakEnded == null ? null : (hasStreakEnded ? 1 : 0)
+          hasStreakEnded == null ? null : (hasStreakEnded ? 1 : 0),
+      columnPrevRunDate:
+          prevRunDate == null ? null : prevRunDate.millisecondsSinceEpoch,
     };
 
     if (id != null) {
@@ -151,5 +158,11 @@ class HabitRunData {
     hasStreakEnded = map[columnHasStreakEnded] == null
         ? null
         : map[columnHasStreakEnded] == 1;
+    prevRunDate = map[columnPrevRunDate] == null
+        ? null
+        : DateTime.fromMillisecondsSinceEpoch(
+            map[columnPrevRunDate],
+            isUtc: false,
+          );
   }
 }

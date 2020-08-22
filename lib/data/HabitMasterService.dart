@@ -195,6 +195,7 @@ class HabitMasterService {
     );
 
     var lastRunData = await this.lrdp.getHabitData(habit.id);
+    var lastRunDate = lastRunData == null ? null : lastRunData.lastUpdated;
     var alreadyPresent = lastRunData != null &&
         (lastRunData.lastUpdated.isAtSameMomentAs(
                 DateTime(forDate.year, forDate.month, forDate.day)) ||
@@ -210,6 +211,10 @@ class HabitMasterService {
         columnTarget: habit.isYNType ? 1 : habit.timesTarget,
         columnProgress: 0,
         columnCurrentStreak: 0,
+        columnPrevRunDate: lastRunDate == null
+            ? null
+            : DateTime(lastRunDate.year, lastRunDate.month, lastRunDate.day)
+                .millisecondsSinceEpoch,
       };
       var runData = HabitRunData.fromMap(runDataMap);
       this.rdp.insert(runData);
@@ -245,13 +250,14 @@ class HabitMasterService {
       dateTime.day,
     );
 
-    // -1 day run data
-    var prevDate = forDate.subtract(Duration(days: 1));
-
-    var prevRunData = await this.rdp.getData(prevDate, habit.id);
     var runData = await this.rdp.getData(forDate, habit.id);
 
     if (runData != null) {
+      // prev day run data
+      var prevDate = runData == null ? null : runData.prevRunDate;
+      var prevRunData =
+          prevDate == null ? null : await this.rdp.getData(prevDate, habit.id);
+
       if (habit.isYNType) {
         if (habit.ynCompleted) {
           runData.progress = 1;
