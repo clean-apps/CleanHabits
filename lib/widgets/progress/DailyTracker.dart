@@ -66,12 +66,11 @@ class _DailyTrackerState extends State<DailyTracker> {
           'Daily Tracker',
           style: Theme.of(context).textTheme.headline6,
         ),
-        trailing: loading
-            ? ConstrainedBox(
-                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
-                child: CircularProgressIndicator(),
-              )
-            : _typeDropDown(),
+        trailing: ConstrainedBox(
+          constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+          child: loading ? CircularProgressIndicator() : Container(),
+        ),
+        // _typeDropDown(),
       ),
       Padding(
         padding: EdgeInsets.all(10),

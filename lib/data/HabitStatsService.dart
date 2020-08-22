@@ -5,7 +5,6 @@ import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/StackedBarChart.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HabitStatsService {
@@ -33,14 +32,19 @@ class HabitStatsService {
     var habitData = await this.rdp.listBetweenFor(startWeek, now, habit.id);
 
     var currentStreak =
-        todayRunData.currentStreak == null ? 0 : todayRunData.currentStreak;
+        todayRunData == null || todayRunData.currentStreak == null
+            ? 0
+            : todayRunData.currentStreak;
 
-    var weeklyProgress = habitData.map((e) => e.progress).reduce(
-          (a, b) => a + b,
-        );
+    var weeklyProgress = habitData == null
+        ? 0
+        : habitData.map((e) => e.progress).reduce(
+              (a, b) => a + b,
+            );
 
-    var weeklyTarget =
-        habitData.length * (habit.isYNType ? 1 : habit.timesTarget);
+    var weeklyTarget = habitData == null
+        ? 0
+        : habitData.length * (habit.isYNType ? 1 : habit.timesTarget);
 
     var habitMaster = await this.hmp.getData(habit.id);
     for (int cnt = now.weekday; cnt < 7; cnt++) {
