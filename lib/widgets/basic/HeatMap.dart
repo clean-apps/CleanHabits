@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:CleanHabits/widgets/basic/HeatMapCalendar2.dart';
 import 'package:flutter/material.dart';
 import 'package:heatmap_calendar/heatmap_calendar.dart';
 
@@ -29,7 +30,7 @@ class HeatMap extends StatelessWidget {
       maxThreshold: accentColor.withAlpha(255),
     };
 
-    return HeatMapCalendar(
+    return HeatMapCalendar2(
       key: this.key,
       input: data,
       colorThresholds: _colorThresholds,
