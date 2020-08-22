@@ -13,6 +13,7 @@ class _DailyTrackerState extends State<DailyTracker> {
   Map<DateTime, int> data = Map();
   var type = "Show All";
   var loading = true;
+  Key hmcKey = ValueKey('progress-all');
 
   @override
   void initState() {
@@ -91,7 +92,7 @@ class _DailyTrackerState extends State<DailyTracker> {
                       ),
                     ),
                   )
-                : HeatMap(data: this.data),
+                : HeatMap(key: hmcKey, data: this.data),
       )
     ];
 

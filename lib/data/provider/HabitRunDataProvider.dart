@@ -264,6 +264,20 @@ class HabitRunDataProvider {
     );
   }
 
+  Future<List<Map<String, dynamic>>> weekWiseStatsForAll(
+    DateTime start,
+    DateTime end,
+    int limit,
+  ) async {
+    return await db.query(
+      tableHabitRunData,
+      columns: [columnTargetWeekInYear, 'COUNT(*) count'],
+      groupBy: '$columnTargetWeekInYear',
+      orderBy: '$columnTargetWeekInYear asc',
+      limit: limit,
+    );
+  }
+
   Future<List<Map<String, dynamic>>> weekMonthStats(
     DateTime start,
     DateTime end,
@@ -276,6 +290,31 @@ class HabitRunDataProvider {
       groupBy: '$columnTargetMonthInYear',
       where: '$columnHabitId = ?',
       whereArgs: [habitId],
+      orderBy: '$columnTargetMonthInYear asc',
+      limit: limit,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> dayWiseStatsForAll(int lastDay) async {
+    return await db.query(
+      tableHabitRunData,
+      columns: [columnTargetDayInWeek, 'COUNT(*) count'],
+      where: '$columnTargetDate >= ?',
+      whereArgs: [lastDay],
+      groupBy: '$columnTargetDayInWeek',
+      orderBy: '$columnTargetDayInWeek asc',
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> weekMonthStatsForAll(
+    DateTime start,
+    DateTime end,
+    int limit,
+  ) async {
+    return await db.query(
+      tableHabitRunData,
+      columns: [columnTargetMonthInYear, 'COUNT(*) count'],
+      groupBy: '$columnTargetMonthInYear',
       orderBy: '$columnTargetMonthInYear asc',
       limit: limit,
     );
