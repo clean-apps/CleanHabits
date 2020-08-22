@@ -12,6 +12,9 @@ class Habit {
 
   String timeOfDay;
 
+  bool isFailed;
+  bool isSkipped;
+
   static Habit newYNHabit({
     int id,
     String title,
@@ -29,6 +32,8 @@ class Habit {
     newHabit.timesProgress = completed ? 1 : 0;
     newHabit.timesTargetType = null;
     newHabit.timeOfDay = timeOfDay;
+    newHabit.isFailed = false;
+    newHabit.isSkipped = false;
 
     return newHabit;
   }
@@ -52,6 +57,8 @@ class Habit {
     newHabit.timesProgress = completed;
     newHabit.timesTargetType = targetType;
     newHabit.timeOfDay = timeOfDay;
+    newHabit.isFailed = false;
+    newHabit.isSkipped = false;
 
     return newHabit;
   }

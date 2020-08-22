@@ -26,10 +26,10 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
   }
 
   void _loadData() {
-    widget.habitStats.getHeatMapData(widget.habit).then(
+    widget.habitStats.getHeatMapData(widget.habit, type).then(
           (value) => setState(() {
-            data = value;
-            loading = false;
+            this.data = value;
+            this.loading = false;
           }),
         );
   }
@@ -37,13 +37,13 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
   @override
   Widget build(BuildContext context) {
     return HeatMap(
-      data: data,
-      type: type,
-      loading: loading,
-      onFilter: (type) => {
+      data: this.data,
+      type: this.type,
+      loading: this.loading,
+      onFilter: (pType) => {
         setState(() {
-          type = type;
-          loading = true;
+          this.type = pType;
+          this.loading = true;
         }),
         _loadData(),
       },

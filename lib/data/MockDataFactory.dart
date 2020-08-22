@@ -16,7 +16,7 @@ class MockDataFactory {
   static var habitStatsService = HabitStatsService();
   static var progressStatsService = ProgressStatsService();
 
-  static create({int daysToMock}) async {
+  static create({int daysToMock, double motivation}) async {
     var rng = Random();
 
     await _removeStaleData();
@@ -29,30 +29,29 @@ class MockDataFactory {
     debugPrint('-creation done-');
 
     // scheduling
-    await Future.wait(
-      allDates.map((eachDate) async =>
-          await habitMasterService.schedule(forDate: eachDate)),
-    );
+    for (var eachDate in allDates)
+      await habitMasterService.schedule(forDate: eachDate);
+    debugPrint('-scheduling done-');
 
     // complete habits
-    await Future.wait(
-      allDates.map((eachDate) async {
-        var habits = await habitMasterService.list(eachDate);
-        habits.forEach((hbt) {
-          if (hbt.isYNType) {
-            hbt.ynCompleted = rng.nextInt(10) <= 7 ? true : false;
-          } else {
-            hbt.timesProgress = rng.nextInt(10) >= 3
-                ? hbt.timesTarget
-                : rng.nextInt(10) / 10 * hbt.timesTarget;
-          }
+    for (var eachDate in allDates) {
+      var habits = await habitMasterService.list(eachDate);
+      for (var hbt in habits) {
+        if (hbt.isYNType) {
+          hbt.ynCompleted = rng.nextInt(10) <= (motivation * 10) ? true : false;
+        } else {
+          hbt.timesProgress = rng.nextInt(10) >= ((1 - motivation) * 10)
+              ? hbt.timesTarget
+              : rng.nextInt(10) / 10 * hbt.timesTarget;
+        }
 
-          habitMasterService.updateStatus(habit: hbt, dateTime: eachDate);
-        });
-
-        return habits;
-      }),
-    );
+        await habitMasterService.updateStatus(
+          habit: hbt,
+          dateTime: eachDate,
+        );
+      }
+    }
+    debugPrint('-status update done-');
 
     var habitsList = await ProviderFactory.habitMasterProvider.list();
     debugPrint(habitsList.length == 0 ? 'No Mock Data' : 'Mock Data Present');
@@ -85,7 +84,7 @@ class MockDataFactory {
 
   static Future<List<Habit>> _createHabits(startDate) async {
     var rng = Random();
-    var mockTitles = ['Morning Jog', 'Eat Healthy', 'Get Up Early'];
+    var mockTitles = ['Morning Jog']; //, 'Eat Healthy', 'Get Up Early'];
     var itrRepeats = [
       Repeats(none: true),
       Repeats(

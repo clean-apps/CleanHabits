@@ -28,6 +28,9 @@ final String columnISYNType = 'is_yn_type';
 final String columnTimesTarget = 'times_target';
 final String columnTimesTargetType = 'times_target_type';
 
+final String columnHasSkipped = 'has_failed';
+final String columnHasFailed = 'has_skipped';
+
 var fmt = DateFormat("HH:mm");
 
 class HabitMaster {
@@ -52,6 +55,9 @@ class HabitMaster {
   bool isYNType;
   int timesTarget;
   String timesTargetType;
+
+  bool hasFailed;
+  bool hasSkipped;
 
   static HabitMaster fromDomain(
     String title,
@@ -83,6 +89,9 @@ class HabitMaster {
     data.timesTarget = type.isSimple ? 1 : type.times;
     data.timesTargetType = type.timesType;
 
+    data.hasFailed = false;
+    data.hasSkipped = false;
+
     return data;
   }
 
@@ -95,6 +104,8 @@ class HabitMaster {
     data.timesTarget = this.isYNType ? 1 : this.timesTarget;
     data.timesTargetType = this.timesTargetType;
     data.timeOfDay = this.timeOfDay;
+    data.isFailed = this.hasFailed;
+    data.isSkipped = this.hasSkipped;
 
     return data;
   }
@@ -146,7 +157,9 @@ class HabitMaster {
       //
       columnISYNType: isYNType == true ? 1 : 0,
       columnTimesTarget: timesTarget == null ? null : timesTarget.toString(),
-      columnTimesTargetType: timesTargetType
+      columnTimesTargetType: timesTargetType,
+      columnHasFailed: hasFailed == true ? 1 : 0,
+      columnHasSkipped: hasSkipped == true ? 1 : 0
     };
 
     if (id != null) {
@@ -193,5 +206,8 @@ class HabitMaster {
     timesTarget =
         map[columnTimesTarget] == null ? null : map[columnTimesTarget];
     timesTargetType = map[columnTimesTargetType];
+    //
+    hasFailed = map[columnHasFailed] == 1;
+    hasSkipped = map[columnHasSkipped] == 1;
   }
 }

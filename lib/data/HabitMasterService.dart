@@ -23,9 +23,13 @@ class HabitMasterService {
           target.day,
         ));
 
-    return await Future.wait(
-      habitRunDatas.map((rd) async => _getHabitData(rd)).toList(),
-    );
+    var habitsList = List<Habit>();
+    for (var rd in habitRunDatas) {
+      var lkpHabit = await _getHabitData(rd);
+      habitsList.add(lkpHabit);
+    }
+
+    return habitsList;
   }
 
   Future<Habit> _getHabitData(HabitRunData pRunData) async {
@@ -242,14 +246,11 @@ class HabitMasterService {
     );
 
     // -1 day run data
-    var prevDate = DateTime(
-      forDate.subtract(Duration(days: 1)).year,
-      forDate.subtract(Duration(days: 1)).month,
-      forDate.subtract(Duration(days: 1)).day,
-    );
-    var prevRunData = await this.rdp.getData(prevDate, habit.id);
+    var prevDate = forDate.subtract(Duration(days: 1));
 
+    var prevRunData = await this.rdp.getData(prevDate, habit.id);
     var runData = await this.rdp.getData(forDate, habit.id);
+
     if (runData != null) {
       if (habit.isYNType) {
         if (habit.ynCompleted) {
@@ -324,9 +325,9 @@ class HabitMasterService {
         }
       }
 
-      return true;
+      return Future(() => true);
     } else {
-      return false;
+      return Future(() => false);
     }
   }
 
