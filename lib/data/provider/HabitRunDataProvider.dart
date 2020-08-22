@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
@@ -277,7 +278,7 @@ class HabitRunDataProvider {
 
   Future<List<HabitRunData>> streaksStats(
     int habitId,
-    int limit,
+    int pLimit,
   ) async {
     return await db
         .query(
@@ -299,7 +300,7 @@ class HabitRunDataProvider {
               '$columnHabitId = ? and $columnHasStreakEnded = ? and $columnCurrentStreak is not null and $columnCurrentStreak <> 0',
           whereArgs: [habitId, 1],
           orderBy: '$columnCurrentStreak desc',
-          limit: limit,
+          limit: pLimit,
         )
         .then(
           (data) => data.map((m) => HabitRunData.fromMap(m)).toList(),

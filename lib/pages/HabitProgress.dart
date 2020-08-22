@@ -80,10 +80,10 @@ class _HabitProgressState extends State<HabitProgress> {
     final Habit habit = ModalRoute.of(context).settings.arguments;
 
     var _widgetList = <Widget>[
-      HabitHeatMap(habit: habit),
       HabitStatusSummary(habit: habit),
       HabitCompletionRate(habit: habit),
       HabitStreaks(habit: habit),
+      HabitHeatMap(habit: habit),
     ];
 
     return new Scaffold(

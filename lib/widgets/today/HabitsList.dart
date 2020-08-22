@@ -44,7 +44,6 @@ class HabitsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('[HabitList] $habits');
     return habits.length == 0
         ? SliverList(
             delegate: new SliverChildListDelegate(

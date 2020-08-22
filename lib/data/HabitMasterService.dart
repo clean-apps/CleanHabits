@@ -258,9 +258,12 @@ class HabitMasterService {
           if (prevRunData != null && prevRunData.progress == 1) {
             runData.currentStreak = prevRunData.currentStreak + 1;
             runData.streakStartDate = prevRunData.streakStartDate;
-            runData.hasStreakEnded = false;
+            runData.hasStreakEnded = true;
+
+            prevRunData.hasStreakEnded = false;
 
             await this.rdp.update(runData);
+            await this.rdp.update(prevRunData);
             //
           } else if (prevRunData != null) {
             runData.currentStreak = 1;
@@ -282,7 +285,7 @@ class HabitMasterService {
         } else {
           runData.currentStreak = 0;
           runData.streakStartDate = null;
-          runData.hasStreakEnded = true;
+          runData.hasStreakEnded = false;
 
           await this.rdp.update(runData);
           //

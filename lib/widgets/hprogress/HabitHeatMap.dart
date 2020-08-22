@@ -15,6 +15,7 @@ class HabitHeatMap extends StatefulWidget {
 class _HabitHeatMapState extends State<HabitHeatMap> {
   Map<DateTime, int> data = Map();
   bool loading = true;
+  Key hmcKey = ValueKey('0');
   //
   var type = "Show All";
 
@@ -22,6 +23,7 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
   void initState() {
     super.initState();
     type = "Show All";
+    this.hmcKey = ValueKey(widget.habit.id);
     _loadData();
   }
 
@@ -34,19 +36,70 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
         );
   }
 
+  Widget _typeDropDown() {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+        items: ["Show All", "Completed", "Started", "Skipped"]
+            .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+            .toList(),
+        value: this.type,
+        onChanged: (e) => {
+          setState(() {
+            this.type = e;
+            this.loading = true;
+          }),
+          _loadData(),
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return HeatMap(
-      data: this.data,
-      type: this.type,
-      loading: this.loading,
-      onFilter: (pType) => {
-        setState(() {
-          this.type = pType;
-          this.loading = true;
-        }),
-        _loadData(),
-      },
+    var widgetList = <Widget>[
+      ListTile(
+        dense: true,
+        title: Text(
+          'Daily Tracker',
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator(),
+              )
+            : _typeDropDown(),
+      ),
+      Padding(
+        padding: EdgeInsets.all(10),
+        child: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(height: 225.0),
+                child: Container(),
+              )
+            : data.length == 0
+                ? ConstrainedBox(
+                    constraints: BoxConstraints.expand(height: 225.0),
+                    child: Center(
+                      child: Text(
+                        'Not Enough Information',
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.subtitle2.color,
+                        ),
+                      ),
+                    ),
+                  )
+                : HeatMap(key: hmcKey, data: this.data),
+      )
+    ];
+
+    return Card(
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: widgetList.length,
+        itemBuilder: (context, index) => widgetList[index],
+      ),
     );
   }
 }

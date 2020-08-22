@@ -5,6 +5,7 @@ import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/StackedBarChart.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HabitStatsService {
@@ -140,7 +141,7 @@ class HabitStatsService {
         data.add(ChartData(monString, 0));
       }
     }
-    counts.forEach((runData) {
+    counts.reversed.forEach((runData) {
       data.add(
         ChartData(runData[columnTargetMonthInYear], runData['count']),
       );
@@ -157,6 +158,9 @@ class HabitStatsService {
     if (stats == null || stats.length == 0) {
       return [];
     } else {
+      stats.sort(
+        (pre, aft) => aft.targetDate.compareTo(pre.targetDate),
+      );
       return stats
           .map((st) => new StackData(
                 fmMMMdd.format(st.streakStartDate),
