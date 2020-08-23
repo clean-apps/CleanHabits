@@ -50,7 +50,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var themeColor = const Color(0xFF085da4);
+    var themeColor = const Color(0xFF056676);
+    //var themeColor = const Color(0xFF085da4);
     //var themeColor = Colors.red;
 
     // Demo Notifications

@@ -15,9 +15,8 @@ class Loading extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/app-logo.png',
-                  //scale: 0.5,
-                  width: 300,
-                  height: 300,
+                  width: 250,
+                  height: 250,
                 ),
                 Text(
                   'Clean',

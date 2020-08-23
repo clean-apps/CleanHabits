@@ -177,6 +177,7 @@ class _TimesListItemState extends State<TimesListItem> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   child: LinearProgressIndicator(
+                    backgroundColor: _theme.primaryColor.withAlpha(80),
                     value: timesProgress / timesTarget,
                   ),
                 ),
