@@ -32,8 +32,6 @@ class BottomNavBar extends StatelessWidget {
       case 2:
         Navigator.pushNamed(context, '/settings');
         break;
-      default:
-        debugPrint('nav changed to $index');
     }
   }
 

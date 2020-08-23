@@ -1,4 +1,5 @@
 import 'package:CleanHabits/data/HabitMasterService.dart';
+import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BottomNavBar.dart';
 import 'package:CleanHabits/widgets/today/HCalDayWidget.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 
 class TodayView extends StatefulWidget {
   final HabitMasterService habitMaster = new HabitMasterService();
+  final sp = ProviderFactory.settingsProvider;
   //
   @override
   _TodayViewState createState() => _TodayViewState();
@@ -23,6 +25,8 @@ class _TodayViewState extends State<TodayView> {
   );
 
   List<Habit> _habits = new List();
+  List<String> areas = ['All Day'];
+
   var selectedArea = "All Day";
   bool loading = true;
 
@@ -31,6 +35,13 @@ class _TodayViewState extends State<TodayView> {
   @override
   void initState() {
     super.initState();
+
+    areas.addAll(
+      widget.sp.timeArea.map(
+        (ta) => ta.area,
+      ),
+    );
+
     _loadData();
   }
 
@@ -54,7 +65,6 @@ class _TodayViewState extends State<TodayView> {
 
     var title = index == 0 ? 'Today' : dFormat.format(thisDate);
 
-    var areas = ['Morning', 'Afternoon', 'Evening', 'Night', 'All Day'];
     var areaOptions = DropdownButton<String>(
       value: selectedArea,
       icon: Icon(

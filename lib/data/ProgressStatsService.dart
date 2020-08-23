@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/LineChart.dart';
 import 'package:CleanHabits/widgets/progress/StatusSummary.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
-import 'package:flutter/material.dart';
-import 'package:heatmap_calendar/time_utils.dart';
 
 class ProgressStatsService {
   //
@@ -20,24 +16,6 @@ class ProgressStatsService {
     return type == 'Weekly'
         ? await getWeeklyCompletionRate()
         : await getMonthlyCompletionRate();
-
-    var rng = new Random();
-    var data = [
-      new LinearData('W21', 1, rng.nextInt(25)),
-      new LinearData('W22', 2, rng.nextInt(25)),
-      new LinearData('W23', 3, rng.nextInt(25)),
-      new LinearData('W24', 4, rng.nextInt(25)),
-      new LinearData('W25', 5, rng.nextInt(25)),
-      new LinearData('W26', 6, rng.nextInt(25)),
-      new LinearData('W27', 7, rng.nextInt(25)),
-      new LinearData('W28', 8, rng.nextInt(25)),
-      new LinearData('W29', 9, rng.nextInt(25)),
-      new LinearData('W30', 10, rng.nextInt(25)),
-    ];
-    return new Future.delayed(
-      const Duration(seconds: 3),
-      () => data,
-    );
   }
 
   Future<List<LinearData>> getWeeklyCompletionRate() async {

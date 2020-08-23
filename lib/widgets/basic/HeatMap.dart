@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:CleanHabits/widgets/basic/HeatMapCalendar2.dart';
 import 'package:flutter/material.dart';
-import 'package:heatmap_calendar/heatmap_calendar.dart';
 
 class HeatMap extends StatelessWidget {
   final Map<DateTime, int> data;

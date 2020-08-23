@@ -3,6 +3,7 @@ import 'package:CleanHabits/data/provider/HabitMasterProvider.dart';
 import 'package:CleanHabits/data/provider/HabitRunDataProvider.dart';
 import 'package:CleanHabits/data/provider/ServiceLastRunProvider.dart';
 import 'package:CleanHabits/data/MockDataFactory.dart';
+import 'package:CleanHabits/data/provider/SettingsProvider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
@@ -12,6 +13,7 @@ class ProviderFactory {
   static var habitRunDataProvider = HabitRunDataProvider();
   static var habitLastRunDataProvider = HabitLastRunDataProvider();
   static var serviceLastRunProvider = ServiceLastRunProvider();
+  static var settingsProvider = SettingsProvider();
 
   static Future<bool> init() async {
     var documentsDirectory = await getApplicationDocumentsDirectory();
@@ -32,6 +34,8 @@ class ProviderFactory {
       daysToMock: 30,
       motivation: 0.75,
     );
+
+    await settingsProvider.init();
 
     return Future<bool>(() => true);
   }

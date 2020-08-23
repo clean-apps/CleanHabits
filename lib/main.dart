@@ -1,9 +1,12 @@
 import 'package:CleanHabits/data/provider/NotificationProvider.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
+import 'package:CleanHabits/pages/AllHabits.dart';
+import 'package:CleanHabits/pages/AllTimeOfDay.dart';
 import 'package:CleanHabits/pages/EditHabit.dart';
 import 'package:CleanHabits/pages/HabitProgress.dart';
 import 'package:CleanHabits/pages/LoadingScreen.dart';
 import 'package:CleanHabits/pages/ProgressMain.dart';
+import 'package:CleanHabits/pages/Settings.dart';
 import 'package:CleanHabits/pages/TodayView.dart';
 import 'package:CleanHabits/pages/NewHabit.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +90,10 @@ class _MyAppState extends State<MyApp> {
             routes: {
               '/': (context) => TodayView(),
               '/habit/progress': (context) => HabitProgress(),
+              '/habit/all': (context) => AllHabits(),
               '/progress': (context) => ProgressMain(),
+              '/settings': (context) => Settings(),
+              '/settings/time-of-day': (context) => AllTimeOfDay(),
               '/new': (context) => NewHabit(),
               '/edit': (context) => EditHabit(),
             },

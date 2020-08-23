@@ -3,6 +3,7 @@ import 'package:heatmap_calendar/time_utils.dart';
 import 'package:heatmap_calendar/week_columns.dart';
 import 'package:heatmap_calendar/week_labels.dart';
 
+// ignore: must_be_immutable
 class HeatMapCalendar2 extends StatelessWidget {
   static const double COLUMN_COUNT = 11;
   static const double ROW_COUNT = 8;

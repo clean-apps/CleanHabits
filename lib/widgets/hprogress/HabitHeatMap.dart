@@ -36,6 +36,7 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
         );
   }
 
+  // ignore: unused_element
   Widget _typeDropDown() {
     return DropdownButtonHideUnderline(
       child: DropdownButton(

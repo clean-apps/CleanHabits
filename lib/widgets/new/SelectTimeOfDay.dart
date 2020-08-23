@@ -1,20 +1,19 @@
+import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/widgets/basic/BaseSelectionTile.dart';
 import 'package:flutter/material.dart';
 
 class SelectTimeOfDay extends StatelessWidget {
   final String value;
   final ValueChanged<String> onChange;
+
+  final sp = ProviderFactory.settingsProvider;
+
   SelectTimeOfDay({this.value, this.onChange});
 
-  final List<String> options = [
-    "All Day",
-    "Morning",
-    "Afternoon",
-    "Evening",
-    "Night",
-  ];
-
   void _showDialog(context) {
+    final List<String> options = sp.timeArea.map((ta) => ta.area).toList();
+    options.add('All Day');
+
     showDialog(
       context: context,
       builder: (ctxt) => SimpleDialog(
