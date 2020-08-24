@@ -34,6 +34,10 @@ class SettingsProvider {
 
     var _areas = List<TimeArea>();
     _areas.add(TimeArea(
+      area: 'Night',
+      startTime: TimeOfDay(hour: 00, minute: 00),
+    ));
+    _areas.add(TimeArea(
       area: 'Morning',
       startTime: TimeOfDay(hour: 06, minute: 00),
     ));
@@ -44,10 +48,6 @@ class SettingsProvider {
     _areas.add(TimeArea(
       area: 'Evening',
       startTime: TimeOfDay(hour: 18, minute: 00),
-    ));
-    _areas.add(TimeArea(
-      area: 'Night',
-      startTime: TimeOfDay(hour: 00, minute: 00),
     ));
 
     await prefs.setString(_timeAreas, json.encode(_areas));

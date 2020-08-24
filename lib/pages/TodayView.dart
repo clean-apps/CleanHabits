@@ -1,6 +1,7 @@
 import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/domain/Habit.dart';
+import 'package:CleanHabits/domain/TimeArea.dart';
 import 'package:CleanHabits/widgets/basic/BottomNavBar.dart';
 import 'package:CleanHabits/widgets/today/HCalDayWidget.dart';
 import 'package:CleanHabits/widgets/today/HabitsList.dart';
@@ -25,7 +26,7 @@ class _TodayViewState extends State<TodayView> {
   );
 
   List<Habit> _habits = new List();
-  List<String> areas = ['All Day'];
+  List<TimeArea> areas = [TimeArea(area: 'All Day', startTime: null)];
 
   var selectedArea = "All Day";
   bool loading = true;
@@ -36,12 +37,8 @@ class _TodayViewState extends State<TodayView> {
   void initState() {
     super.initState();
 
-    areas.addAll(
-      widget.sp.timeArea.map(
-        (ta) => ta.area,
-      ),
-    );
-
+    areas.addAll(widget.sp.timeArea);
+    selectedArea = _currentTimeOfDay();
     _loadData();
   }
 
@@ -55,7 +52,30 @@ class _TodayViewState extends State<TodayView> {
         );
   }
 
+  int _toMinutes(TimeOfDay _time) {
+    return (_time.hour * 60) + _time.minute;
+  }
+
+  String _currentTimeOfDay() {
+    var timeNow = TimeOfDay.now();
+
+    var _sortAreas = areas.where((ar) => ar.area != 'All Day').toList();
+
+    _sortAreas.sort((prev, after) =>
+        _toMinutes(prev.startTime) < _toMinutes(after.startTime) ? -1 : 1);
+
+    var _nowArea = _sortAreas
+        .where((ar) => _toMinutes(ar.startTime) < _toMinutes(timeNow));
+
+    return _nowArea == null || _nowArea.length == 0
+        ? 'All Day'
+        : _nowArea.last.area;
+  }
+
   AppBar _getAppBar(selectedDate, context) {
+    var _theme = Theme.of(context);
+    var _accent = _theme.accentColor;
+
     var index = DateTime.now().difference(selectedDate).inDays;
     var thisDate = DateTime.utc(
       DateTime.now().year,
@@ -80,10 +100,22 @@ class _TodayViewState extends State<TodayView> {
           selectedArea = newValue;
         });
       },
-      items: areas.map<DropdownMenuItem<String>>((String value) {
+      items: areas.map<DropdownMenuItem<String>>((timeArea) {
         return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
+          value: timeArea.area,
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 5.0),
+                child: Icon(
+                  timeArea.icon,
+                  color: _accent,
+                  size: 20,
+                ),
+              ),
+              Text(timeArea.area),
+            ],
+          ),
         );
       }).toList(),
     );
@@ -132,7 +164,13 @@ class _TodayViewState extends State<TodayView> {
     if (selectedArea == "All Day")
       return this._habits;
     else {
-      return this._habits.where((i) => i.timeOfDay == selectedArea).toList();
+      return this
+          ._habits
+          .where((i) =>
+              i.timeOfDay == selectedArea ||
+              i.timeOfDay == null ||
+              i.timeOfDay == "All Day")
+          .toList();
     }
   }
 

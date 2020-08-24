@@ -37,7 +37,7 @@ class _AllTimeOfDayState extends State<AllTimeOfDay> {
         automaticallyImplyLeading: true,
         iconTheme: IconThemeData(color: accentColor),
         elevation: 0.0,
-        title: Text('All Time Of Day', style: TextStyle(color: Colors.black)),
+        title: Text('Time Of Day', style: TextStyle(color: Colors.black)),
         backgroundColor: _theme.scaffoldBackgroundColor,
         actions: [
           FlatButton(
@@ -54,7 +54,7 @@ class _AllTimeOfDayState extends State<AllTimeOfDay> {
         itemBuilder: (context, index) => ListTile(
           title: Text(data[index].area),
           subtitle: Text(data[index].startTime.format(context)),
-          leading: Icon(Icons.timer, size: 40.0),
+          leading: Icon(data[index].icon, size: 40.0),
           onTap: () => showTextWTimePicker(index, context),
         ),
       ),

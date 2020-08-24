@@ -7,6 +7,28 @@ class TimeArea {
   final _format = DateFormat("HH:mm");
   TimeArea({this.area, this.startTime});
 
+  IconData get icon {
+    switch (area) {
+      case "Morning":
+        return Icons.landscape;
+        break;
+      case "Afternoon":
+        return Icons.brightness_5;
+        break;
+      case "Evening":
+        return Icons.brightness_4;
+        break;
+      case "Night":
+        return Icons.brightness_2;
+        break;
+      case "All Day":
+        return Icons.view_day;
+        break;
+      default:
+        return Icons.lightbulb_outline;
+    }
+  }
+
   Map<String, String> toJson() {
     Map<String, String> jsonData = Map<String, String>();
     jsonData['area'] = area;
