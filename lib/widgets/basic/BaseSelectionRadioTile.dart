@@ -21,10 +21,19 @@ class BaseSelectionRadioTile extends StatelessWidget {
   });
 
   Widget _tile(
-      Icon _icon, String title, String subtitle, BuildContext context) {
+    Icon _icon,
+    String title,
+    String subtitle,
+    BuildContext context,
+  ) {
+    var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: _darkMode
+            ? Colors.grey.withOpacity(0.25)
+            : Theme.of(context).scaffoldBackgroundColor,
         border: Border(
           top: BorderSide(color: Colors.grey.withOpacity(0.5), width: 0.5),
           bottom: BorderSide(color: Colors.grey.withOpacity(0.5), width: 0.5),

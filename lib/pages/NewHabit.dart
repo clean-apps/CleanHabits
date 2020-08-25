@@ -103,9 +103,14 @@ class _NewHabitState extends State<NewHabit> {
   }
 
   Widget _nameTile(context) {
+    var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: _darkMode
+            ? Colors.grey.withOpacity(0.25)
+            : Theme.of(context).scaffoldBackgroundColor,
         border: Border(
           top: BorderSide(color: Colors.grey.withOpacity(0.5)),
           bottom: BorderSide(color: Colors.grey.withOpacity(0.5)),
@@ -151,6 +156,9 @@ class _NewHabitState extends State<NewHabit> {
   }
 
   Widget _suggestionsTile(context) {
+    var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
+
     var suggestions = [
       '📖 Read Book',
       '🧘 Meditate',
@@ -164,7 +172,9 @@ class _NewHabitState extends State<NewHabit> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: _darkMode
+            ? Colors.grey.withOpacity(0.25)
+            : Theme.of(context).scaffoldBackgroundColor,
         border: Border(
           top: BorderSide(color: Colors.grey.withOpacity(0.5)),
           bottom: BorderSide(color: Colors.grey.withOpacity(0.5)),

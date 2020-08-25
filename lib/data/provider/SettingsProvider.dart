@@ -55,7 +55,7 @@ class SettingsProvider {
   }
 
   bool get darkMode {
-    return prefs.getBool(_darkMode);
+    return prefs.containsKey(_darkMode) ? prefs.getBool(_darkMode) : false;
   }
 
   set darkMode(bool pMode) {
