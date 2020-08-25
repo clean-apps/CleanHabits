@@ -86,6 +86,7 @@ class _TimesListItemState extends State<TimesListItem> {
   Widget build(BuildContext context) {
     //
     var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     var subtitleStyle = _theme.textTheme.subtitle2;
 
     var timesProgress = widget.habit == null ? 0 : widget.habit.timesProgress;
@@ -94,12 +95,14 @@ class _TimesListItemState extends State<TimesListItem> {
         widget.habit == null ? 0 : widget.habit.timesTargetType;
 
     var backgroundColor = timesProgress == timesTarget
-        ? _theme.primaryColor.withAlpha(10)
-        : _theme.scaffoldBackgroundColor;
+        ? _theme.primaryColor.withAlpha(_darkMode ? 75 : 10)
+        : _darkMode
+            ? _theme.textTheme.subtitle2.color.withAlpha(50)
+            : _theme.scaffoldBackgroundColor;
 
     var borderColor = timesProgress == timesTarget
         ? _theme.primaryColor.withAlpha(80)
-        : _theme.textTheme.subtitle2.color.withAlpha(50);
+        : _theme.textTheme.subtitle2.color.withAlpha(_darkMode ? 100 : 50);
 
     var _border = BoxDecoration(
       border: Border.all(color: borderColor),

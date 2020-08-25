@@ -14,6 +14,8 @@ class HCalDayWidget extends StatelessWidget {
   final DateFormat dFormat = new DateFormat("MMM");
 
   Widget _eachCalDate(index, selected, context) {
+    var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     var thisDate = DateTime.utc(
       DateTime.now().year,
       DateTime.now().month,
@@ -24,11 +26,17 @@ class HCalDayWidget extends StatelessWidget {
         ? TextStyle(color: Theme.of(context).accentColor)
         : TextStyle(color: Theme.of(context).textTheme.headline6.color);
     var backgroundColor = index == selected
-        ? Theme.of(context).scaffoldBackgroundColor
-        : Theme.of(context).primaryColor.withAlpha(10);
+        ? _darkMode
+            ? Theme.of(context).accentColor.withAlpha(35)
+            : Theme.of(context).scaffoldBackgroundColor
+        : _darkMode
+            ? Theme.of(context).textTheme.subtitle2.color.withAlpha(35)
+            : Theme.of(context).primaryColor.withAlpha(10);
     var borderColor = index == selected
         ? Theme.of(context).accentColor.withAlpha(160)
-        : Theme.of(context).primaryColor.withAlpha(50);
+        : _darkMode
+            ? Theme.of(context).textTheme.subtitle2.color.withAlpha(50)
+            : Theme.of(context).primaryColor.withAlpha(_darkMode ? 200 : 50);
 
     return GestureDetector(
       onTap: () => this.onChange(thisDate),

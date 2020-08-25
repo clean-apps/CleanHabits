@@ -54,20 +54,23 @@ class _MyAppState extends State<MyApp> {
   }
 
   ThemeData _theme(BuildContext context) {
-    var themeColor = const Color(0xFF056676);
-    //var themeColor = const Color(0xFF085da4);
-    //var themeColor = Colors.red;
+    var isDarkMode = widget.sp.darkMode;
+
+    var lightThemeColor = const Color(0xFF056676);
+    var darkThemeColor = Colors.red;
+    var lightSubtitleColor = Colors.black.withAlpha(130);
+    var darkSubtitleColor = Colors.white.withAlpha(180);
 
     return ThemeData(
-      accentColor: themeColor,
-      primaryColor: themeColor,
-      scaffoldBackgroundColor: Colors.white,
+      accentColor: isDarkMode ? darkThemeColor : lightThemeColor,
+      primaryColor: isDarkMode ? darkThemeColor : lightThemeColor,
+      brightness: isDarkMode ? Brightness.dark : Brightness.light,
+      scaffoldBackgroundColor: isDarkMode ? Colors.black : Colors.white,
       textTheme: TextTheme(
-        subtitle2: TextStyle(
-          color: Colors.black.withAlpha(130),
-        ),
-      ),
+          subtitle2: TextStyle(
+              color: isDarkMode ? darkSubtitleColor : lightSubtitleColor)),
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      cardColor: isDarkMode ? Colors.grey.withOpacity(0.25) : Colors.white,
     );
   }
 
@@ -98,7 +101,11 @@ class _MyAppState extends State<MyApp> {
               '/habit/progress': (context) => HabitProgress(),
               '/habit/all': (context) => AllHabits(),
               '/progress': (context) => ProgressMain(),
-              '/settings': (context) => Settings(),
+              '/settings': (context) => Settings(
+                    themeChanged: (val) => setState(() {
+                      loading = false;
+                    }),
+                  ),
               '/settings/time-of-day': (context) => AllTimeOfDay(),
               '/new': (context) => NewHabit(),
               '/edit': (context) => EditHabit(),

@@ -163,6 +163,7 @@ class _AllTimeOfDayState extends State<AllTimeOfDay> {
   @override
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     var accentColor = _theme.accentColor;
     _sort();
 
@@ -171,7 +172,12 @@ class _AllTimeOfDayState extends State<AllTimeOfDay> {
         automaticallyImplyLeading: true,
         iconTheme: IconThemeData(color: accentColor),
         elevation: 0.0,
-        title: Text('Time Of Day', style: TextStyle(color: Colors.black)),
+        title: Text(
+          'Time Of Day',
+          style: TextStyle(
+            color: _darkMode ? Colors.white : Colors.black,
+          ),
+        ),
         backgroundColor: _theme.scaffoldBackgroundColor,
         actions: [
           FlatButton(

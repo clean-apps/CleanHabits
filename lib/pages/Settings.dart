@@ -5,6 +5,9 @@ import 'package:flutter/widgets.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class Settings extends StatefulWidget {
+  final ValueChanged<bool> themeChanged;
+  Settings({this.themeChanged});
+
   @override
   _SettingsState createState() => _SettingsState();
 }
@@ -15,13 +18,16 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
+    var _accent = _theme.accentColor;
+    var _darkMode = _theme.brightness == Brightness.dark;
     var _selectedNavIndex = 2;
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0.0,
-        title: Text('Settings', style: TextStyle(color: Colors.black)),
+        title: Text('Settings',
+            style: TextStyle(color: _darkMode ? Colors.white : Colors.black)),
         backgroundColor: _theme.scaffoldBackgroundColor,
       ),
       body: SettingsList(
@@ -53,6 +59,7 @@ class _SettingsState extends State<Settings> {
                 title: "Start Week With Monday",
                 leading: Icon(Icons.calendar_today),
                 switchValue: sp.firstDayOfWeek == "Mon",
+                switchActiveColor: _accent,
                 onToggle: (val) => setState(() {
                   sp.firstDayOfWeek = val ? "Mon" : "Sun";
                 }),
@@ -61,9 +68,13 @@ class _SettingsState extends State<Settings> {
                 title: "Dark Mode",
                 leading: Icon(Icons.lightbulb_outline),
                 switchValue: sp.darkMode,
-                onToggle: (val) => setState(() {
-                  sp.darkMode = val;
-                }),
+                switchActiveColor: _accent,
+                onToggle: (val) => {
+                  setState(() {
+                    sp.darkMode = val;
+                  }),
+                  widget.themeChanged(true),
+                },
               )
             ],
           ),
@@ -74,6 +85,7 @@ class _SettingsState extends State<Settings> {
                 title: "Habit Reminders",
                 leading: Icon(Icons.notifications),
                 switchValue: sp.allowNotifcations,
+                switchActiveColor: _accent,
                 onToggle: (val) => setState(() {
                   sp.allowNotifcations = val;
                 }),
@@ -82,6 +94,7 @@ class _SettingsState extends State<Settings> {
                 title: "Daily Briefing",
                 leading: Icon(Icons.dashboard),
                 switchValue: sp.morningBriefing,
+                switchActiveColor: _accent,
                 onToggle: (val) => setState(() {
                   sp.morningBriefing = val;
                 }),
@@ -90,6 +103,7 @@ class _SettingsState extends State<Settings> {
                 title: "Weekly Reports",
                 leading: Icon(Icons.weekend),
                 switchValue: sp.weeklyReports,
+                switchActiveColor: _accent,
                 onToggle: (val) => setState(() {
                   sp.weeklyReports = val;
                 }),

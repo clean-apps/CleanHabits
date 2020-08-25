@@ -23,16 +23,19 @@ class _BooleanListItemState extends State<BooleanListItem> {
   @override
   Widget build(BuildContext context) {
     //
-
+    var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     var subtitleStyle = Theme.of(context).textTheme.subtitle2;
 
     var backgroundColor = widget.habit == null || widget.habit.ynCompleted
-        ? Theme.of(context).primaryColor.withAlpha(10)
-        : Theme.of(context).scaffoldBackgroundColor;
+        ? _theme.primaryColor.withAlpha(_darkMode ? 75 : 10)
+        : _darkMode
+            ? _theme.textTheme.subtitle2.color.withAlpha(50)
+            : _theme.scaffoldBackgroundColor;
 
     var borderColor = widget.habit == null || widget.habit.ynCompleted
-        ? Theme.of(context).primaryColor.withAlpha(80)
-        : Theme.of(context).textTheme.subtitle2.color.withAlpha(50);
+        ? _theme.primaryColor.withAlpha(80)
+        : _theme.textTheme.subtitle2.color.withAlpha(_darkMode ? 100 : 50);
 
     var _icon = widget.habit == null || widget.habit.ynCompleted
         ? Icon(Icons.check_circle,

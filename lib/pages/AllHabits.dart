@@ -33,6 +33,7 @@ class _AllHabitsState extends State<AllHabits> {
   @override
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     var accentColor = _theme.accentColor;
 
     return Scaffold(
@@ -40,22 +41,26 @@ class _AllHabitsState extends State<AllHabits> {
         automaticallyImplyLeading: true,
         iconTheme: IconThemeData(color: accentColor),
         elevation: 0.0,
-        title: Text('All Habits', style: TextStyle(color: Colors.black)),
+        title: Text(
+          'All Habits',
+          style: TextStyle(
+            color: _darkMode ? Colors.white : Colors.black,
+          ),
+        ),
         backgroundColor: _theme.scaffoldBackgroundColor,
       ),
       body: loading
           ? Container()
           : ListView.separated(
               itemCount: data.length,
-              separatorBuilder: (context, index) => Divider(),
+              separatorBuilder: (context, index) =>
+                  _darkMode ? Divider(color: accentColor) : Divider(),
               itemBuilder: (context, index) => ListTile(
-                // leading: Icon(
-                //   data[index].isYNType
-                //       ? Icons.check_circle_outline
-                //       : Icons.add_circle_outline,
-                //   size: 40.0,
-                // ),
-                trailing: Icon(Icons.chevron_right, size: 40.0),
+                trailing: Icon(
+                  Icons.chevron_right,
+                  size: 40.0,
+                  color: accentColor,
+                ),
                 title: Text(data[index].title),
                 subtitle: Row(
                   children: [

@@ -22,16 +22,18 @@ class _HabitProgressState extends State<HabitProgress> {
 
   AppBar _appBar(BuildContext context, Habit habit) {
     var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     var accentColor = _theme.accentColor;
 
     return new AppBar(
       automaticallyImplyLeading: true,
+      backgroundColor: _theme.scaffoldBackgroundColor,
       iconTheme: IconThemeData(color: accentColor),
       title: Hero(
         tag: 'habit-title-' + habit.id.toString(),
         child: Text(
           habit.title,
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: _darkMode ? Colors.white : Colors.black),
         ),
       ),
       actions: [
@@ -70,13 +72,14 @@ class _HabitProgressState extends State<HabitProgress> {
                 ],
               )
       ],
-      backgroundColor: Colors.white,
       elevation: 0.0,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     final Habit habit = ModalRoute.of(context).settings.arguments;
 
     var _widgetList = <Widget>[
@@ -89,7 +92,7 @@ class _HabitProgressState extends State<HabitProgress> {
     return new Scaffold(
       appBar: _appBar(context, habit),
       body: Container(
-        color: Colors.grey.withOpacity(0.05),
+        color: _darkMode ? Colors.black : Colors.grey.withOpacity(0.05),
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAnimatedList(

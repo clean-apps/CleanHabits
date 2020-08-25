@@ -11,6 +11,8 @@ class HabitsList extends StatelessWidget {
   HabitsList({this.habits, this.date});
 
   Widget _emptyList(context) {
+    var _theme = Theme.of(context);
+    var _darkMode = _theme.brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: EdgeInsets.only(top: 10),
@@ -23,7 +25,9 @@ class HabitsList extends StatelessWidget {
                 top: 30,
               ),
               child: Image.asset(
-                'assets/no-habit-light.png',
+                _darkMode
+                    ? 'assets/no-habit-dark.png'
+                    : 'assets/no-habit-light.png',
                 width: 250,
                 height: 250,
               ),

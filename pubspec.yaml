@@ -33,6 +33,7 @@ flutter:
   assets:
     - assets/app-logo.png
     - assets/no-habit-light.png
+    - assets/no-habit-dark.png
     - assets/welcome-1.png
     - assets/welcome-2.png
     - assets/welcome-3.png
