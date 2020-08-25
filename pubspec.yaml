@@ -32,7 +32,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/app-logo.png
-    - assets/no-habits.png
+    - assets/no-habit-light.png
     - assets/welcome-1.png
     - assets/welcome-2.png
     - assets/welcome-3.png

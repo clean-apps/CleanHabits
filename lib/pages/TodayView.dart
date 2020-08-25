@@ -210,7 +210,8 @@ class _TodayViewState extends State<TodayView> {
         ],
       ),
       bottomNavigationBar: BottomNavBar(index: _selectedNavIndex),
-      floatingActionButton: _getFab(),
+      floatingActionButton:
+          _filterHabits().length == 0 ? Container() : _getFab(),
     );
   }
 }

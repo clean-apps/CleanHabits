@@ -2,7 +2,6 @@ import 'package:CleanHabits/data/provider/HabitLastRunDataProvider.dart';
 import 'package:CleanHabits/data/provider/HabitMasterProvider.dart';
 import 'package:CleanHabits/data/provider/HabitRunDataProvider.dart';
 import 'package:CleanHabits/data/provider/ServiceLastRunProvider.dart';
-import 'package:CleanHabits/data/MockDataFactory.dart';
 import 'package:CleanHabits/data/provider/SettingsProvider.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -30,10 +29,10 @@ class ProviderFactory {
     String path4 = join(documentsDirectory.path, 'clean_habits-4.db');
     await serviceLastRunProvider.open(path4);
 
-    await MockDataFactory.create(
-      daysToMock: 0,
-      motivation: 0.75,
-    );
+    // await MockDataFactory.create(
+    //   daysToMock: 0,
+    //   motivation: 0.75,
+    // );
 
     await settingsProvider.init();
 

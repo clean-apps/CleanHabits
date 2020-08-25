@@ -19,22 +19,49 @@ class HabitsList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.all(30),
+              padding: EdgeInsets.only(
+                top: 30,
+              ),
               child: Image.asset(
-                'assets/no-habits.png',
+                'assets/no-habit-light.png',
+                width: 250,
+                height: 250,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+              ),
+              child: Text(
+                'No Habits Found',
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
             Text(
-              'Empty List',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            Text(
-              'Click on the new button',
+              'Motivation is what gets you started',
               style: Theme.of(context).textTheme.subtitle2,
             ),
             Text(
-              ' to add a habit',
+              'Habit is what gets you going',
               style: Theme.of(context).textTheme.subtitle2,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: FloatingActionButton.extended(
+                onPressed: () => Navigator.pushNamed(context, '/new'),
+                label: Text(
+                  'Create New Habit',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(color: Colors.white),
+                ),
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),
