@@ -31,7 +31,7 @@ class ProviderFactory {
     await serviceLastRunProvider.open(path4);
 
     await MockDataFactory.create(
-      daysToMock: 30,
+      daysToMock: 0,
       motivation: 0.75,
     );
 

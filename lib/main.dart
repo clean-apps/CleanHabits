@@ -9,6 +9,7 @@ import 'package:CleanHabits/pages/ProgressMain.dart';
 import 'package:CleanHabits/pages/Settings.dart';
 import 'package:CleanHabits/pages/TodayView.dart';
 import 'package:CleanHabits/pages/NewHabit.dart';
+import 'package:CleanHabits/pages/Welcome.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,6 +19,7 @@ void main() {
 class MyApp extends StatefulWidget {
   final providerFactory = ProviderFactory();
   final notificationProvider = NotificationProvider();
+  final sp = ProviderFactory.settingsProvider;
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -51,12 +53,26 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  ThemeData _theme(BuildContext context) {
     var themeColor = const Color(0xFF056676);
     //var themeColor = const Color(0xFF085da4);
     //var themeColor = Colors.red;
 
+    return ThemeData(
+      accentColor: themeColor,
+      primaryColor: themeColor,
+      scaffoldBackgroundColor: Colors.white,
+      textTheme: TextTheme(
+        subtitle2: TextStyle(
+          color: Colors.black.withAlpha(130),
+        ),
+      ),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // Demo Notifications
     if (notificationInit && !notificationTest)
       widget.notificationProvider
@@ -75,18 +91,8 @@ class _MyAppState extends State<MyApp> {
     return loading
         ? Loading()
         : MaterialApp(
-            theme: ThemeData(
-              accentColor: themeColor,
-              primaryColor: themeColor,
-              scaffoldBackgroundColor: Colors.white,
-              textTheme: TextTheme(
-                subtitle2: TextStyle(
-                  color: Colors.black.withAlpha(130),
-                ),
-              ),
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            initialRoute: '/',
+            theme: _theme(context),
+            initialRoute: widget.sp.initDone ? '/' : '/welcome',
             routes: {
               '/': (context) => TodayView(),
               '/habit/progress': (context) => HabitProgress(),
@@ -96,6 +102,7 @@ class _MyAppState extends State<MyApp> {
               '/settings/time-of-day': (context) => AllTimeOfDay(),
               '/new': (context) => NewHabit(),
               '/edit': (context) => EditHabit(),
+              '/welcome': (context) => Welcome(),
             },
           );
   }

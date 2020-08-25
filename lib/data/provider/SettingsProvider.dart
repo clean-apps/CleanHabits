@@ -17,15 +17,10 @@ class SettingsProvider {
 
   Future<bool> init() async {
     prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey(_initDone) ||
-        (prefs.containsKey(_initDone) && !prefs.getBool(_initDone))) {
-      await _loadInit();
-    }
-
     return Future<bool>(() => true);
   }
 
-  Future<bool> _loadInit() async {
+  Future<bool> loadInitData() async {
     await prefs.setBool(_darkMode, false);
     await prefs.setString(_firstDayOfWeek, 'Sun');
     await prefs.setBool(_allowNotifications, true);
@@ -33,10 +28,6 @@ class SettingsProvider {
     await prefs.setBool(_weeklyReports, true);
 
     var _areas = List<TimeArea>();
-    _areas.add(TimeArea(
-      area: 'Night',
-      startTime: TimeOfDay(hour: 00, minute: 00),
-    ));
     _areas.add(TimeArea(
       area: 'Morning',
       startTime: TimeOfDay(hour: 06, minute: 00),
@@ -49,10 +40,18 @@ class SettingsProvider {
       area: 'Evening',
       startTime: TimeOfDay(hour: 18, minute: 00),
     ));
+    _areas.add(TimeArea(
+      area: 'Night',
+      startTime: TimeOfDay(hour: 23, minute: 00),
+    ));
 
     await prefs.setString(_timeAreas, json.encode(_areas));
 
-    return prefs.setBool(_initDone, false);
+    return prefs.setBool(_initDone, true);
+  }
+
+  bool get initDone {
+    return prefs.containsKey(_initDone) ? prefs.getBool(_initDone) : false;
   }
 
   bool get darkMode {
