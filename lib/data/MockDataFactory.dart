@@ -84,22 +84,24 @@ class MockDataFactory {
 
   static Future<List<Habit>> _createHabits(startDate) async {
     var rng = Random();
-    var mockTitles = ['Morning Jog', 'Eat Healthy', 'Read A Book'];
+    var mockTitles = [
+      'Morning Jog',
+      'Eat Healthy',
+      'Read A Book',
+    ];
     var itrRepeats = [
       Repeats(none: true),
-      Repeats(none: true),
-      Repeats(none: true),
-      // Repeats(
-      //   none: false,
-      //   isWeekly: true,
-      //   hasMon: true,
-      //   hasWed: true,
-      //   hasFri: true,
-      // ),
-      // Repeats(
-      //   none: false,
-      //   interval: 2,
-      // ),
+      Repeats(
+        none: false,
+        isWeekly: true,
+        hasMon: true,
+        hasWed: true,
+        hasFri: true,
+      ),
+      Repeats(
+        none: false,
+        interval: 2,
+      ),
     ].iterator;
 
     var itrTypes = [

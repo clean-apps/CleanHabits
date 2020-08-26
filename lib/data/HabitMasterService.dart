@@ -303,9 +303,12 @@ class HabitMasterService {
               prevRunData.progress == habit.timesTarget) {
             runData.currentStreak = prevRunData.currentStreak + 1;
             runData.streakStartDate = prevRunData.streakStartDate;
-            runData.hasStreakEnded = false;
+            runData.hasStreakEnded = true;
+
+            prevRunData.hasStreakEnded = false;
 
             await this.rdp.update(runData);
+            await this.rdp.update(prevRunData);
             //
           } else if (prevRunData != null) {
             runData.currentStreak = 1;
