@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:CleanHabits/widgets/basic/HeatMapCalendar2.dart';
 import 'package:flutter/material.dart';
+import 'package:CleanHabits/widgets/basic/HeatMapCalendar.dart';
 
 class HeatMap extends StatelessWidget {
   final Map<DateTime, int> data;
@@ -20,6 +20,7 @@ class HeatMap extends StatelessWidget {
     var maxThreshold = data.length == 0 ? 0 : data.values.reduce(max);
 
     var _colorThresholds = {
+      0: _theme.brightness == Brightness.dark ? Colors.white10 : Colors.black12,
       minThreshold == 0 ? 1 : minThreshold: accentColor.withAlpha(0),
       ((avgThreshold - minThreshold) / 2 + minThreshold).toInt():
           accentColor.withAlpha(100),
@@ -29,13 +30,17 @@ class HeatMap extends StatelessWidget {
       maxThreshold: accentColor.withAlpha(255),
     };
 
-    return HeatMapCalendar2(
+    var _darkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return HeatMapCalendar(
       key: this.key,
       input: data,
       colorThresholds: _colorThresholds,
       squareSize: 24.0,
-      textOpacity: 0.3,
+      textOpacity: 1.0,
       labelTextColor: Colors.blueGrey,
+      dayTextColor: Theme.of(context).textTheme.subtitle2.color,
+      displayDates: _darkMode ? true : false,
     );
   }
 }

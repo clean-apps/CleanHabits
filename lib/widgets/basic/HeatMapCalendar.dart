@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:heatmap_calendar/heatmap_day.dart';
 import 'package:heatmap_calendar/time_utils.dart';
 import 'package:heatmap_calendar/week_columns.dart';
 import 'package:heatmap_calendar/week_labels.dart';
 
-// ignore: must_be_immutable
-class HeatMapCalendar2 extends StatelessWidget {
+class HeatMapCalendar extends StatefulWidget {
   static const double COLUMN_COUNT = 11;
   static const double ROW_COUNT = 8;
   static const double EDGE_SIZE = 4;
@@ -42,10 +42,9 @@ class HeatMapCalendar2 extends StatelessWidget {
   /// Helps avoiding overspacing issues
   final double safetyMargin;
 
-  double currentOpacity = 0;
   final bool displayDates;
 
-  HeatMapCalendar2({
+  const HeatMapCalendar({
     Key key,
     @required this.input,
     @required this.colorThresholds,
@@ -59,15 +58,39 @@ class HeatMapCalendar2 extends StatelessWidget {
     this.displayDates = false,
   }) : super(key: key);
 
+  @override
+  HeatMapCalendarState createState() {
+    return HeatMapCalendarState();
+  }
+}
+
+class HeatMapCalendarState extends State<HeatMapCalendar> {
+  double currentOpacity = 0;
+  bool displayDates = false;
+
+  @override
+  void initState() {
+    super.initState();
+    this.displayDates = widget.displayDates;
+  }
+
+  /// Toggles the labels in all [HeatMapDay]s
+  void onDoubleTap() {
+    setState(() {
+      displayDates = !displayDates;
+      currentOpacity = displayDates ? widget.textOpacity : 0;
+    });
+  }
+
   /// Calculates the right amount of columns to create based on [maxWidth]
   ///
   /// returns the number of columns that the widget should have
   int getColumnsToCreate(double maxWidth) {
-    assert(maxWidth > (2 * (HeatMapCalendar2.EDGE_SIZE + this.squareSize)));
+    assert(maxWidth > (2 * (HeatMapCalendar.EDGE_SIZE + widget.squareSize)));
 
     // The given size of a square + the size of the margin
-    final double widgetWidth = this.squareSize + HeatMapCalendar2.EDGE_SIZE;
-    return (maxWidth - this.safetyMargin) ~/ widgetWidth;
+    final double widgetWidth = widget.squareSize + HeatMapCalendar.EDGE_SIZE;
+    return (maxWidth - widget.safetyMargin) ~/ widgetWidth;
   }
 
   @override
@@ -75,28 +98,32 @@ class HeatMapCalendar2 extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return InkWell(
-          onDoubleTap: () {},
+          onDoubleTap: onDoubleTap,
           child: Container(
-            height: (this.squareSize + HeatMapCalendar2.EDGE_SIZE) *
-                (HeatMapCalendar2.ROW_COUNT + 1),
+            height: (widget.squareSize + HeatMapCalendar.EDGE_SIZE) *
+                (HeatMapCalendar.ROW_COUNT + 1),
             width: constraints.maxWidth,
             child: Row(
               children: <Widget>[
                 WeekLabels(
-                  weekDaysLabels: this.weekDaysLabels,
-                  squareSize: this.squareSize,
-                  labelTextColor: this.labelTextColor,
+                  weekDaysLabels: widget.weekDaysLabels,
+                  squareSize: widget.squareSize,
+                  labelTextColor: widget.labelTextColor,
                 ),
                 WeekColumns(
-                  squareSize: this.squareSize,
-                  labelTextColor: this.labelTextColor,
-                  input: this.input,
-                  colorThresholds: this.colorThresholds,
+                  squareSize: widget.squareSize,
+                  labelTextColor: widget.labelTextColor,
+                  input: widget.input,
+                  colorThresholds: widget.colorThresholds,
                   currentOpacity: currentOpacity,
-                  monthLabels: this.monthsLabels,
-                  dayTextColor: this.dayTextColor,
+                  monthLabels: widget.monthsLabels,
+                  dayTextColor: widget.dayTextColor,
                   columnsToCreate: getColumnsToCreate(constraints.maxWidth) - 1,
-                  date: DateTime.now(),
+                  date: DateTime(
+                    DateTime.now().year,
+                    DateTime.now().month,
+                    DateTime.now().day,
+                  ),
                 )
               ],
             ),
