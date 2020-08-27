@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationProvider {
-  var flutterLocalNotificationsPlugin;
   //
   Future selectNotification(String payload) async {
     if (payload != null) {
@@ -10,8 +9,8 @@ class NotificationProvider {
     }
   }
 
-  Future<bool> init() async {
-    this.flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  showNotificiation({String title, String body, String payload}) async {
+    var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.initialize(
       InitializationSettings(
         AndroidInitializationSettings('ic_stat_name'),
@@ -19,11 +18,6 @@ class NotificationProvider {
       ),
       onSelectNotification: selectNotification,
     );
-
-    return Future<bool>(() => true);
-  }
-
-  showNotificiation({String title, String body, String payload}) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'clean-habits-reminders',
       'Reminders',

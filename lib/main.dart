@@ -1,4 +1,3 @@
-import 'package:CleanHabits/data/provider/NotificationProvider.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/pages/AllHabits.dart';
 import 'package:CleanHabits/pages/AllTimeOfDay.dart';
@@ -18,7 +17,6 @@ void main() {
 
 class MyApp extends StatefulWidget {
   final providerFactory = ProviderFactory();
-  final notificationProvider = NotificationProvider();
   final sp = ProviderFactory.settingsProvider;
   @override
   _MyAppState createState() => _MyAppState();
@@ -27,18 +25,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var loading = true;
 
-  var notificationInit = false;
-  var notificationTest = false;
-
   @override
   initState() {
     super.initState();
-
-    widget.notificationProvider.init().then(
-          (sts) => setState(() {
-            notificationInit = true;
-          }),
-        );
 
     ProviderFactory.init().then(
       (sts) => setState(() {
@@ -77,19 +66,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     // Demo Notifications
-    if (notificationInit && !notificationTest)
-      widget.notificationProvider
-          .showNotificiation(
-            title: 'Habit Reminder',
-            body: 'Read 20 Pages',
-            payload: 'habit-id-1',
-          )
-          .then(
-            (sts) => setState(() {
-              notificationTest = true;
-            }),
-          );
-    //
+    // if (notificationInit && !notificationTest)
+    //   widget.notificationProvider
+    //       .showNotificiation(
+    //         title: 'Habit Reminder',
+    //         body: 'Read 20 Pages',
+    //         payload: 'habit-id-1',
+    //       )
+    //       .then(
+    //         (sts) => setState(() {
+    //           notificationTest = true;
+    //         }),
+    //       );
+    // //
 
     return loading
         ? Loading()

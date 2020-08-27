@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/data/HabitStatsService.dart';
 import 'package:CleanHabits/data/ProgressStatsService.dart';
+import 'package:CleanHabits/data/WorkManagerService.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
+import 'package:CleanHabits/data/provider/WorkManagerProvider.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/new/SelectChecklistType.dart';
 import 'package:CleanHabits/widgets/new/SelectRepeat.dart';
@@ -55,6 +57,13 @@ class MockDataFactory {
 
     var habitsList = await ProviderFactory.habitMasterProvider.list();
     debugPrint(habitsList.length == 0 ? 'No Mock Data' : 'Mock Data Present');
+
+    var wmp = ProviderFactory.workManagerProvider;
+    wmp.runSingleJob(
+      id: "99",
+      taskName: "daily-reminder",
+      inputData: {"test": "hello world"},
+    );
   }
 
   static _removeStaleData() async {

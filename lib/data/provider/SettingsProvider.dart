@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:CleanHabits/data/WorkManagerService.dart';
 import 'package:CleanHabits/domain/TimeArea.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,9 @@ class SettingsProvider {
   }
 
   Future<bool> loadInitData() async {
+    var wms = WorkManagerService();
+    await wms.activate();
+
     await prefs.setBool(_darkMode, false);
     await prefs.setString(_firstDayOfWeek, 'Sun');
     await prefs.setBool(_allowNotifications, true);
@@ -96,7 +100,7 @@ class SettingsProvider {
 
   List<TimeArea> get timeArea {
     String spData = prefs.getString(_timeAreas);
-    List<dynamic> decData = json.decode(spData);
+    List<dynamic> decData = spData == null ? List() : json.decode(spData);
     var decList = decData.map((mp) => TimeArea.fromJson(mp)).toList();
     return decList;
   }

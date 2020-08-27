@@ -1,3 +1,4 @@
+import 'package:CleanHabits/data/WorkManagerService.dart';
 import 'package:CleanHabits/data/domain/HabitLastRunData.dart';
 import 'package:CleanHabits/data/domain/HabitMaster.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
@@ -15,6 +16,7 @@ class HabitMasterService {
   var lrdp = ProviderFactory.habitLastRunDataProvider;
   var rdp = ProviderFactory.habitRunDataProvider;
   var slrp = ProviderFactory.serviceLastRunProvider;
+  var wms = WorkManagerService();
   //
   Future<List<Habit>> list(DateTime target) async {
     var habitRunDatas = await this.rdp.listForDate(DateTime(
@@ -218,6 +220,27 @@ class HabitMasterService {
       };
       var runData = HabitRunData.fromMap(runDataMap);
       this.rdp.insert(runData);
+
+      //add reminder
+      var notStarts = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+        habit.reminder.hour,
+        habit.reminder.minute,
+      );
+      if (habit.reminder != null && forDate.isAfter(notStarts)) {
+        this.wms.addHabitReminder(
+              habit.id,
+              DateTime(
+                forDate.year,
+                forDate.month,
+                forDate.day,
+                habit.reminder.hour,
+                habit.reminder.minute,
+              ),
+            );
+      }
 
       // update last run data
       var lastRunData = await this.lrdp.getHabitData(habit.id);
