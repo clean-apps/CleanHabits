@@ -106,6 +106,16 @@ class WorkManagerService {
 
   callbackDailyScheduler(Map<String, dynamic> inputData) async {
     hms.schedule();
+
+    var todaysCount = await hms.countTodaysHabits();
+    if (ProviderFactory.settingsProvider.morningBriefing) {
+      ProviderFactory.notificationProvider.showNotificiation(
+        title: "Morning Briefing",
+        body: todaysCount == null || todaysCount == 0
+            ? "There are no habits planned for today, enjoy your free day"
+            : "There are $todaysCount habits planned for today, time to get it done",
+      );
+    }
   }
 
   addHabitReminder(int habitId, DateTime then) {
@@ -156,9 +166,10 @@ class WorkManagerService {
   }
 
   callbackWeeklyBriefing(Map<String, dynamic> inputData) {
-    ProviderFactory.notificationProvider.showNotificiation(
-      title: "Weekly progress report",
-      body: "Your weekly habit progress is now ready",
-    );
+    if (ProviderFactory.settingsProvider.weeklyReports)
+      ProviderFactory.notificationProvider.showNotificiation(
+        title: "Weekly progress report",
+        body: "Your weekly habit progress is now ready",
+      );
   }
 }

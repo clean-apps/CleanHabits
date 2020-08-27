@@ -143,6 +143,17 @@ class HabitMasterService {
     return habit;
   }
 
+  Future<int> countTodaysHabits() async {
+    var forDate = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
+    var habitList = await this.rdp.listForDate(forDate);
+    return habitList == null ? 0 : habitList.length;
+  }
+
   Future<ServiceLastRun> schedule({DateTime forDate}) async {
     if (forDate == null) {
       forDate = DateTime.now().add(

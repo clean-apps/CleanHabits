@@ -8,6 +8,7 @@ void callbackDispatcher() {
     //
     WidgetsFlutterBinding.ensureInitialized();
     await ProviderFactory.initDB();
+    await ProviderFactory.settingsProvider.init();
 
     var wms = WorkManagerService();
     await wms.callback(taskName, inputData);

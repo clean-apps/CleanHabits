@@ -1,3 +1,4 @@
+import 'package:CleanHabits/data/WorkManagerService.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/widgets/basic/BottomNavBar.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   final sp = ProviderFactory.settingsProvider;
+  final wms = WorkManagerService();
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +90,13 @@ class _SettingsState extends State<Settings> {
                 switchActiveColor: _accent,
                 onToggle: (val) => setState(() {
                   sp.allowNotifcations = val;
+                  sp.morningBriefing = val;
+                  sp.weeklyReports = val;
+
+                  if (val)
+                    wms.activate();
+                  else
+                    wms.deactivate();
                 }),
               ),
               SettingsTile.switchTile(
