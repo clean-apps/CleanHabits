@@ -1,3 +1,4 @@
+import 'package:CleanHabits/data/provider/WidgetDataProvider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
@@ -70,27 +71,36 @@ class HabitRunDataProvider {
   }
 
   Future<int> delete(int id) async {
-    return await db.delete(
+    var updated = await db.delete(
       tableHabitRunData,
       where: '$columnId = ?',
       whereArgs: [id],
     );
+
+    doUpdateAppWidget();
+    return updated;
   }
 
   Future<int> deleteData(int habitId) async {
-    return await db.delete(
+    var updated = await db.delete(
       tableHabitRunData,
       where: '$columnHabitId = ?',
       whereArgs: [habitId],
     );
+
+    doUpdateAppWidget();
+    return updated;
   }
 
   Future<int> deleteDataFor(int habitId, DateTime forDate) async {
-    return await db.delete(
+    var updated = await db.delete(
       tableHabitRunData,
       where: '$columnTargetDate = ? and $columnHabitId = ?',
       whereArgs: [forDate.millisecondsSinceEpoch, habitId],
     );
+
+    doUpdateAppWidget();
+    return updated;
   }
 
   Future<int> update(HabitRunData runData) async {
@@ -101,6 +111,7 @@ class HabitRunDataProvider {
       whereArgs: [runData.id],
     );
 
+    doUpdateAppWidget();
     return updated;
   }
 

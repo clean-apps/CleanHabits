@@ -1,3 +1,4 @@
+import 'package:CleanHabits/data/provider/WidgetDataProvider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:CleanHabits/data/domain/HabitMaster.dart';
@@ -48,6 +49,8 @@ class HabitMasterProvider {
       tableHabitMaster,
       todo.toMap(),
     );
+
+    doUpdateAppWidget();
     return todo;
   }
 
@@ -87,20 +90,26 @@ class HabitMasterProvider {
   }
 
   Future<int> delete(int id) async {
-    return await db.delete(
+    var updated = await db.delete(
       tableHabitMaster,
       where: '$columnId = ?',
       whereArgs: [id],
     );
+
+    doUpdateAppWidget();
+    return updated;
   }
 
   Future<int> update(HabitMaster habit) async {
-    return await db.update(
+    var updated = await db.update(
       tableHabitMaster,
       habit.toMap(),
       where: '$columnId = ?',
       whereArgs: [habit.id],
     );
+
+    doUpdateAppWidget();
+    return updated;
   }
 
   Future<int> count() async {

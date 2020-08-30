@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:padding="@dimen/widget_listview_padding"
+    android:weightSum="2"
+    android:id="@+id/widgetItemContainer2"
+    android:layout_gravity="center_vertical"
+    android:layout_height="wrap_content">
+
+    <TextView android:id="@+id/todayWidgetListItemHabitTitle"
+        android:layout_width="wrap_content"
+        android:gravity="start"
+        android:layout_weight="1"
+        android:text="Title"
+        android:textSize="14dp"
+        android:textColor="@android:color/black"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"></TextView>
+
+    <TextView
+        android:id="@+id/todayWidgetListItemHabitSubtitle1"
+        android:layout_below="@+id/todayWidgetListItemHabitTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:text="Subtitle1"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"></TextView>
+
+    <TextView
+        android:id="@+id/todayWidgetListItemHabitSubtitle2"
+        android:layout_below="@+id/todayWidgetListItemHabitTitle"
+        android:layout_toRightOf="@id/todayWidgetListItemHabitSubtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:text="Subtitle2"
+        android:paddingLeft="18dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"></TextView>
+
+    <ImageView
+        android:id="@+id/todayWidgetListItemHabitProgress"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_baseline_check_24"></ImageView>
+
+</RelativeLayout>

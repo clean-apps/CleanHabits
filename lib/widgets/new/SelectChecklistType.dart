@@ -51,7 +51,7 @@ class _SelectChecklistTypeState extends State<SelectChecklistType> {
             title: new TextField(
               controller: TextEditingController(text: timesType),
               decoration: new InputDecoration(labelText: "Type"),
-              keyboardType: TextInputType.number,
+              keyboardType: TextInputType.text,
               onChanged: (val) => setState(() {
                 timesType = val;
               }),

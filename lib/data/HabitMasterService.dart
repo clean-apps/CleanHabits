@@ -237,8 +237,8 @@ class HabitMasterService {
         DateTime.now().year,
         DateTime.now().month,
         DateTime.now().day,
-        habit.reminder.hour,
-        habit.reminder.minute,
+        habit.reminder == null ? 0 : habit.reminder.hour,
+        habit.reminder == null ? 0 : habit.reminder.minute,
       );
       if (habit.reminder != null && forDate.isAfter(notStarts)) {
         this.wms.addHabitReminder(
@@ -323,6 +323,7 @@ class HabitMasterService {
             await this.rdp.update(runData);
           }
         } else {
+          runData.progress = 0;
           runData.currentStreak = 0;
           runData.streakStartDate = null;
           runData.hasStreakEnded = false;
@@ -362,6 +363,7 @@ class HabitMasterService {
             await this.rdp.update(runData);
           }
         } else {
+          runData.progress = habit.timesProgress;
           runData.currentStreak = 0;
           runData.streakStartDate = null;
           runData.hasStreakEnded = true;

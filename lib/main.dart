@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
+import 'package:CleanHabits/data/provider/WidgetDataProvider.dart';
 import 'package:CleanHabits/pages/AllHabits.dart';
 import 'package:CleanHabits/pages/AllTimeOfDay.dart';
 import 'package:CleanHabits/pages/EditHabit.dart';
@@ -9,10 +13,37 @@ import 'package:CleanHabits/pages/Settings.dart';
 import 'package:CleanHabits/pages/TodayView.dart';
 import 'package:CleanHabits/pages/NewHabit.dart';
 import 'package:CleanHabits/pages/Welcome.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  initializeAndroidWidgets();
   runApp(MyApp());
+}
+
+void initializeAndroidWidgets() {
+  if (Platform.isAndroid) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    final CallbackHandle callback = PluginUtilities.getCallbackHandle(
+      doWidgetUpdate,
+    );
+    final handle = callback.toRawHandle();
+
+    const channelName = 'com.babanomania.cleanhabits/todayWidget';
+    const MethodChannel channel = MethodChannel(channelName);
+    channel.invokeMethod('initialize', handle);
+  }
+}
+
+void doWidgetUpdate() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ProviderFactory.initDB();
+  await ProviderFactory.settingsProvider.init();
+
+  const channelName = 'com.babanomania.cleanhabits/todayWidget';
+  const MethodChannel channel = MethodChannel(channelName);
+  channel.setMethodCallHandler(getAppWidgetData);
 }
 
 class MyApp extends StatefulWidget {
@@ -65,21 +96,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Demo Notifications
-    // if (notificationInit && !notificationTest)
-    //   widget.notificationProvider
-    //       .showNotificiation(
-    //         title: 'Habit Reminder',
-    //         body: 'Read 20 Pages',
-    //         payload: 'habit-id-1',
-    //       )
-    //       .then(
-    //         (sts) => setState(() {
-    //           notificationTest = true;
-    //         }),
-    //       );
-    // //
-
     return loading
         ? Loading()
         : MaterialApp(
