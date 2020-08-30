@@ -1,5 +1,6 @@
 package com.example.CleanHabits
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
@@ -61,15 +62,26 @@ class TodayWidgetRemoteViewsFactory : RemoteViewsService.RemoteViewsFactory {
 
         var complete = target == progress
 
-        val rv = RemoteViews(mContext.packageName, R.layout.today_widget_listitem)
+        return RemoteViews(mContext.packageName, R.layout.today_widget_listitem).apply {
+            setTextViewText(R.id.todayWidgetListItemHabitTitle, title)
+            setTextViewText(R.id.todayWidgetListItemHabitSubtitle1, timeOfDay)
 
-        rv.setTextViewText(R.id.todayWidgetListItemHabitTitle, title)
-        rv.setTextViewText(R.id.todayWidgetListItemHabitSubtitle1, timeOfDay)
+            var listSubtitle2 = if (isYNType) " " else "$progress/$target $targetType"
+            setTextViewText(R.id.todayWidgetListItemHabitSubtitle2, listSubtitle2)
 
-        rv.setTextViewText(R.id.todayWidgetListItemHabitSubtitle2, if(isYNType) " " else "$progress/$target $targetType")
-        rv.setImageViewResource(R.id.todayWidgetListItemHabitProgress, if(complete) R.drawable.ic_baseline_check_24 else R.drawable.ic_baseline_check_24_white)
+            var listIcon = if (complete) R.drawable.ic_baseline_check_24 else R.drawable.ic_baseline_check_24_white
+            setImageViewResource(R.id.todayWidgetListItemHabitProgress, listIcon)
 
-        return rv
+            setOnClickPendingIntent(
+                    R.id.todayWidgetListItem,
+                    PendingIntent.getActivity(
+                            mContext,
+                            0,
+                            Intent(mContext, MainActivity::class.java),
+                            0
+                    )
+            )
+        }
     }
 
     override fun getLoadingView(): RemoteViews {

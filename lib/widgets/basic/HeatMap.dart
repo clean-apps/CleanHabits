@@ -19,16 +19,24 @@ class HeatMap extends StatelessWidget {
         : data.values.reduce((a, b) => a + b) ~/ data.values.length;
     var maxThreshold = data.length == 0 ? 0 : data.values.reduce(max);
 
-    var _colorThresholds = {
-      0: _theme.brightness == Brightness.dark ? Colors.white10 : Colors.black12,
-      minThreshold == 0 ? 1 : minThreshold: accentColor.withAlpha(0),
-      ((avgThreshold - minThreshold) / 2 + minThreshold).toInt():
-          accentColor.withAlpha(100),
-      avgThreshold: accentColor.withAlpha(130),
-      ((maxThreshold - avgThreshold) / 2 + avgThreshold).toInt():
-          accentColor.withAlpha(180),
-      maxThreshold: accentColor.withAlpha(255),
-    };
+    var _colorThresholds = maxThreshold == 0
+        ? {
+            0: _theme.brightness == Brightness.dark
+                ? Colors.white10
+                : Colors.black12
+          }
+        : {
+            0: _theme.brightness == Brightness.dark
+                ? Colors.white10
+                : Colors.black12,
+            minThreshold == 0 ? 1 : minThreshold: accentColor.withAlpha(0),
+            ((avgThreshold - minThreshold) / 2 + minThreshold).toInt():
+                accentColor.withAlpha(100),
+            avgThreshold: accentColor.withAlpha(130),
+            ((maxThreshold - avgThreshold) / 2 + avgThreshold).toInt():
+                accentColor.withAlpha(180),
+            maxThreshold: accentColor.withAlpha(255),
+          };
 
     var _darkMode = Theme.of(context).brightness == Brightness.dark;
 

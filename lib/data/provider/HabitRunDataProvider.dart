@@ -266,7 +266,7 @@ class HabitRunDataProvider {
   ) async {
     return await db.query(
       tableHabitRunData,
-      columns: [columnTargetWeekInYear, 'COUNT(*) count'],
+      columns: [columnTargetWeekInYear, 'SUM($columnProgress) sum'],
       groupBy: '$columnTargetWeekInYear',
       where: '$columnHabitId = ?',
       whereArgs: [habitId],
@@ -282,7 +282,7 @@ class HabitRunDataProvider {
   ) async {
     return await db.query(
       tableHabitRunData,
-      columns: [columnTargetWeekInYear, 'COUNT(*) count'],
+      columns: [columnTargetWeekInYear, 'SUM($columnProgress) sum'],
       groupBy: '$columnTargetWeekInYear',
       orderBy: '$columnTargetWeekInYear asc',
       limit: limit,
@@ -297,7 +297,7 @@ class HabitRunDataProvider {
   ) async {
     return await db.query(
       tableHabitRunData,
-      columns: [columnTargetMonthInYear, 'COUNT(*) count'],
+      columns: [columnTargetMonthInYear, 'SUM($columnProgress) sum'],
       groupBy: '$columnTargetMonthInYear',
       where: '$columnHabitId = ?',
       whereArgs: [habitId],
@@ -309,7 +309,7 @@ class HabitRunDataProvider {
   Future<List<Map<String, dynamic>>> dayWiseStatsForAll(int lastDay) async {
     return await db.query(
       tableHabitRunData,
-      columns: [columnTargetDayInWeek, 'COUNT(*) count'],
+      columns: [columnTargetDayInWeek, 'SUM($columnProgress) sum'],
       where: '$columnTargetDate >= ?',
       whereArgs: [lastDay],
       groupBy: '$columnTargetDayInWeek',
@@ -324,7 +324,7 @@ class HabitRunDataProvider {
   ) async {
     return await db.query(
       tableHabitRunData,
-      columns: [columnTargetMonthInYear, 'COUNT(*) count'],
+      columns: [columnTargetMonthInYear, 'SUM($columnProgress) sum'],
       groupBy: '$columnTargetMonthInYear',
       orderBy: '$columnTargetMonthInYear asc',
       limit: limit,

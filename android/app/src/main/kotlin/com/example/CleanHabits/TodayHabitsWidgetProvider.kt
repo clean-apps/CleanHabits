@@ -1,5 +1,6 @@
 package com.example.CleanHabits
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
@@ -96,8 +97,6 @@ class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
 }
 
 internal fun updateWidget(id: Int, habits: List<Map<String, *>>, progress: List<Map<String, *>>, context: Context) {
-    val TAG = TodayHabitsWidgetProvider::class.java.simpleName
-    Log.d(TAG, "updateWidget")
 
     val views = RemoteViews(context.packageName, R.layout.today_habits_widget).apply {
         val widgetText: CharSequence = context.getString(R.string.todayWidgetHeaderText)
@@ -110,10 +109,19 @@ internal fun updateWidget(id: Int, habits: List<Map<String, *>>, progress: List<
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)))
         intent.setAction( System.currentTimeMillis().toString() )
 
+        setOnClickPendingIntent(
+                R.id.todayWidget,
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        Intent(context, MainActivity::class.java),
+                        0
+                )
+        )
+
         setRemoteAdapter(R.id.todayWidgetListView, intent)
     }
 
     val manager = AppWidgetManager.getInstance(context)
     manager.updateAppWidget(id, views)
-
 }

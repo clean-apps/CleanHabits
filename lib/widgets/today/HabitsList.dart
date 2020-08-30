@@ -53,7 +53,7 @@ class HabitsList extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 30),
               child: FloatingActionButton.extended(
-                onPressed: () => Navigator.pushNamed(context, '/new'),
+                onPressed: () => Navigator.popAndPushNamed(context, '/new'),
                 label: Text(
                   'Create New Habit',
                   style: Theme.of(context)

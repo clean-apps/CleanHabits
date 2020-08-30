@@ -55,7 +55,7 @@ class ProgressStatsService {
     counts.forEach((runData) {
       cnt2++;
       data.add(
-        LinearData(runData[columnTargetWeekInYear], cnt2, runData['count']),
+        LinearData(runData[columnTargetWeekInYear], cnt2, runData['sum']),
       );
     });
     //
@@ -99,7 +99,7 @@ class ProgressStatsService {
     counts.reversed.forEach((runData) {
       cnt2++;
       data.add(
-        LinearData(runData[columnTargetMonthInYear], cnt2, runData['count']),
+        LinearData(runData[columnTargetMonthInYear], cnt2, runData['sum']),
       );
     });
     //
@@ -207,7 +207,7 @@ class ProgressStatsService {
 
     var data = List<ChartData>();
     for (var weekData in weekWiseData) {
-      data.add(ChartData(weekData[columnTargetDayInWeek], weekData['count']));
+      data.add(ChartData(weekData[columnTargetDayInWeek], weekData['sum']));
     }
 
     var weeklyId = {};

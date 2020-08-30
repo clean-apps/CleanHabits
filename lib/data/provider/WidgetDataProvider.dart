@@ -1,8 +1,5 @@
-import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:flutter/services.dart';
-
-var _hms = HabitMasterService();
 
 Future<dynamic> getAppWidgetData(MethodCall call) async {
 //

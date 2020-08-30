@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:padding="@dimen/widget_listview_padding"
     android:weightSum="2"
-    android:id="@+id/widgetItemContainer2"
+    android:id="@+id/todayWidgetListItem"
     android:layout_gravity="center_vertical"
     android:layout_height="wrap_content">
 

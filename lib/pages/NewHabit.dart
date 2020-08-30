@@ -59,7 +59,7 @@ class _NewHabitState extends State<NewHabit> {
               setState(() {
                 loading = false;
               }),
-              Navigator.pushNamed(context, '/'),
+              Navigator.popAndPushNamed(context, '/'),
             });
   }
 
