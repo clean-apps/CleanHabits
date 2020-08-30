@@ -1,3 +1,4 @@
+import 'package:CleanHabits/data/provider/ProviderFactory.dart';
 import 'package:CleanHabits/data/provider/WidgetDataProvider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -18,7 +19,8 @@ class HabitRunDataProvider {
           $columnHabitId integer not null, 
 
           $columnTargetDate integer not null,
-          $columnTargetWeekInYear text not null,
+          $columnTargetWeekInYearWMon text not null,
+          $columnTargetWeekInYearWSun text not null,
           $columnTargetMonthInYear text not null,
           $columnTargetDayInWeek text not null,
           
@@ -264,9 +266,17 @@ class HabitRunDataProvider {
     int habitId,
     int limit,
   ) async {
+    var sp = ProviderFactory.settingsProvider;
+    var mondayFirst = sp.firstDayOfWeek == 'Mon';
+
     return await db.query(
       tableHabitRunData,
-      columns: [columnTargetWeekInYear, 'SUM($columnProgress) sum'],
+      columns: [
+        mondayFirst
+            ? '$columnTargetWeekInYearWMon as $columnTargetWeekInYear'
+            : '$columnTargetWeekInYearWSun as $columnTargetWeekInYear',
+        'SUM($columnProgress) sum'
+      ],
       groupBy: '$columnTargetWeekInYear',
       where: '$columnHabitId = ?',
       whereArgs: [habitId],
@@ -280,9 +290,17 @@ class HabitRunDataProvider {
     DateTime end,
     int limit,
   ) async {
+    var sp = ProviderFactory.settingsProvider;
+    var mondayFirst = sp.firstDayOfWeek == 'Mon';
+
     return await db.query(
       tableHabitRunData,
-      columns: [columnTargetWeekInYear, 'SUM($columnProgress) sum'],
+      columns: [
+        mondayFirst
+            ? '$columnTargetWeekInYearWMon as $columnTargetWeekInYear'
+            : '$columnTargetWeekInYearWSun as $columnTargetWeekInYear',
+        'SUM($columnProgress) sum'
+      ],
       groupBy: '$columnTargetWeekInYear',
       orderBy: '$columnTargetWeekInYear asc',
       limit: limit,

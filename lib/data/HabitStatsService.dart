@@ -1,11 +1,11 @@
 import 'package:CleanHabits/data/HabitMasterService.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
+import 'package:CleanHabits/data/provider/WeekDateProvider.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/StackedBarChart.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HabitStatsService {
@@ -28,7 +28,12 @@ class HabitStatsService {
     );
     var todayRunData = await this.rdp.getData(now, habit.id);
 
-    var startWeek = now.subtract(Duration(days: now.weekday - 1));
+    var sp = ProviderFactory.settingsProvider;
+    var mondayStart = sp.firstDayOfWeek == 'Mon';
+    var startWeek = WeekDateProvider.weekStart(
+      date: now,
+      startWithMonday: mondayStart,
+    );
 
     var habitData = await this.rdp.listBetweenFor(startWeek, now, habit.id);
 

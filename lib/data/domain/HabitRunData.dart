@@ -1,4 +1,5 @@
 import 'package:CleanHabits/data/domain/HabitMaster.dart';
+import 'package:CleanHabits/data/provider/WeekDateProvider.dart';
 import 'package:CleanHabits/domain/Habit.dart';
 import 'package:intl/intl.dart';
 
@@ -10,6 +11,8 @@ final String columnHabitId = '_habit_id';
 final String columnTargetDate = 'target_date'; // unix epoch
 
 final String columnTargetWeekInYear = 'target_week_in_year';
+final String columnTargetWeekInYearWMon = 'target_week_in_year_w_mon';
+final String columnTargetWeekInYearWSun = 'target_week_in_year_w_sun';
 final String columnTargetMonthInYear = 'target_mon_in_year';
 final String columnTargetDayInWeek = 'target_day_in_week';
 
@@ -26,10 +29,12 @@ var fmtDay = DateFormat("D");
 var fmMonth = DateFormat("MMM");
 var fmtDayOfWeek = DateFormat("E");
 
-/// Calculates week number from a date as per https://en.wikipedia.org/wiki/ISO_week_date#Calculation
-int weekNumber(DateTime date) {
-  int dayOfYear = int.parse(fmtDay.format(date));
-  return ((dayOfYear - date.weekday + 10) / 7).floor();
+int weekNumberWMon(DateTime date) {
+  return WeekDateProvider.weekOfYear(date: date, startWithMonday: true);
+}
+
+int weekNumberWSun(DateTime date) {
+  return WeekDateProvider.weekOfYear(date: date, startWithMonday: false);
 }
 
 String getMonth(DateTime date) {
@@ -42,7 +47,8 @@ class HabitRunData {
   DateTime targetDate;
 
   String dayName;
-  String weekNo;
+  String weekNoWMon;
+  String weekNoWSun;
   String monthName;
 
   int target;
@@ -108,8 +114,10 @@ class HabitRunData {
           targetDate == null ? null : targetDate.millisecondsSinceEpoch,
       columnTargetDayInWeek:
           targetDate == null ? null : fmtDayOfWeek.format(targetDate),
-      columnTargetWeekInYear:
-          targetDate == null ? null : 'W${weekNumber(targetDate)}',
+      columnTargetWeekInYearWMon:
+          targetDate == null ? null : 'W${weekNumberWMon(targetDate)}',
+      columnTargetWeekInYearWSun:
+          targetDate == null ? null : 'W${weekNumberWSun(targetDate)}',
       columnTargetMonthInYear: targetDate == null ? null : getMonth(targetDate),
       columnTarget: target == null ? null : target.toString(),
       columnProgress: progress == null ? null : progress.toString(),
@@ -143,7 +151,8 @@ class HabitRunData {
           );
 
     dayName = map[columnTargetDayInWeek];
-    weekNo = map[columnTargetWeekInYear];
+    weekNoWMon = map[columnTargetWeekInYearWMon];
+    weekNoWSun = map[columnTargetWeekInYearWSun];
     monthName = map[columnTargetMonthInYear];
 
     target = map[columnTarget] == null ? null : map[columnTarget];

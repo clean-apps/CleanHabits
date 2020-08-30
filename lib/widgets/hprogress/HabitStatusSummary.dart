@@ -53,6 +53,10 @@ class HabitStatus {
   final int currentStreak;
   final int weekProgress;
   final int weekTarget;
-  HabitStatus(
-      {this.currentStreak = 0, this.weekProgress = 0, this.weekTarget = 0});
+
+  HabitStatus({
+    this.currentStreak = 0,
+    this.weekProgress = 0,
+    this.weekTarget = 0,
+  });
 }

@@ -27,10 +27,10 @@ class ProviderFactory {
     await workManagerProvider.init();
     await settingsProvider.init();
 
-    // await MockDataFactory.create(
-    //   daysToMock: 30,
-    //   motivation: 0.75,
-    // );
+    await MockDataFactory.create(
+      daysToMock: 30,
+      motivation: 0.75,
+    );
 
     return Future<bool>(() => true);
   }

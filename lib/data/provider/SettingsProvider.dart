@@ -26,7 +26,7 @@ class SettingsProvider {
     await wms.activate();
 
     await prefs.setBool(_darkMode, false);
-    await prefs.setString(_firstDayOfWeek, 'Sun');
+    await prefs.setString(_firstDayOfWeek, 'Mon');
     await prefs.setBool(_allowNotifications, true);
     await prefs.setBool(_briefingMorning, true);
     await prefs.setBool(_weeklyReports, true);
