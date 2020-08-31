@@ -57,14 +57,41 @@ class _SettingsState extends State<Settings> {
                   "/settings/time-of-day",
                 ),
               ),
-              SettingsTile.switchTile(
-                title: "Start Week With Monday",
+              SettingsTile(
+                title: "Start Week With",
+                subtitle: sp.firstDayOfWeek == 'Mon' ? "Monday" : "Sunday",
                 leading: Icon(Icons.calendar_today),
-                switchValue: sp.firstDayOfWeek == "Mon",
                 switchActiveColor: _accent,
-                onToggle: (val) => setState(() {
-                  sp.firstDayOfWeek = val ? "Mon" : "Sun";
-                }),
+                onTap: () => showDialog(
+                  context: context,
+                  child: SimpleDialog(
+                    title: Text('Start Week With'),
+                    children: [
+                      SimpleDialogOption(
+                        child: CheckboxListTile(
+                          title: Text('Sunday'),
+                          value: sp.firstDayOfWeek == "Sun",
+                          activeColor: _accent,
+                          onChanged: (val) => setState(() {
+                            sp.firstDayOfWeek = val ? "Sun" : "Mon";
+                            Navigator.pop(context);
+                          }),
+                        ),
+                      ),
+                      SimpleDialogOption(
+                        child: CheckboxListTile(
+                          title: Text('Monday'),
+                          value: sp.firstDayOfWeek == "Mon",
+                          activeColor: _accent,
+                          onChanged: (val) => setState(() {
+                            sp.firstDayOfWeek = val ? "Mon" : "Sun";
+                            Navigator.pop(context);
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SettingsTile.switchTile(
                 title: "Dark Mode",
