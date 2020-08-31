@@ -28,74 +28,102 @@ class _SelectChecklistTypeState extends State<SelectChecklistType> {
   }
 
   void _showDialog(context) {
+    var _theme = Theme.of(context);
+    var _accent = _theme.accentColor;
+
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (ctxt) => SimpleDialog(
-        title: Text('Times Type Options'),
+        title: Text('Select Times Type'),
         children: [
-          ListTile(
-            title: new TextField(
-              controller: TextEditingController(text: times.toString()),
-              decoration: new InputDecoration(labelText: "Count"),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter.digitsOnly
-              ],
-              onChanged: (val) => setState(() {
-                times = int.parse(val);
-              }),
-            ),
-          ),
-          ListTile(
-            title: new TextField(
-              controller: TextEditingController(text: timesType),
-              decoration: new InputDecoration(labelText: "Type"),
-              keyboardType: TextInputType.text,
-              onChanged: (val) => setState(() {
-                timesType = val;
-              }),
-            ),
-          ),
-          ListTile(
-            leading: FlatButton(
-              onPressed: () => {
-                setState(() {
-                  isSimple = true;
-                  times = 1;
-                  timesType = null;
+          Padding(
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: ListTile(
+              title: new TextField(
+                controller: TextEditingController(text: times.toString()),
+                decoration: new InputDecoration(
+                  labelText: "Count",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    borderSide: BorderSide(color: _accent),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly
+                ],
+                onChanged: (val) => setState(() {
+                  times = int.parse(val);
                 }),
-                widget.onChange(new ChecklistType(
-                  isSimple: true,
-                  times: 1,
-                  timesType: null,
-                )),
-                Navigator.of(context).pop()
-              },
-              child: Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                ),
               ),
             ),
-            trailing: FlatButton(
-              onPressed: () => {
-                widget.onChange(new ChecklistType(
-                  isSimple: this.isSimple,
-                  times: this.times,
-                  timesType: this.timesType,
-                )),
-                Navigator.of(context).pop()
-              },
-              child: Text(
-                'Submit',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            child: ListTile(
+              title: new TextField(
+                controller: TextEditingController(text: timesType),
+                decoration: new InputDecoration(
+                  labelText: "Type",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    borderSide: BorderSide(color: _accent),
+                  ),
                 ),
+                keyboardType: TextInputType.text,
+                onChanged: (val) => setState(() {
+                  timesType = val;
+                }),
               ),
             ),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: ButtonBar(
+              children: [
+                OutlineButton(
+                  color: _accent,
+                  onPressed: () => {
+                    setState(() {
+                      isSimple = true;
+                      times = 1;
+                      timesType = null;
+                    }),
+                    widget.onChange(new ChecklistType(
+                      isSimple: true,
+                      times: 1,
+                      timesType: null,
+                    )),
+                    Navigator.of(context).pop()
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                ),
+                FlatButton(
+                  color: _accent.withOpacity(0.2),
+                  onPressed: () => {
+                    widget.onChange(new ChecklistType(
+                      isSimple: this.isSimple,
+                      times: this.times,
+                      timesType: this.timesType,
+                    )),
+                    Navigator.of(context).pop()
+                  },
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

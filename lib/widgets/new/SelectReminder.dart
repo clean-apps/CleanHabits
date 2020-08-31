@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 class SelectReminder extends StatelessWidget {
   final TimeOfDay value;
   final ValueChanged<TimeOfDay> onChange;
+
   SelectReminder({this.value, this.onChange});
 
   void _showDialog(context) {
-    showTimePicker(initialTime: TimeOfDay.now(), context: context)
-        .then(this.onChange);
+    showTimePicker(
+      initialTime: TimeOfDay.now(),
+      helpText: 'Select Reminder Time',
+      context: context,
+    ).then(this.onChange);
   }
 
   @override

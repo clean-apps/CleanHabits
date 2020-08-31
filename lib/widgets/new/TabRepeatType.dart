@@ -2,9 +2,11 @@ import 'package:CleanHabits/widgets/new/SelectRepeat.dart';
 import 'package:flutter/material.dart';
 
 class TabRepeatType extends StatefulWidget {
+  //
   final Repeats value;
   final ValueChanged<Repeats> onChange;
   TabRepeatType({this.value, this.onChange});
+
   @override
   _TabRepeatTypeState createState() => _TabRepeatTypeState();
 }
@@ -18,18 +20,21 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
     selected = widget.value;
   }
 
-  ListTile _tile({String title, bool value, ValueChanged<bool> onChange}) {
-    return ListTile(
-      dense: true,
+  CheckboxListTile _tile({
+    String title,
+    bool value,
+    ValueChanged<bool> onChange,
+    Color accent,
+  }) {
+    return CheckboxListTile(
       title: Text(title),
-      trailing: IconButton(
-        icon: Icon(value ? Icons.check_box : Icons.check_box_outline_blank),
-        onPressed: () => onChange(!value),
-      ),
+      value: value,
+      activeColor: accent,
+      onChanged: (val) => onChange(!value),
     );
   }
 
-  List<Widget> _intervalList() {
+  List<Widget> _intervalList(Color accent) {
     return [1, 2, 3, 4, 5, 6, 7]
         .map(
           (d) => _tile(
@@ -42,12 +47,13 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
               }),
               widget.onChange(selected),
             },
+            accent: accent,
           ),
         )
         .toList();
   }
 
-  List<Widget> _weekdayList() {
+  List<Widget> _weekdayList(Color accent) {
     return [
       _tile(
         title: 'Sunday',
@@ -59,6 +65,7 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
           }),
           widget.onChange(selected),
         },
+        accent: accent,
       ),
       _tile(
         title: 'Monday',
@@ -70,6 +77,7 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
           }),
           widget.onChange(selected),
         },
+        accent: accent,
       ),
       _tile(
         title: 'Tuesday',
@@ -81,6 +89,7 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
           }),
           widget.onChange(selected),
         },
+        accent: accent,
       ),
       _tile(
         title: 'Wednesday',
@@ -92,6 +101,7 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
           }),
           widget.onChange(selected),
         },
+        accent: accent,
       ),
       _tile(
         title: 'Thursday',
@@ -103,6 +113,7 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
           }),
           widget.onChange(selected),
         },
+        accent: accent,
       ),
       _tile(
         title: 'Friday',
@@ -114,6 +125,7 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
           }),
           widget.onChange(selected),
         },
+        accent: accent,
       ),
       _tile(
         title: 'Saturday',
@@ -125,43 +137,66 @@ class _TabRepeatTypeState extends State<TabRepeatType> {
           }),
           widget.onChange(selected),
         },
+        accent: accent,
       )
     ];
   }
 
   @override
   Widget build(BuildContext context) {
+    var _theme = Theme.of(context);
+    var _accent = _theme.accentColor;
+    var _bgColor = _theme.brightness == Brightness.dark
+        ? Colors.grey.withOpacity(0.25)
+        : Theme.of(context).scaffoldBackgroundColor;
+
+    var weekdayList = _weekdayList(_accent);
+    var intervalList = _intervalList(_accent);
+
     return DefaultTabController(
       length: 2,
       initialIndex: selected.isWeekly ? 0 : 1,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: _bgColor,
+          //elevation: 0.0,
           leading: IconButton(
-            icon: Icon(Icons.clear),
+            icon: Icon(Icons.clear, color: _theme.textTheme.bodyText1.color),
             onPressed: () => Navigator.pop(context),
           ),
-          title: Text('Select Repetitions'),
+          title: Text(
+            'Select Repetitions',
+            style: TextStyle(color: _theme.textTheme.bodyText1.color),
+          ),
           bottom: TabBar(
+            labelColor: _accent,
+            indicatorColor: _accent,
+            unselectedLabelColor: _theme.textTheme.subtitle2.color,
             tabs: [
               Tab(child: Text('Weekly')),
               Tab(child: Text('In-Interval')),
             ],
             onTap: (index) => {
               setState(() {
-                if (index == 0)
-                  selected.isWeekly = true;
-                else
-                  selected.isWeekly = false;
+                selected.isWeekly = index == 0;
               }),
               widget.onChange(selected),
             },
           ),
         ),
-        body: TabBarView(
-          children: [
-            ListView(shrinkWrap: true, children: _weekdayList()),
-            ListView(shrinkWrap: true, children: _intervalList()),
-          ],
+        body: Container(
+          child: TabBarView(children: [
+            ListView.separated(
+              separatorBuilder: (context, index) => Divider(color: _bgColor),
+              itemCount: weekdayList.length,
+              itemBuilder: (context, index) => weekdayList[index],
+            ),
+            ListView.separated(
+              separatorBuilder: (context, index) => Divider(color: _bgColor),
+              itemCount: intervalList.length,
+              itemBuilder: (context, index) => intervalList[index],
+            ),
+          ]),
         ),
       ),
     );

@@ -23,13 +23,11 @@ class _SelectRepeatState extends State<SelectRepeat> {
   void _showDialog(context) {
     showDialog(
       context: context,
-      builder: (ctxt) => Dialog(
-        child: TabRepeatType(
-          value: selected,
-          onChange: (rep) => setState(() {
-            selected = rep;
-          }),
-        ),
+      builder: (ctxt) => TabRepeatType(
+        value: selected,
+        onChange: (rep) => setState(() {
+          selected = rep;
+        }),
       ),
     );
   }

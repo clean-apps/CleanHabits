@@ -91,6 +91,9 @@ class _MyAppState extends State<MyApp> {
               color: isDarkMode ? darkSubtitleColor : lightSubtitleColor)),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       cardColor: isDarkMode ? Colors.grey.withOpacity(0.25) : Colors.white,
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      ),
     );
   }
 
