@@ -287,6 +287,9 @@ class HabitMasterService {
     var runData = await this.rdp.getData(forDate, habit.id);
 
     if (runData != null) {
+      //set skipped
+      runData.hasSkipped = habit.isSkipped;
+
       // prev day run data
       var prevDate = runData == null ? null : runData.prevRunDate;
       var prevRunData =

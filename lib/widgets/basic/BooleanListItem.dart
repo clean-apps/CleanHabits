@@ -63,23 +63,36 @@ class _BooleanListItemState extends State<BooleanListItem> {
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
-        subtitle: this.widget.habit.reminder == null
-            ? Text(
-                this.widget.habit.timeOfDay == null
-                    ? 'All Day'
-                    : this.widget.habit.timeOfDay,
-                style: subtitleStyle,
-              )
-            : Row(
-                children: [
-                  Icon(
-                    Icons.alarm,
-                    color: subtitleStyle.color,
-                    size: subtitleStyle.fontSize,
+        subtitle: Row(
+          children: [
+            this.widget.habit.reminder == null
+                ? Text(
+                    this.widget.habit.timeOfDay == null
+                        ? 'All Day'
+                        : this.widget.habit.timeOfDay,
+                    style: subtitleStyle,
+                  )
+                : Row(
+                    children: [
+                      Icon(
+                        Icons.alarm,
+                        color: subtitleStyle.color,
+                        size: subtitleStyle.fontSize,
+                      ),
+                      Text(this.widget.habit.reminder, style: subtitleStyle)
+                    ],
                   ),
-                  Text(this.widget.habit.reminder, style: subtitleStyle)
-                ],
-              ),
+            this.widget.habit.isSkipped
+                ? Padding(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Text(
+                      'Skipped',
+                      style: subtitleStyle,
+                    ),
+                  )
+                : Container()
+          ],
+        ),
         trailing: loading
             ? IconButton(
                 icon: CircularProgressIndicator(),
@@ -92,6 +105,7 @@ class _BooleanListItemState extends State<BooleanListItem> {
                   setState(() {
                     loading = true;
                     widget.habit.ynCompleted = !widget.habit.ynCompleted;
+                    widget.habit.isSkipped = false;
                   }),
                   widget.habitMaster
                       .updateStatus(habit: widget.habit, dateTime: widget.date)

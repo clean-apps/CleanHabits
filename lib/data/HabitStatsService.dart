@@ -197,7 +197,8 @@ class HabitStatsService {
     var runData = await this.rdp.listBetweenFor(statDate, today, habit.id);
 
     var itrRunData = runData.map((rd) => {
-          rd.targetDate: rd.progress * (habit.isYNType ? 100 : 1),
+          rd.targetDate:
+              (rd.hasSkipped ? 0 : rd.progress) * (habit.isYNType ? 100 : 1),
         });
     var data = {
       for (var v in itrRunData) v.keys.toList()[0]: v.values.toList()[0]

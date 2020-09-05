@@ -1,14 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:CleanHabits/domain/Habit.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:CleanHabits/widgets/basic/BooleanListItem.dart';
 import 'package:CleanHabits/widgets/basic/TimesListItem.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class HabitsList extends StatelessWidget {
   //
   final List<Habit> habits;
   final DateTime date;
-  HabitsList({this.habits, this.date});
+  final ValueChanged<Habit> onEdit;
+  final ValueChanged<Habit> onDelete;
+  final ValueChanged<Habit> onSkip;
+  HabitsList({this.habits, this.date, this.onEdit, this.onDelete, this.onSkip});
 
   Widget _emptyList(context) {
     var _theme = Theme.of(context);
@@ -73,8 +77,40 @@ class HabitsList extends StatelessWidget {
     );
   }
 
-  Widget _slidable(child) {
-    return child;
+  Widget _slidable(child, Habit habit, context) {
+    var _theme = Theme.of(context);
+    var _accentColor = _theme.accentColor;
+    var _darkMode = _theme.brightness == Brightness.dark;
+
+    return Slidable(
+      actionPane: SlidableScrollActionPane(),
+      actionExtentRatio: 0.2,
+      actions: <Widget>[
+        IconSlideAction(
+          caption: 'Edit',
+          icon: Icons.edit,
+          color: _darkMode ? Colors.black : Colors.white,
+          foregroundColor: _accentColor,
+          onTap: () => this.onEdit(habit),
+        ),
+        IconSlideAction(
+            caption: 'Delete',
+            icon: Icons.delete,
+            color: _darkMode ? Colors.black : Colors.white,
+            foregroundColor: _accentColor,
+            onTap: () => this.onDelete(habit)),
+      ],
+      child: child,
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Skip',
+          icon: Icons.skip_next,
+          color: _darkMode ? Colors.black : Colors.white,
+          foregroundColor: _accentColor,
+          onTap: () => this.onSkip(habit),
+        ),
+      ],
+    );
   }
 
   @override
@@ -104,6 +140,8 @@ class HabitsList extends StatelessWidget {
                                   habit: entry.value,
                                   date: this.date,
                                 ),
+                          entry.value,
+                          context,
                         ),
                       ),
                     ),

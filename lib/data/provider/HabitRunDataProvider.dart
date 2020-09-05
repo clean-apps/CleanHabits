@@ -30,7 +30,9 @@ class HabitRunDataProvider {
           $columnCurrentStreak integer not null,
           $columnStreakStartDate integer null,
           $columnHasStreakEnded integer null,
-          $columnPrevRunDate integer null
+          $columnPrevRunDate integer null,
+
+          $columnHasSkipped integer not null
         )
         ''');
       },
@@ -61,6 +63,7 @@ class HabitRunDataProvider {
         columnStreakStartDate,
         columnHasStreakEnded,
         columnPrevRunDate,
+        columnHasSkipped,
       ],
       where: '$columnTargetDate = ? and $columnHabitId = ?',
       whereArgs: [formDate.millisecondsSinceEpoch, habitId],
@@ -141,6 +144,7 @@ class HabitRunDataProvider {
             columnStreakStartDate,
             columnHasStreakEnded,
             columnPrevRunDate,
+            columnHasSkipped
           ],
           orderBy: '$columnHabitId asc',
         )
@@ -170,6 +174,7 @@ class HabitRunDataProvider {
             columnStreakStartDate,
             columnHasStreakEnded,
             columnPrevRunDate,
+            columnHasSkipped
           ],
           where: '$columnTargetDate = ?',
           whereArgs: [forDate.millisecondsSinceEpoch],
@@ -204,6 +209,7 @@ class HabitRunDataProvider {
             columnStreakStartDate,
             columnHasStreakEnded,
             columnPrevRunDate,
+            columnHasSkipped
           ],
           where: '$columnTargetDate between ? and ?',
           whereArgs: [
@@ -242,6 +248,7 @@ class HabitRunDataProvider {
             columnStreakStartDate,
             columnHasStreakEnded,
             columnPrevRunDate,
+            columnHasSkipped
           ],
           where: '$columnTargetDate between ? and ? and $columnHabitId = ?',
           whereArgs: [
@@ -369,6 +376,7 @@ class HabitRunDataProvider {
             columnStreakStartDate,
             columnHasStreakEnded,
             columnPrevRunDate,
+            columnHasSkipped
           ],
           where:
               '$columnHabitId = ? and $columnHasStreakEnded = ? and $columnCurrentStreak is not null and $columnCurrentStreak <> 0',

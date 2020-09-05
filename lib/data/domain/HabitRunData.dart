@@ -23,6 +23,8 @@ final String columnCurrentStreak = '_current_streak';
 final String columnStreakStartDate = '_streak_start_date';
 final String columnHasStreakEnded = '_has_streak_ended';
 
+final String columnHasSkipped = 'has_skipped';
+
 final String columnPrevRunDate = 'prev_run_date'; // unix epoch
 
 var fmtDay = DateFormat("D");
@@ -59,6 +61,8 @@ class HabitRunData {
   bool hasStreakEnded;
   DateTime prevRunDate;
 
+  bool hasSkipped;
+
   static HabitRunData withSimpleHabit(
     HabitMaster habit,
     DateTime targetDate,
@@ -76,6 +80,7 @@ class HabitRunData {
     data.streakStartDate = streakStartDate;
     data.hasStreakEnded = hasStreakEnded;
     data.prevRunDate = null;
+    data.hasSkipped = false;
     return data;
   }
 
@@ -96,6 +101,7 @@ class HabitRunData {
     data.streakStartDate = streakStartDate;
     data.hasStreakEnded = hasStreakEnded;
     data.prevRunDate = null;
+    data.hasSkipped = false;
     return data;
   }
 
@@ -103,6 +109,7 @@ class HabitRunData {
     //
     habit.timesProgress = this.progress;
     habit.ynCompleted = this.progress == habit.timesTarget;
+    habit.isSkipped = this.hasSkipped;
 
     return habit;
   }
@@ -129,6 +136,7 @@ class HabitRunData {
           hasStreakEnded == null ? null : (hasStreakEnded ? 1 : 0),
       columnPrevRunDate:
           prevRunDate == null ? null : prevRunDate.millisecondsSinceEpoch,
+      columnHasSkipped: hasSkipped ? 1 : 0,
     };
 
     if (id != null) {
@@ -173,5 +181,6 @@ class HabitRunData {
             map[columnPrevRunDate],
             isUtc: false,
           );
+    hasSkipped = map[columnHasSkipped] == 1;
   }
 }

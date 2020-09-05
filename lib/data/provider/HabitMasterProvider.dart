@@ -34,10 +34,7 @@ class HabitMasterProvider {
 
           $columnISYNType integer not null,
           $columnTimesTarget integer not null,
-          $columnTimesTargetType text null,
-
-          $columnHasFailed integer not null,
-          $columnHasSkipped integer not null
+          $columnTimesTargetType text null
         )
         ''');
       },
@@ -75,9 +72,7 @@ class HabitMasterProvider {
         columnRepDuration,
         columnISYNType,
         columnTimesTarget,
-        columnTimesTargetType,
-        columnHasFailed,
-        columnHasSkipped
+        columnTimesTargetType
       ],
       where: '$columnId = ?',
       whereArgs: [id],
@@ -140,9 +135,7 @@ class HabitMasterProvider {
         columnRepDuration,
         columnISYNType,
         columnTimesTarget,
-        columnTimesTargetType,
-        columnHasFailed,
-        columnHasSkipped
+        columnTimesTargetType
       ],
     ).then(
       (data) => data

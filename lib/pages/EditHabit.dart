@@ -260,7 +260,7 @@ class _EditHabitState extends State<EditHabit> {
                     }),
                   ),
                   SelectTimeOfDay(
-                    value: timeOfDay,
+                    value: timeOfDay == 'All Day' ? null : timeOfDay,
                     onChange: (val) => setState(() {
                       timeOfDay = val;
                     }),

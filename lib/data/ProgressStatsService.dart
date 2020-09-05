@@ -184,8 +184,9 @@ class ProgressStatsService {
     var hmData = Map<DateTime, int>();
     for (var rd in runData) {
       var habit = await this.hmp.getData(rd.habitId);
-      var pcCompleted =
-          (rd.progress / (habit.isYNType ? 1 : habit.timesTarget)) * 100;
+      var pcCompleted = ((rd.hasSkipped ? 0 : rd.progress) /
+              (habit.isYNType ? 1 : habit.timesTarget)) *
+          100;
       hmData[rd.targetDate] = pcCompleted.toInt();
     }
 

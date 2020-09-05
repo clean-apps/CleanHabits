@@ -35,7 +35,7 @@ class SelectTimeOfDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseSelection2LineTile(
-      value: value,
+      value: this.value,
       icon: Icon(Icons.brightness_low),
       title: 'Time Of Day',
       emptyText: 'All Day',

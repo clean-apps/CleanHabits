@@ -35,6 +35,7 @@ class _TimesListItemState extends State<TimesListItem> {
           ? {
               setState(() {
                 loading = true;
+                widget.habit.isSkipped = false;
                 widget.habit.timesProgress++;
               }),
               widget.habitMaster
@@ -65,6 +66,7 @@ class _TimesListItemState extends State<TimesListItem> {
           ? {
               setState(() {
                 loading = true;
+                widget.habit.isSkipped = false;
                 widget.habit.timesProgress--;
               }),
               widget.habitMaster
@@ -139,24 +141,37 @@ class _TimesListItemState extends State<TimesListItem> {
                         child: Text(this.widget.habit.title,
                             style: Theme.of(context).textTheme.headline6),
                       ),
-                      this.widget.habit.reminder == null
-                          ? Text(
-                              this.widget.habit.timeOfDay == null
-                                  ? 'All Day'
-                                  : this.widget.habit.timeOfDay,
-                              style: subtitleStyle,
-                            )
-                          : Row(
-                              children: [
-                                Icon(
-                                  Icons.alarm,
-                                  color: subtitleStyle.color,
-                                  size: subtitleStyle.fontSize,
+                      Row(
+                        children: [
+                          this.widget.habit.reminder == null
+                              ? Text(
+                                  this.widget.habit.timeOfDay == null
+                                      ? 'All Day'
+                                      : this.widget.habit.timeOfDay,
+                                  style: subtitleStyle,
+                                )
+                              : Row(
+                                  children: [
+                                    Icon(
+                                      Icons.alarm,
+                                      color: subtitleStyle.color,
+                                      size: subtitleStyle.fontSize,
+                                    ),
+                                    Text(this.widget.habit.reminder,
+                                        style: subtitleStyle)
+                                  ],
                                 ),
-                                Text(this.widget.habit.reminder,
-                                    style: subtitleStyle)
-                              ],
-                            ),
+                          this.widget.habit.isSkipped
+                              ? Padding(
+                                  padding: EdgeInsets.only(left: 20),
+                                  child: Text(
+                                    'Skipped',
+                                    style: subtitleStyle,
+                                  ),
+                                )
+                              : Container()
+                        ],
+                      ),
                     ],
                   ),
                   Spacer(),

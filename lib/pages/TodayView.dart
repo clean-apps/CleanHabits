@@ -206,6 +206,43 @@ class _TodayViewState extends State<TodayView> {
               : HabitsList(
                   habits: _filterHabits(),
                   date: _selectedDate,
+                  onEdit: (habit) => Navigator.pushNamed(
+                    context,
+                    '/edit',
+                    arguments: habit,
+                  ),
+                  onDelete: (habit) => {
+                    setState(() {
+                      loading = false;
+                    }),
+                    widget.habitMaster.deleteHabit(habit.id).then(
+                          (value) => {
+                            Navigator.popAndPushNamed(context, '/'),
+                          },
+                        ),
+                  },
+                  onSkip: (habit) => {
+                    setState(() {
+                      habit.isSkipped = true;
+                      if (habit.isYNType) {
+                        habit.timesProgress = 1;
+                        habit.ynCompleted = true;
+                      } else {
+                        habit.timesProgress = habit.timesProgress;
+                      }
+                      loading = false;
+                    }),
+                    widget.habitMaster
+                        .updateStatus(
+                          habit: habit,
+                          dateTime: _selectedDate,
+                        )
+                        .then(
+                          (value) => {
+                            Navigator.popAndPushNamed(context, '/'),
+                          },
+                        ),
+                  },
                 )
         ],
       ),
