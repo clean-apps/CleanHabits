@@ -27,13 +27,19 @@ class _StatusSummaryState extends State<StatusSummary> {
 
   @override
   Widget build(BuildContext context) {
+    var descTodaysGoal = data.todayProgress > 0
+        ? data.todayProgress == data.todayTarget
+            ? 'Great, target completed'
+            : 'Good, target is in-progress'
+        : 'Start for your goals now';
+
     return Row(
       children: <Widget>[
         BasicTile(
           title:
               '${data.todayProgress.toString()}/${data.todayTarget.toString()}',
           subtitle1: 'Today\'s Habits',
-          subtitle2: 'cool today description',
+          subtitle2: descTodaysGoal,
         )
       ],
     );

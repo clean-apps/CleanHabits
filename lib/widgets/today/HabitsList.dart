@@ -73,6 +73,10 @@ class HabitsList extends StatelessWidget {
     );
   }
 
+  Widget _slidable(child) {
+    return child;
+  }
+
   @override
   Widget build(BuildContext context) {
     return habits.length == 0
@@ -90,15 +94,17 @@ class HabitsList extends StatelessWidget {
                       position: entry.key,
                       duration: const Duration(milliseconds: 1000),
                       child: FadeInAnimation(
-                        child: entry.value.isYNType
-                            ? BooleanListItem(
-                                habit: entry.value,
-                                date: this.date,
-                              )
-                            : TimesListItem(
-                                habit: entry.value,
-                                date: this.date,
-                              ),
+                        child: _slidable(
+                          entry.value.isYNType
+                              ? BooleanListItem(
+                                  habit: entry.value,
+                                  date: this.date,
+                                )
+                              : TimesListItem(
+                                  habit: entry.value,
+                                  date: this.date,
+                                ),
+                        ),
                       ),
                     ),
                   )
