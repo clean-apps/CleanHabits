@@ -215,11 +215,9 @@ class _TodayViewState extends State<TodayView> {
                     setState(() {
                       loading = false;
                     }),
-                    widget.habitMaster.deleteHabit(habit.id).then(
-                          (value) => {
-                            Navigator.popAndPushNamed(context, '/'),
-                          },
-                        ),
+                    widget.habitMaster
+                        .deleteHabit(habit.id)
+                        .whenComplete(() => _loadData()),
                   },
                   onSkip: (habit) => {
                     setState(() {
@@ -233,15 +231,8 @@ class _TodayViewState extends State<TodayView> {
                       loading = false;
                     }),
                     widget.habitMaster
-                        .updateStatus(
-                          habit: habit,
-                          dateTime: _selectedDate,
-                        )
-                        .then(
-                          (value) => {
-                            Navigator.popAndPushNamed(context, '/'),
-                          },
-                        ),
+                        .updateStatus(habit: habit, dateTime: _selectedDate)
+                        .then((value) => _loadData()),
                   },
                 )
         ],
