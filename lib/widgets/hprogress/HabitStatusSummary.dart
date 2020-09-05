@@ -30,19 +30,33 @@ class _HabitStatusSummaryState extends State<HabitStatusSummary> {
 
   @override
   Widget build(BuildContext context) {
+    var descCurrentStreak = loading
+        ? ''
+        : status.currentStreak > 0
+            ? 'Let\'s keep this tempo going'
+            : 'Now is a good time to start';
+
+    var descWeeklyGoal = loading
+        ? ''
+        : status.weekProgress > 0
+            ? status.weekProgress == status.weekTarget
+                ? 'Great, target completed'
+                : 'Good, target is in-progress'
+            : 'Start for your goals now';
+
     return Row(
       children: <Widget>[
         BasicTile(
           title: loading ? '0' : '${status.currentStreak.toString()}',
           subtitle1: 'Current Streak',
-          subtitle2: 'cool streak description',
+          subtitle2: descCurrentStreak,
         ),
         BasicTile(
           title: loading
               ? '0'
               : '${status.weekProgress.toString()}/${status.weekTarget.toString()}',
           subtitle1: 'Weekly Goal',
-          subtitle2: 'cool goal description',
+          subtitle2: descWeeklyGoal,
         )
       ],
     );

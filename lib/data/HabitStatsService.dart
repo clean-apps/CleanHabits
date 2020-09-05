@@ -53,11 +53,13 @@ class HabitStatsService {
         : habitData.length * (habit.isYNType ? 1 : habit.timesTarget);
 
     var habitMaster = await this.hmp.getData(habit.id);
-    for (int cnt = now.weekday; cnt < 7; cnt++) {
+    for (int cnt = 1; cnt <= (7 - now.weekday); cnt++) {
       var nextDay = now.add(Duration(days: cnt));
-      var isApplicable = await this.hms.isApplicable(habitMaster, nextDay);
-      if (isApplicable) {
-        weeklyTarget += (habit.isYNType ? 1 : habit.timesTarget);
+      if (nextDay.weekday == DateTime.sunday && mondayStart) {
+        var isApplicable = await this.hms.isApplicable(habitMaster, nextDay);
+        if (isApplicable) {
+          weeklyTarget += (habit.isYNType ? 1 : habit.timesTarget);
+        }
       }
     }
 
