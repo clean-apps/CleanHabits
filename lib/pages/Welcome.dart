@@ -63,10 +63,10 @@ class _WelcomeState extends State<Welcome> {
         themeColor: _themeColor,
         pages: pages,
         skipClicked: (value) {
-          Navigator.pushNamed(context, "/");
+          Navigator.popAndPushNamed(context, "/");
         },
         getStartedClicked: (value) {
-          Navigator.pushNamed(context, "/");
+          Navigator.popAndPushNamed(context, "/");
         },
       ),
     );

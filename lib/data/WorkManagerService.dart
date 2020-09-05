@@ -93,7 +93,7 @@ class WorkManagerService {
         break;
 
       case _habit_reminder:
-        await callbackDailyScheduler(inputData);
+        await callbackHabitReminder(inputData);
         break;
 
       case _weekly_briefing:
@@ -109,7 +109,7 @@ class WorkManagerService {
 
     var todaysCount = await hms.countTodaysHabits();
     if (ProviderFactory.settingsProvider.morningBriefing) {
-      ProviderFactory.notificationProvider.showNotificiation(
+      await ProviderFactory.notificationProvider.showNotificiation(
         title: "Morning Briefing",
         body: todaysCount == null || todaysCount == 0
             ? "There are no habits planned for today, enjoy your free day"
@@ -154,7 +154,7 @@ class WorkManagerService {
       var lastCompleted =
           lastRunData == null ? false : lastRunData.progress < target;
 
-      ProviderFactory.notificationProvider.showNotificiation(
+      await ProviderFactory.notificationProvider.showNotificiation(
         title: habitMaster.title,
         body: lastRunData == null
             ? "Reminder to complete this now"
@@ -165,9 +165,9 @@ class WorkManagerService {
     }
   }
 
-  callbackWeeklyBriefing(Map<String, dynamic> inputData) {
+  callbackWeeklyBriefing(Map<String, dynamic> inputData) async {
     if (ProviderFactory.settingsProvider.weeklyReports)
-      ProviderFactory.notificationProvider.showNotificiation(
+      await ProviderFactory.notificationProvider.showNotificiation(
         title: "Weekly progress report",
         body: "Your weekly habit progress is now ready",
       );

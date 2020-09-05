@@ -22,9 +22,6 @@ class SettingsProvider {
   }
 
   Future<bool> loadInitData() async {
-    var wms = WorkManagerService();
-    await wms.activate();
-
     await prefs.setBool(_darkMode, false);
     await prefs.setString(_firstDayOfWeek, 'Mon');
     await prefs.setBool(_allowNotifications, true);
@@ -50,6 +47,9 @@ class SettingsProvider {
     ));
 
     await prefs.setString(_timeAreas, json.encode(_areas));
+
+    var wms = WorkManagerService();
+    await wms.activate();
 
     return prefs.setBool(_initDone, true);
   }
