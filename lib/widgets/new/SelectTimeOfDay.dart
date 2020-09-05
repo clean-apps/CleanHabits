@@ -1,5 +1,5 @@
 import 'package:CleanHabits/data/provider/ProviderFactory.dart';
-import 'package:CleanHabits/widgets/basic/BaseSelectionTile.dart';
+import 'package:CleanHabits/widgets/basic/BaseSelection2LineTile.dart';
 import 'package:flutter/material.dart';
 
 class SelectTimeOfDay extends StatelessWidget {
@@ -34,11 +34,11 @@ class SelectTimeOfDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseSelectionTile(
+    return BaseSelection2LineTile(
       value: value,
       icon: Icon(Icons.brightness_low),
-      title: 'Do at',
-      emptyText: 'Do all day',
+      title: 'Time Of Day',
+      emptyText: 'All Day',
       onTap: () => _showDialog(context),
       onClear: () => this.onChange(null),
     );

@@ -1,4 +1,4 @@
-import 'package:CleanHabits/widgets/basic/BaseSelectionTile.dart';
+import 'package:CleanHabits/widgets/basic/BaseSelection2LineTile.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,11 +20,11 @@ class SelectFromDate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseSelectionTile(
+    return BaseSelection2LineTile(
       value: value == null ? null : DateFormat('dd-MMM, EEE').format(value),
       icon: Icon(Icons.calendar_today),
-      title: 'From',
-      emptyText: 'From Today',
+      title: 'Start From',
+      emptyText: 'Today',
       onTap: () => _showDialog(context),
       onClear: () => this.onChange(null),
     );

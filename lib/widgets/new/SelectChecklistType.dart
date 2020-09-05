@@ -35,7 +35,7 @@ class _SelectChecklistTypeState extends State<SelectChecklistType> {
       context: context,
       barrierDismissible: false,
       builder: (ctxt) => SimpleDialog(
-        title: Text('Select Times Type'),
+        title: Text('Select Goal Type'),
         children: [
           Padding(
             padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -133,16 +133,14 @@ class _SelectChecklistTypeState extends State<SelectChecklistType> {
   Widget build(BuildContext context) {
     return BaseSelectionRadioTile(
       value: this.isSimple,
-      icon: Icon(Icons.check),
-      title: this.isSimple == null || this.isSimple
-          ? 'Simple Habit'
-          : 'Countable Habit',
+      icon: Icon(Icons.filter_tilt_shift),
+      title: this.isSimple == null || this.isSimple ? 'No Goals' : 'Goals',
       subtitle: this.isSimple == null ||
               this.isSimple ||
               times == null ||
               timesType == null
           ? null
-          : 'Target $times $timesType',
+          : '$times $timesType per day',
       onTap: () => this.isSimple ? {} : _showDialog(context),
       onChange: (val) => {
         setState(() {

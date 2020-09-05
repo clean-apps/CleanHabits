@@ -30,7 +30,7 @@ class _NewHabitState extends State<NewHabit> {
     //
     title = null;
     repeat = Repeats();
-    fromDate = DateTime.now();
+    fromDate = null;
     type = ChecklistType(
       isSimple: true,
       times: 1,
@@ -50,7 +50,7 @@ class _NewHabitState extends State<NewHabit> {
         .create(
           title: title,
           repeat: repeat,
-          fromDate: fromDate,
+          fromDate: fromDate == null ? DateTime.now() : fromDate,
           type: type,
           reminder: reminder,
           timeOfDay: timeOfDay,
@@ -59,6 +59,7 @@ class _NewHabitState extends State<NewHabit> {
               setState(() {
                 loading = false;
               }),
+              Navigator.of(context).popUntil((route) => route.isFirst),
               Navigator.popAndPushNamed(context, '/'),
             });
   }

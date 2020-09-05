@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-class BaseSelectionRadioTile extends StatelessWidget {
+class BaseSelection2LineTile extends StatelessWidget {
   //
-  final bool value;
+  final String value;
   final VoidCallback onTap;
-  final ValueChanged<bool> onChange;
   final VoidCallback onClear;
   final Icon icon;
   final String title;
   final String subtitle;
+  final String emptyText;
 
-  BaseSelectionRadioTile({
+  BaseSelection2LineTile({
     this.value,
     this.onTap,
-    this.onChange,
     this.onClear,
     this.icon,
     this.title,
     this.subtitle,
+    this.emptyText,
   });
 
   Widget _tile(
@@ -41,14 +41,16 @@ class BaseSelectionRadioTile extends StatelessWidget {
       ),
       child: ListTile(
         leading: _icon,
-        title: Text('$title'),
-        subtitle: subtitle == null ? null : Text(subtitle),
-        trailing: title == null || title == ''
+        title: Text(title),
+        subtitle: Text(
+          subtitle == null || subtitle == '' ? this.emptyText : subtitle,
+        ),
+        trailing: subtitle == null || subtitle == ''
             ? Text('')
             : IconButton(
                 color: Theme.of(context).accentColor,
-                icon: Icon(value ? Icons.add_circle_outline : Icons.cancel),
-                onPressed: () => this.onChange(!this.value),
+                icon: Icon(Icons.cancel),
+                onPressed: () => this.onClear(),
               ),
         onTap: () => this.onTap(),
       ),
@@ -60,7 +62,7 @@ class BaseSelectionRadioTile extends StatelessWidget {
     return _tile(
       this.icon,
       this.title,
-      this.subtitle,
+      this.value,
       context,
     );
   }

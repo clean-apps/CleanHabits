@@ -1,3 +1,4 @@
+import 'package:CleanHabits/widgets/basic/BaseSelection2LineTile.dart';
 import 'package:CleanHabits/widgets/basic/BaseSelectionTile.dart';
 import 'package:flutter/material.dart';
 
@@ -17,13 +18,22 @@ class SelectReminder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BaseSelectionTile(
-      value: value == null ? null : value.format(context),
-      icon: Icon(Icons.notifications),
-      title: 'Remind at',
-      emptyText: 'No Reminder',
-      onTap: () => _showDialog(context),
-      onClear: () => this.onChange(null),
-    );
+    return value == null
+        ? BaseSelectionTile(
+            value: null,
+            icon: Icon(Icons.notifications),
+            title: 'Reminder',
+            emptyText: 'No Reminder',
+            onTap: () => _showDialog(context),
+            onClear: () => this.onChange(null),
+          )
+        : BaseSelection2LineTile(
+            value: value.format(context),
+            icon: Icon(Icons.notifications),
+            title: 'Reminder',
+            emptyText: 'No Reminder',
+            onTap: () => _showDialog(context),
+            onClear: () => this.onChange(null),
+          );
   }
 }

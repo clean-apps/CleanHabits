@@ -1,4 +1,4 @@
-import 'package:CleanHabits/widgets/basic/BaseSelectionTile.dart';
+import 'package:CleanHabits/widgets/basic/BaseSelection2LineTile.dart';
 import 'package:CleanHabits/widgets/new/TabRepeatType.dart';
 import 'package:flutter/material.dart';
 
@@ -34,11 +34,11 @@ class _SelectRepeatState extends State<SelectRepeat> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseSelectionTile(
+    return BaseSelection2LineTile(
       value: selected.none ? null : selected.displayString(),
       icon: Icon(Icons.repeat),
       title: 'Repeat',
-      emptyText: 'Repeat Everyday',
+      emptyText: 'Everyday',
       onTap: () => _showDialog(context),
       onClear: () => {
         setState(() {
