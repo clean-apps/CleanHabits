@@ -58,8 +58,8 @@ class WorkManagerService {
 
     var weekEnd = DateTime(
       DateTime.now().add(Duration(days: 7 - DateTime.now().weekday)).year,
-      DateTime.now().add(Duration(days: 7 - DateTime.now().weekday)).minute,
-      DateTime.now().add(Duration(days: 7 - DateTime.now().weekday)).second,
+      DateTime.now().add(Duration(days: 7 - DateTime.now().weekday)).month,
+      DateTime.now().add(Duration(days: 7 - DateTime.now().weekday)).day,
       _weekly_briefing_time.hour,
       _weekly_briefing_time.minute,
     );

@@ -15,8 +15,9 @@ class _WelcomeState extends State<Welcome> {
   @override
   void initState() {
     super.initState();
-    sp.loadInitData().then(
-          (value) => setState(() {
+
+    sp.loadInitData().whenComplete(
+          () => setState(() {
             loading = false;
           }),
         );
