@@ -187,7 +187,11 @@ class ProgressStatsService {
       var pcCompleted = ((rd.hasSkipped ? 0 : rd.progress) /
               (habit.isYNType ? 1 : habit.timesTarget)) *
           100;
-      hmData[rd.targetDate] = pcCompleted.toInt();
+
+      var prevData = hmData[rd.targetDate];
+      hmData[rd.targetDate] = prevData == null
+          ? pcCompleted.toInt()
+          : (prevData + pcCompleted.toInt());
     }
 
     return hmData;

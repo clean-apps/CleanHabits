@@ -1,0 +1,51 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:id="@+id/singleHabitWidget"
+    android:orientation="vertical"
+    android:scrollbars="none">
+
+    <RelativeLayout android:layout_width="wrap_content"
+        android:background="@color/accent"
+        android:id="@+id/singleHabitWidgetHeader"
+        android:layout_height="@dimen/widget_title_min_height">
+        <TextView
+            android:id="@+id/singleHabitWidgetHeaderText"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/widget_title_min_height"
+            android:gravity="center"
+            android:paddingLeft="@dimen/widget_listview_padding_title"
+            android:text="@string/singleHabitWidgetHeaderText"
+            android:textColor="@android:color/white"
+            android:textSize="16dp"></TextView>
+        <ImageView
+            android:id="@+id/singleHabitWidgetHeaderIcon"
+            android:layout_width="24dp"
+            android:layout_height="@dimen/widget_title_min_height"
+            android:layout_toRightOf="@id/singleHabitWidgetHeaderText"
+            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"></ImageView>
+        <TextView
+            android:id="@+id/singleHabitWidgetMonthText"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widget_title_min_height"
+            android:paddingRight="@dimen/widget_listview_padding_title"
+            android:textAlignment="textEnd"
+            android:gravity="center|end"
+            android:textColor="@color/lightAccent"
+            android:textSize="16dp"></TextView>
+    </RelativeLayout>
+
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:scrollbars="none">
+        <GridView
+            android:id="@+id/singleHabitCalenderGridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="7"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -25,13 +25,10 @@ void initializeAndroidWidgets() {
   if (Platform.isAndroid) {
     WidgetsFlutterBinding.ensureInitialized();
 
-    final CallbackHandle callback = PluginUtilities.getCallbackHandle(
-      doWidgetUpdate,
-    );
+    final callback = PluginUtilities.getCallbackHandle(doWidgetUpdate);
     final handle = callback.toRawHandle();
 
-    const channelName = 'com.babanomania.cleanhabits/todayWidget';
-    const MethodChannel channel = MethodChannel(channelName);
+    const MethodChannel channel = MethodChannel(channelAppWidget);
     channel.invokeMethod('initialize', handle);
   }
 }
@@ -41,8 +38,7 @@ void doWidgetUpdate() async {
   await ProviderFactory.initDB();
   await ProviderFactory.settingsProvider.init();
 
-  const channelName = 'com.babanomania.cleanhabits/todayWidget';
-  const MethodChannel channel = MethodChannel(channelName);
+  const MethodChannel channel = MethodChannel(channelAppWidget);
   channel.setMethodCallHandler(getAppWidgetData);
 }
 

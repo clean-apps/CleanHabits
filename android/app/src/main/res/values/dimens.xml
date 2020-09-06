@@ -10,7 +10,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_listitem_min_height">48dp</dimen>
     <dimen name="widget_listview_item_height">48dp</dimen>
     <dimen name="widget_listview_padding">16dp</dimen>
-    <dimen name="widget_listview_padding_title">22dp</dimen>
+    <dimen name="widget_listview_padding_title">10dp</dimen>
 
 
 </resources>

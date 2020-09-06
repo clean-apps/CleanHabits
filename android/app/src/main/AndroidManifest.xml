@@ -9,7 +9,27 @@
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="Clean Habits">
-        <receiver android:name=".TodayHabitsWidgetProvider" android:label="Today's Habits">
+
+        <activity android:name=".SingleHabitWidgetConfigureActivity" android:theme="@android:style/Theme.Material.Light.Dialog.MinWidth">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".SingleHabitWidgetProvider"
+            android:label="Track A Habit">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/single_habit_widget_info" />
+        </receiver>
+        <receiver
+            android:name=".TodayHabitsWidgetProvider"
+            android:label="Today&apos;s Habits">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -19,8 +39,12 @@
                 android:resource="@xml/today_habits_widget_info" />
         </receiver>
 
-        <service android:name=".TodayWidgetRemoteViewsService"
-                android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+        <service
+            android:name=".TodayWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+            android:name=".SingleHabitWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <activity
             android:name=".MainActivity"

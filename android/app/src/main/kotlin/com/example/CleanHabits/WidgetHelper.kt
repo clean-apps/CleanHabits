@@ -7,7 +7,7 @@ class WidgetHelper {
         private const val WIDGET_PREFERENCES_KEY = "widget_preferences"
         private const val WIDGET_HANDLE_KEY = "handle"
 
-        const val CHANNEL = "com.babanomania.cleanhabits/todayWidget"
+        const val CHANNEL = "com.babanomania.cleanhabits/updateWidget"
         const val NO_HANDLE = -1L
 
         fun setHandle(context: Context, handle: Long) {

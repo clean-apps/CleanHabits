@@ -82,7 +82,8 @@ class HabitRunDataProvider {
       whereArgs: [id],
     );
 
-    doUpdateAppWidget();
+    doUpdateTodayAppWidget();
+    doUpdateSingleHabitWidget();
     return updated;
   }
 
@@ -93,7 +94,8 @@ class HabitRunDataProvider {
       whereArgs: [habitId],
     );
 
-    doUpdateAppWidget();
+    doUpdateTodayAppWidget();
+    doUpdateSingleHabitWidget();
     return updated;
   }
 
@@ -104,7 +106,8 @@ class HabitRunDataProvider {
       whereArgs: [forDate.millisecondsSinceEpoch, habitId],
     );
 
-    doUpdateAppWidget();
+    doUpdateTodayAppWidget();
+    doUpdateSingleHabitWidget();
     return updated;
   }
 
@@ -116,7 +119,8 @@ class HabitRunDataProvider {
       whereArgs: [runData.id],
     );
 
-    doUpdateAppWidget();
+    doUpdateTodayAppWidget();
+    doUpdateSingleHabitWidget();
     return updated;
   }
 

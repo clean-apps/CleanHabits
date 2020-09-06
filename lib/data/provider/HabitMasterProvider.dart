@@ -47,7 +47,8 @@ class HabitMasterProvider {
       todo.toMap(),
     );
 
-    doUpdateAppWidget();
+    doUpdateTodayAppWidget();
+    doUpdateSingleHabitWidget();
     return todo;
   }
 
@@ -91,7 +92,8 @@ class HabitMasterProvider {
       whereArgs: [id],
     );
 
-    doUpdateAppWidget();
+    doUpdateTodayAppWidget();
+    doUpdateSingleHabitWidget();
     return updated;
   }
 
@@ -103,7 +105,8 @@ class HabitMasterProvider {
       whereArgs: [habit.id],
     );
 
-    doUpdateAppWidget();
+    doUpdateTodayAppWidget();
+    doUpdateSingleHabitWidget();
     return updated;
   }
 
