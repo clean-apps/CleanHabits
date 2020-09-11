@@ -12,7 +12,7 @@ Did you know that around 40% of everything we do on a daily basis is habitual? T
 
 In reality, successful people are simply those with successful habits, and they give small efforts repeated day in and day out. I've build an app around this idea of building great habits and sticking to it. 
 
-Clean Habits is a Minimal Habit Tracker that helps you to achieve good goals using data analytics
+Clean Habits is a Minimalist Habit Tracker that helps you to achieve good goals using data analytics
 
 ### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/external-link-alt.svg" width="22" align="left" /> &nbsp; Build Great Habits
 
