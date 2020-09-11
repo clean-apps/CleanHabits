@@ -94,7 +94,7 @@ class _HabitCompletionRateState extends State<HabitCompletionRate> {
     return Card(
       child: ListView.builder(
         shrinkWrap: true,
-        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
         physics: NeverScrollableScrollPhysics(),
         itemCount: widgetList.length,
         itemBuilder: (context, index) => widgetList[index],

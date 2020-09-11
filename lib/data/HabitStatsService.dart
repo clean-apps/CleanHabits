@@ -6,6 +6,7 @@ import 'package:CleanHabits/domain/Habit.dart';
 import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/StackedBarChart.dart';
 import 'package:CleanHabits/widgets/hprogress/HabitStatusSummary.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class HabitStatsService {
@@ -86,7 +87,7 @@ class HabitStatsService {
       DateTime.now().day,
     );
 
-    var weeksToShow = 10;
+    var weeksToShow = 12;
     var statStart = today.subtract(Duration(days: today.weekday - 1));
     var statEnd = statStart.subtract(Duration(days: 7 * weeksToShow));
     //
@@ -128,7 +129,7 @@ class HabitStatsService {
       DateTime.now().day,
     );
 
-    var monthsToShow = 10;
+    var monthsToShow = 12;
 
     var statStart = DateTime(today.year, today.month + 1, 1);
     var statEnd = statStart.subtract(Duration(days: 31 * monthsToShow));
@@ -147,13 +148,15 @@ class HabitStatsService {
     if (counts.length < monthsToShow) {
       var startingMonth = counts.first[columnTargetMonthInYear];
       var firstDate = fmMonth.parse(startingMonth);
-      for (var ct = 0; ct < (monthsToShow - counts.length); ct++) {
+      for (var ct = 1; ct <= (monthsToShow - counts.length); ct++) {
         var monthToShow = firstDate.month - (monthsToShow - ct) + 1;
         var monString = fmMonth.format(DateTime(2020, monthToShow, 1));
         data.add(ChartData(monString, 0));
       }
     }
-    counts.reversed.forEach((runData) {
+
+    counts.forEach((runData) {
+      debugPrint('${runData[columnTargetMonthInYear]}');
       data.add(
         ChartData(runData[columnTargetMonthInYear], runData['sum']),
       );
