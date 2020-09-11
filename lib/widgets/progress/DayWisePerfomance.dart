@@ -12,15 +12,35 @@ class DayWisePerfomance extends StatefulWidget {
 class _DayWisePerfomanceState extends State<DayWisePerfomance> {
   List<ChartData> data = List();
   var loading = true;
+  var type = "3 Months";
 
   @override
   void initState() {
     super.initState();
+    type = "3 Months";
     _loadData();
   }
 
+  Widget _typeDropDown() {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+        items: ["3 Months", "6 Months", "12 Months"]
+            .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+            .toList(),
+        value: this.type,
+        onChanged: (e) => {
+          setState(() {
+            this.type = e;
+            this.loading = true;
+          }),
+          _loadData(),
+        },
+      ),
+    );
+  }
+
   void _loadData() {
-    widget.statsService.getDayWiseProgressData().then(
+    widget.statsService.getDayWiseProgressData(type).then(
           (value) => setState(() {
             data = value;
             loading = false;
@@ -36,10 +56,12 @@ class _DayWisePerfomanceState extends State<DayWisePerfomance> {
           'Day Wise Perfomance',
           style: Theme.of(context).textTheme.headline6,
         ),
-        trailing: ConstrainedBox(
-          constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
-          child: loading ? CircularProgressIndicator() : Container(),
-        ),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator(),
+              )
+            : _typeDropDown(),
       ),
       ConstrainedBox(
         constraints: BoxConstraints.expand(height: 300.0),

@@ -7,7 +7,7 @@ import 'package:heatmap_calendar/week_labels.dart';
 class HeatMapCalendar extends StatefulWidget {
   static const double COLUMN_COUNT = 11;
   static const double ROW_COUNT = 8;
-  static const double EDGE_SIZE = 4;
+  final double spacing;
 
   /// The labels identifying the initials of the days of the week
   /// Defaults to [TimeUtils.defaultWeekLabels]
@@ -56,6 +56,7 @@ class HeatMapCalendar extends StatefulWidget {
     this.dayTextColor: Colors.black,
     this.safetyMargin: 0,
     this.displayDates = false,
+    this.spacing = 4,
   }) : super(key: key);
 
   @override
@@ -86,10 +87,10 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
   ///
   /// returns the number of columns that the widget should have
   int getColumnsToCreate(double maxWidth) {
-    assert(maxWidth > (2 * (HeatMapCalendar.EDGE_SIZE + widget.squareSize)));
+    assert(maxWidth > (2 * (widget.spacing + widget.squareSize)));
 
     // The given size of a square + the size of the margin
-    final double widgetWidth = widget.squareSize + HeatMapCalendar.EDGE_SIZE;
+    final double widgetWidth = widget.squareSize + widget.spacing;
     return (maxWidth - widget.safetyMargin) ~/ widgetWidth;
   }
 
@@ -100,7 +101,7 @@ class HeatMapCalendarState extends State<HeatMapCalendar> {
         return InkWell(
           onDoubleTap: onDoubleTap,
           child: Container(
-            height: (widget.squareSize + HeatMapCalendar.EDGE_SIZE) *
+            height: (widget.squareSize + widget.spacing) *
                 (HeatMapCalendar.ROW_COUNT + 1),
             width: constraints.maxWidth,
             child: Row(

@@ -15,16 +15,40 @@ class HabitStreaks extends StatefulWidget {
 class _HabitStreaksState extends State<HabitStreaks> {
   List<StackData> data = List();
   bool loading = true;
+  var type = "3 Months";
 
   @override
   void initState() {
     super.initState();
-    widget.habitStats.getStreaks(widget.habit).then(
+    type = "3 Months";
+    _loadData();
+  }
+
+  void _loadData() {
+    widget.habitStats.getStreaks(widget.habit, this.type).then(
           (value) => setState(() {
             data = value;
             loading = false;
           }),
         );
+  }
+
+  Widget _typeDropDown() {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+        items: ["3 Months", "6 Months", "12 Months"]
+            .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+            .toList(),
+        value: this.type,
+        onChanged: (e) => {
+          setState(() {
+            this.type = e;
+            this.loading = true;
+          }),
+          _loadData(),
+        },
+      ),
+    );
   }
 
   @override
@@ -35,10 +59,12 @@ class _HabitStreaksState extends State<HabitStreaks> {
           'Best Streaks',
           style: Theme.of(context).textTheme.headline6,
         ),
-        trailing: ConstrainedBox(
-          constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
-          child: loading ? CircularProgressIndicator() : Container(),
-        ),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator(),
+              )
+            : _typeDropDown(),
       ),
       loading
           ? ConstrainedBox(

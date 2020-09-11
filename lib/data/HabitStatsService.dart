@@ -166,10 +166,19 @@ class HabitStatsService {
   }
 
   //
-  Future<List<StackData>> getStreaks(Habit habit) async {
+  Future<List<StackData>> getStreaks(Habit habit, String type) async {
+    //
+    var today = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+    //
+    var dayToShow = type == "12 Months" ? 366 : (type == "6 Months" ? 183 : 90);
+    var statDate = today.subtract(Duration(days: dayToShow));
     //
     var maxStreaks = 5;
-    var stats = await this.rdp.streaksStats(habit.id, maxStreaks);
+    var stats = await this.rdp.streaksStats(habit.id, maxStreaks, statDate);
     if (stats == null || stats.length == 0) {
       return [];
     } else {

@@ -178,7 +178,7 @@ class ProgressStatsService {
       DateTime.now().day,
     );
     //
-    var dayToShow = 90;
+    var dayToShow = type == "12 Months" ? 366 : (type == "6 Months" ? 183 : 90);
     var statDate = today.subtract(Duration(days: dayToShow));
     var runData = await this.rdp.listBetween(statDate, today);
 
@@ -198,9 +198,10 @@ class ProgressStatsService {
     return hmData;
   }
 
-  Future<List<ChartData>> getDayWiseProgressData() async {
+  Future<List<ChartData>> getDayWiseProgressData(type) async {
     //
-    var numDaysToShow = 30;
+    var numDaysToShow =
+        type == "12 Months" ? 366 : (type == "6 Months" ? 183 : 90);
     var today = DateTime(
       DateTime.now().year,
       DateTime.now().month,

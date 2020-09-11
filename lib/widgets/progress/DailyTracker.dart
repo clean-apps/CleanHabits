@@ -32,7 +32,6 @@ class _DailyTrackerState extends State<DailyTracker> {
         );
   }
 
-  // ignore: unused_element
   Widget _typeDropDown() {
     return DropdownButtonHideUnderline(
       child: DropdownButton(

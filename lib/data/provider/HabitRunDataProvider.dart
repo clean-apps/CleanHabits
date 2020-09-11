@@ -363,6 +363,7 @@ class HabitRunDataProvider {
   Future<List<HabitRunData>> streaksStats(
     int habitId,
     int pLimit,
+    DateTime start,
   ) async {
     return await db
         .query(
@@ -383,8 +384,8 @@ class HabitRunDataProvider {
             columnHasSkipped
           ],
           where:
-              '$columnHabitId = ? and $columnHasStreakEnded = ? and $columnCurrentStreak is not null and $columnCurrentStreak <> 0',
-          whereArgs: [habitId, 1],
+              '$columnTargetDate >= ? and $columnHabitId = ? and $columnHasStreakEnded = ? and $columnCurrentStreak is not null and $columnCurrentStreak <> 0',
+          whereArgs: [start.millisecondsSinceEpoch, habitId, 1],
           orderBy: '$columnCurrentStreak desc',
           limit: pLimit,
         )
