@@ -1,6 +1,12 @@
-# CleanHabits
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0?style=flat-square)
+[![GitHub release](https://img.shields.io/github/release/clean-apps/CleanSCAN.svg)](https://github.com/clean-apps/CleanHabits/releases/latest?style=flat-square)
+![Powered By](https://img.shields.io/badge/Powered%20By-Flutter-blue&logo=flutter)
 
-The Minimal, Clean, Habit Tracker
+<p align="center">
+<img src="https://github.com/clean-apps/CleanHabits/raw/master/marketing/app-logo.png?raw=true" width="100"/>
+  <h3 align="center">Clean Habits</h3>
+  <p align="center">The Minimal, Clean, Habit Tracker</p>
+</p>
 
 ## Getting Started
 
