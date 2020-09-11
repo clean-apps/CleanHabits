@@ -8,7 +8,24 @@
 
 
 <img src="https://github.com/clean-apps/CleanHabits/raw/master/marketing/gh-logo.png?raw=true" />
-The Minimal, Clean, Habit Tracker
+
+Clean Habits is a Minimal, Clean, Habit Tracker
+
+### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/external-link-alt.svg" width="22" align="left" /> &nbsp; Build Great Habits
+
+Easily convet yout paper document into a digitized into a PDF file, looking sharp and clean.
+
+### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/chart-bar.svg" width="22" align="left" /> &nbsp; Learn Your Behaviour
+
+Categorize your documents for improved management and search
+
+### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/chart-line.svg" width="22" align="left" /> &nbsp; Your Own Progress Journal
+
+Share with your friends via email, whatsapp, messenger or and via link to other social networks
+
+### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/regular/bell.svg" width="22" align="left" /> &nbsp; Timely Reminders
+
+No more low light or bad photos, it can auto-enhance the image quality for best perfomances
 
 ## Getting Started
 
