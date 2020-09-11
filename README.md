@@ -61,9 +61,13 @@ limitations under the License.
 
 _Comfortaa Font by Johan Aakerlund_
 
-      Comfortaa is a rounded geometric sans-serif type design intended for large sizes. It is absolutely free, both for personal and commercial use.
+      Comfortaa is a rounded geometric sans-serif type design intended for large sizes. 
+      It is absolutely free, both for personal and commercial use.
 
-      If you like it please visit my DeviantArt page and fav it (but obviously only if you like it.) You are also more than welcome to comment about anything you want (I'm open to critique). I obviously would love to see how my font is being used, so feel free to comment with a link to your work, or send me a message.
+      If you like it please visit my DeviantArt page and fav it (but obviously only if you like it.) 
+      You are also more than welcome to comment about anything you want (I'm open to critique). 
+      I obviously would love to see how my font is being used, 
+      so feel free to comment with a link to your work, or send me a message.
 
       I hope you will enjoy using my font!
 
@@ -71,9 +75,13 @@ _Comfortaa Font by Johan Aakerlund_
    
  _Open Doodles Illustrations by Pablo Stanley_
  
-      Open Doodles is a set of free illustrations that embraces the idea of Open Design. You can copy, edit, remix, share, or redraw these images for any purpose without restriction under copyright or database law (CC0 license.)
+      Open Doodles is a set of free illustrations that embraces the idea of Open Design. 
+      You can copy, edit, remix, share, or redraw these images for any purpose 
+      without restriction under copyright or database law (CC0 license.)
 
-      I hope that this kind of resource makes it easier for designers to show the value of illustration in their mockups. Maybe you use these images as placeholders, before you're ready to hire an illustrator. Or perhaps this will encourage others to create their own kit and share it with the world.
+      I hope that this kind of resource makes it easier for designers to show the value of illustration in their mockups. 
+      Maybe you use these images as placeholders, before you're ready to hire an illustrator. 
+      Or perhaps this will encourage others to create their own kit and share it with the world.
 
 # Credits
 
