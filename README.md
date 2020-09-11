@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0?style=flat-square)
-[![GitHub release](https://img.shields.io/github/release/clean-apps/CleanSCAN.svg)](https://github.com/clean-apps/CleanHabits/releases/latest?style=flat-square)
+[![GitHub release](https://img.shields.io/github/release/clean-apps/CleanHabits.svg)](https://github.com/clean-apps/CleanHabits/releases/latest?style=flat-square)
 ![Powered By](https://img.shields.io/badge/Powered%20By-Flutter-blue&logo=flutter)
 
 <p align="center">
