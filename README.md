@@ -4,9 +4,11 @@
 
 <p align="center">
 <img src="https://github.com/clean-apps/CleanHabits/raw/master/marketing/gh-feature-graphic.png?raw=true" />
-  <h3 align="center">Clean Habits</h3>
-  <p align="center">The Minimal, Clean, Habit Tracker</p>
 </p>
+
+
+<img src="https://github.com/clean-apps/CleanHabits/raw/master/marketing/gh-logo.png?raw=true" />
+The Minimal, Clean, Habit Tracker
 
 ## Getting Started
 
