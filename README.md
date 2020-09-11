@@ -3,7 +3,7 @@
 ![Powered By](https://img.shields.io/badge/Powered%20By-Flutter-blue&logo=flutter)
 
 <p align="center">
-<img src="https://github.com/clean-apps/CleanHabits/raw/master/marketing/app-logo.png?raw=true" width="100"/>
+<img src="https://github.com/clean-apps/CleanHabits/raw/master/marketing/gh-feature-graphic.png?raw=true" />
   <h3 align="center">Clean Habits</h3>
   <p align="center">The Minimal, Clean, Habit Tracker</p>
 </p>
