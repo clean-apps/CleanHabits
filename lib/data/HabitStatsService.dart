@@ -195,7 +195,7 @@ class HabitStatsService {
       DateTime.now().day,
     );
     //
-    var dayToShow = 90;
+    var dayToShow = type == "12 Months" ? 366 : (type == "6 Months" ? 183 : 90);
     var statDate = today.subtract(Duration(days: dayToShow));
     var runData = await this.rdp.listBetweenFor(statDate, today, habit.id);
 

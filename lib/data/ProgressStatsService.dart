@@ -4,6 +4,7 @@ import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/LineChart.dart';
 import 'package:CleanHabits/widgets/progress/StatusSummary.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
+import 'package:flutter/material.dart';
 
 class ProgressStatsService {
   //
@@ -26,7 +27,7 @@ class ProgressStatsService {
       DateTime.now().day,
     );
 
-    var weeksToShow = 10;
+    var weeksToShow = 12;
     var statStart = today.subtract(Duration(days: today.weekday - 1));
     var statEnd = statStart.subtract(Duration(days: 7 * weeksToShow));
     //
@@ -70,7 +71,7 @@ class ProgressStatsService {
       DateTime.now().day,
     );
 
-    var monthsToShow = 10;
+    var monthsToShow = 12;
 
     var statStart = DateTime(today.year, today.month + 1, 1);
     var statEnd = statStart.subtract(Duration(days: 31 * monthsToShow));
@@ -88,15 +89,15 @@ class ProgressStatsService {
     if (counts.length < monthsToShow) {
       var startingMonth = counts.first[columnTargetMonthInYear];
       var firstDate = fmMonth.parse(startingMonth);
-      for (var ct = 0; ct < (monthsToShow - counts.length); ct++) {
+      for (var ct = 1; ct <= (monthsToShow - counts.length); ct++) {
         var monthToShow = firstDate.month - (monthsToShow - ct) + 1;
         var monString = fmMonth.format(DateTime(2020, monthToShow, 1));
-        data.add(LinearData(monString, ct + 1, 0));
+        data.add(LinearData(monString, ct, 0));
       }
     }
 
     var cnt2 = monthsToShow - counts.length;
-    counts.reversed.forEach((runData) {
+    counts.forEach((runData) {
       cnt2++;
       data.add(
         LinearData(runData[columnTargetMonthInYear], cnt2, runData['sum']),

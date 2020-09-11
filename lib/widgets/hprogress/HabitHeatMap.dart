@@ -17,12 +17,12 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
   bool loading = true;
   Key hmcKey = ValueKey('0');
   //
-  var type = "Show All";
+  var type = "3 Months";
 
   @override
   void initState() {
     super.initState();
-    type = "Show All";
+    type = "3 Months";
     this.hmcKey = ValueKey(widget.habit.id);
     _loadData();
   }
@@ -40,7 +40,7 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
   Widget _typeDropDown() {
     return DropdownButtonHideUnderline(
       child: DropdownButton(
-        items: ["Show All", "Completed", "Started", "Skipped"]
+        items: ["3 Months", "6 Months", "12 Months"]
             .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
             .toList(),
         value: this.type,
@@ -64,10 +64,11 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
           'Daily Tracker',
           style: Theme.of(context).textTheme.headline6,
         ),
-        trailing: ConstrainedBox(
-          constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
-          child: loading ? CircularProgressIndicator() : Container(),
-        ), //_typeDropDown(),
+        trailing: loading
+            ? ConstrainedBox(
+                constraints: BoxConstraints.expand(width: 24.0, height: 24.0),
+                child: CircularProgressIndicator())
+            : _typeDropDown(),
       ),
       Padding(
         padding: EdgeInsets.all(10),
@@ -88,7 +89,7 @@ class _HabitHeatMapState extends State<HabitHeatMap> {
                       ),
                     ),
                   )
-                : HeatMap(key: hmcKey, data: this.data),
+                : HeatMap(key: hmcKey, data: this.data, range: this.type),
       )
     ];
 

@@ -6,7 +6,8 @@ import 'package:CleanHabits/widgets/basic/HeatMapCalendar.dart';
 class HeatMap extends StatelessWidget {
   final Map<DateTime, int> data;
   final Key key;
-  HeatMap({this.key, this.data});
+  final String range;
+  HeatMap({this.key, this.data, this.range = "3 Months"});
 
   @override
   Widget build(BuildContext context) {
@@ -40,15 +41,57 @@ class HeatMap extends StatelessWidget {
 
     var _darkMode = Theme.of(context).brightness == Brightness.dark;
 
+    var squareSize = this.range == "12 Months"
+        ? 4.0
+        : (this.range == "6 Months" ? 12.0 : 24.0);
+
+    var weekLabels = this.range == "12 Months"
+        ? ['', '', '', '', '', '', '']
+        : ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+    var monthsLabels = this.range == "12 Months"
+        ? [
+            "",
+            "J",
+            "F",
+            "M",
+            "A",
+            "M",
+            "J",
+            "J",
+            "A",
+            "S",
+            "O",
+            "N",
+            "D",
+          ]
+        : [
+            "",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ];
+
     return HeatMapCalendar(
       key: this.key,
       input: data,
       colorThresholds: _colorThresholds,
-      squareSize: 24.0,
+      squareSize: squareSize,
       textOpacity: 1.0,
       labelTextColor: Colors.blueGrey,
       dayTextColor: Theme.of(context).textTheme.subtitle2.color,
       displayDates: _darkMode ? true : false,
+      weekDaysLabels: weekLabels,
+      monthsLabels: monthsLabels,
     );
   }
 }
