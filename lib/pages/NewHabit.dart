@@ -168,7 +168,7 @@ class _NewHabitState extends State<NewHabit> {
           times: _habit.timesTarget,
           timesType: _habit.timesTargetType,
         );
-        repeat = _habit.repeat;
+        repeat = _habit.repeat == null ? Repeats() : _habit.repeat;
         timeOfDay = _habit.timeOfDay;
       });
     }

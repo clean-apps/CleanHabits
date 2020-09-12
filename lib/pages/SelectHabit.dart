@@ -322,6 +322,26 @@ class SelectHabit extends StatelessWidget {
     );
   }
 
+  Widget _getFab(context) {
+    return Padding(
+      padding: EdgeInsets.all(30),
+      child: FloatingActionButton.extended(
+        onPressed: () => Navigator.popAndPushNamed(context, '/new'),
+        label: Text(
+          'Create Your Own',
+          style: Theme.of(context)
+              .textTheme
+              .headline6
+              .copyWith(color: Colors.white),
+        ),
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
@@ -371,6 +391,8 @@ class SelectHabit extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: _getFab(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -104,7 +104,8 @@ class SelectTopic extends StatelessWidget {
         children: widgets,
         padding: EdgeInsets.all(12),
       ),
-      bottomNavigationBar: _getFab(context),
+      floatingActionButton: _getFab(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

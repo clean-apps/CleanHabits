@@ -14,7 +14,10 @@ class HabitOptionTile extends StatelessWidget {
     return option.isYNType
         ? ListTile(
             leading: FaIcon(option.icon, size: 36),
-            title: Text(option.title),
+            title: Text(
+              option.title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             subtitle: _displayString == null || _displayString == ''
                 ? Text('')
                 : Text(_displayString),
@@ -26,7 +29,10 @@ class HabitOptionTile extends StatelessWidget {
           )
         : ListTile(
             leading: FaIcon(option.icon, size: 36),
-            title: Text(option.title),
+            title: Text(
+              option.title,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             subtitle: Text(
                 "${option.timesTarget} ${option.timesTargetType} $_displayString"),
             onTap: () => Navigator.pushNamed(
