@@ -20,67 +20,154 @@ class _TimesListItemState extends State<TimesListItem> {
     super.initState();
   }
 
-  IconButton _addIcon(_theme) {
+  Future<void> _updateData(int progress) async {
+    setState(() {
+      loading = true;
+      widget.habit.isSkipped = false;
+      widget.habit.timesProgress = progress;
+    });
+    widget.habitMaster
+        .updateStatus(
+          habit: widget.habit,
+          dateTime: widget.date,
+        )
+        .then(
+          (sts) => setState(() {
+            loading = false;
+          }),
+        );
+  }
+
+  Future<void> _showLogEntry(context) async {
+    var _theme = Theme.of(context);
+    var _accent = _theme.accentColor;
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        double _timesProgress = widget.habit.timesProgress.toDouble();
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(
+                'Log Entry',
+                style: TextStyle(fontWeight: FontWeight.bold, color: _accent),
+              ),
+              titlePadding: EdgeInsets.all(20),
+              contentPadding: EdgeInsets.all(0),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(widget.habit.title),
+                      subtitle: Text(
+                          "Target ${widget.habit.timesTarget} ${widget.habit.timesTargetType}"),
+                      trailing: Text(
+                        widget.habit.timesProgress.toString(),
+                        style: _theme.textTheme.headline4,
+                      ),
+                    ),
+                    Slider(
+                      value: _timesProgress,
+                      min: 0,
+                      max: widget.habit.timesTarget.toDouble(),
+                      divisions: widget.habit.timesTarget,
+                      label: _timesProgress.toInt().toString(),
+                      activeColor: _accent,
+                      onChanged: (value) => setState(() {
+                        _timesProgress = value;
+                      }),
+                      onChangeEnd: (double value) => {
+                        setState(() {
+                          _timesProgress = value;
+                        }),
+                        _updateData(value.toInt()),
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Okay'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  InkWell _addIcon(_theme, context) {
     var _icon = Icon(
       Icons.add_circle_outline,
       size: 40,
       color: _theme.primaryColor.withAlpha(200),
     );
 
-    return IconButton(
-      icon: widget.habit.timesProgress < widget.habit.timesTarget
-          ? _icon
-          : Container(),
-      onPressed: () => widget.habit.timesProgress < widget.habit.timesTarget
-          ? {
-              setState(() {
-                loading = true;
-                widget.habit.isSkipped = false;
-                widget.habit.timesProgress++;
-              }),
-              widget.habitMaster
-                  .updateStatus(
-                    habit: widget.habit,
-                    dateTime: widget.date,
-                  )
-                  .then(
-                    (sts) => setState(() {
-                      loading = false;
-                    }),
-                  ),
-            }
-          : {},
+    return InkWell(
+      child: IconButton(
+        icon: widget.habit.timesProgress < widget.habit.timesTarget
+            ? _icon
+            : Container(),
+        onPressed: () => widget.habit.timesProgress < widget.habit.timesTarget
+            ? {
+                setState(() {
+                  loading = true;
+                  widget.habit.isSkipped = false;
+                  widget.habit.timesProgress++;
+                }),
+                widget.habitMaster
+                    .updateStatus(
+                      habit: widget.habit,
+                      dateTime: widget.date,
+                    )
+                    .then(
+                      (sts) => setState(() {
+                        loading = false;
+                      }),
+                    ),
+              }
+            : {},
+      ),
+      onLongPress: () async => _showLogEntry(context),
     );
   }
 
-  IconButton _minusIcon(_theme) {
+  InkWell _minusIcon(_theme, context) {
     var _icon = Icon(
       Icons.remove_circle_outline,
       size: 40,
       color: _theme.primaryColor.withAlpha(200),
     );
 
-    return IconButton(
-      icon: widget.habit.timesProgress > 0 ? _icon : Container(),
-      onPressed: () => widget.habit.timesProgress > 0
-          ? {
-              setState(() {
-                loading = true;
-                widget.habit.isSkipped = false;
-                widget.habit.timesProgress--;
-              }),
-              widget.habitMaster
-                  .updateStatus(
-                    habit: widget.habit,
-                    dateTime: widget.date,
-                  )
-                  .then(
-                    (sts) => setState(() {
-                      loading = false;
-                    }),
-                  )
-            }
-          : {},
+    return InkWell(
+      child: IconButton(
+        icon: widget.habit.timesProgress > 0 ? _icon : Container(),
+        onPressed: () => widget.habit.timesProgress > 0
+            ? {
+                setState(() {
+                  loading = true;
+                  widget.habit.isSkipped = false;
+                  widget.habit.timesProgress--;
+                }),
+                widget.habitMaster
+                    .updateStatus(
+                      habit: widget.habit,
+                      dateTime: widget.date,
+                    )
+                    .then(
+                      (sts) => setState(() {
+                        loading = false;
+                      }),
+                    )
+              }
+            : {},
+      ),
+      onLongPress: () async => _showLogEntry(context),
     );
   }
 
@@ -181,8 +268,8 @@ class _TimesListItemState extends State<TimesListItem> {
                           onPressed: () => {},
                         )
                       : Container(),
-                  loading ? Container() : _minusIcon(_theme),
-                  loading ? Container() : _addIcon(_theme),
+                  loading ? Container() : _minusIcon(_theme, context),
+                  loading ? Container() : _addIcon(_theme, context),
                 ],
               ),
               Padding(
