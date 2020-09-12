@@ -1,4 +1,5 @@
 import 'package:CleanHabits/data/HabitMasterService.dart';
+import 'package:CleanHabits/domain/TopicHabits.dart';
 import 'package:CleanHabits/widgets/new/SelectChecklistType.dart';
 import 'package:CleanHabits/widgets/new/SelectFromDate.dart';
 import 'package:CleanHabits/widgets/new/SelectReminder.dart';
@@ -156,44 +157,22 @@ class _NewHabitState extends State<NewHabit> {
     );
   }
 
-  Widget _suggestionsTile(context) {
-    var _theme = Theme.of(context);
-    var _darkMode = _theme.brightness == Brightness.dark;
-
-    var suggestions = [
-      '📖 Read Book',
-      '🧘 Meditate',
-      '💤 Sleep Early',
-      '🏃 Go Running',
-      '🏋️ Hit The Gym',
-      '🚰 Drink Water',
-      '🙇 Yoga',
-      '📕 Learn a Langage',
-    ];
-
-    return Container(
-      decoration: BoxDecoration(
-        color: _darkMode
-            ? Colors.grey.withOpacity(0.25)
-            : Theme.of(context).scaffoldBackgroundColor,
-        border: Border(
-          top: BorderSide(color: Colors.grey.withOpacity(0.5)),
-          bottom: BorderSide(color: Colors.grey.withOpacity(0.5)),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-      padding: EdgeInsets.all(5),
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: Wrap(
-          children: suggestions.map((e) => _chip(e)).toList(),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    TopicHabits _habit = ModalRoute.of(context).settings.arguments;
+    if (_habit != null) {
+      setState(() {
+        title = _habit.title;
+        type = ChecklistType(
+          isSimple: _habit.isYNType,
+          times: _habit.timesTarget,
+          timesType: _habit.timesTargetType,
+        );
+        repeat = _habit.repeat;
+        timeOfDay = _habit.timeOfDay;
+      });
+    }
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: _getAppBar(context),
@@ -208,7 +187,6 @@ class _NewHabitState extends State<NewHabit> {
             : ListView(
                 children: <Widget>[
                   _nameTile(context),
-                  _suggestionsTile(context),
                   SelectRepeat(
                     value: repeat,
                     onChange: (val) => {

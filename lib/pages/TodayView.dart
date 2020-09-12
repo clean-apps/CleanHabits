@@ -136,7 +136,7 @@ class _TodayViewState extends State<TodayView> {
 
   FloatingActionButton _getFab() {
     return new FloatingActionButton.extended(
-      onPressed: () => Navigator.popAndPushNamed(context, '/new'),
+      onPressed: () => Navigator.pushNamed(context, '/suggest/topic'),
       label: Text('NEW'),
       icon: Icon(
         Icons.add,

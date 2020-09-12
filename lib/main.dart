@@ -9,7 +9,9 @@ import 'package:CleanHabits/pages/EditHabit.dart';
 import 'package:CleanHabits/pages/HabitProgress.dart';
 import 'package:CleanHabits/pages/LoadingScreen.dart';
 import 'package:CleanHabits/pages/ProgressMain.dart';
+import 'package:CleanHabits/pages/SelectHabit.dart';
 import 'package:CleanHabits/pages/Settings.dart';
+import 'package:CleanHabits/pages/SelectTopic.dart';
 import 'package:CleanHabits/pages/TodayView.dart';
 import 'package:CleanHabits/pages/NewHabit.dart';
 import 'package:CleanHabits/pages/Welcome.dart';
@@ -112,6 +114,8 @@ class _MyAppState extends State<MyApp> {
                   ),
               '/settings/time-of-day': (context) => AllTimeOfDay(),
               '/new': (context) => NewHabit(),
+              '/suggest/topic': (context) => SelectTopic(),
+              '/suggest/habit': (context) => SelectHabit(),
               '/edit': (context) => EditHabit(),
               '/welcome': (context) => Welcome(),
             },

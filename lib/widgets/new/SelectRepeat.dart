@@ -92,4 +92,8 @@ class Repeats {
         ? 'Weekly ' + _weeklyString()
         : 'In Intervals, every $interval days';
   }
+
+  String displayString2() {
+    return this.isWeekly ? 'Weekly ' + _weeklyString() : 'Every $interval days';
+  }
 }

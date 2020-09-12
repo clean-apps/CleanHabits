@@ -22,6 +22,7 @@ dependencies:
   flutter_staggered_animations: ^0.1.2
   flutter_local_notifications: ^1.4.4+4
   shared_preferences: ">=0.5.7+3 <2.0.0"
+  font_awesome_flutter: ^8.8.1
 
   flutter:
     sdk: flutter
@@ -39,3 +40,15 @@ flutter:
     - assets/welcome-1.png
     - assets/welcome-2.png
     - assets/welcome-3.png
+    - assets/topics/light/DoogieDoodle.png
+    - assets/topics/dark/DoogieDoodle.png
+    - assets/topics/light/MeditatingDoodle.png
+    - assets/topics/dark/MeditatingDoodle.png
+    - assets/topics/light/StrollingDoodle.png
+    - assets/topics/dark/StrollingDoodle.png
+    - assets/topics/light/IceCreamDoodle.png
+    - assets/topics/dark/IceCreamDoodle.png
+    - assets/topics/light/ReadingDoodle.png
+    - assets/topics/dark/ReadingDoodle.png
+    - assets/topics/light/SwingingDoodle.png
+    - assets/topics/dark/SwingingDoodle.png
