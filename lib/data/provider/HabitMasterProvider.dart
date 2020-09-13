@@ -16,7 +16,7 @@ class HabitMasterProvider {
         create table $tableHabitMaster ( 
           $columnId integer primary key autoincrement, 
           $columnTitle text not null, 
-          $columnReminder integer null,
+          $columnReminder text null,
 
           $columnFromDate integer not null, 
           $columnTimeOfDay text null,
