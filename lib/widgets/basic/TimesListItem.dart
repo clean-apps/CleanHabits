@@ -258,28 +258,26 @@ class _TimesListItemState extends State<TimesListItem> {
                       Row(
                         children: [
                           this.widget.habit.reminder == null ||
-                                  this.widget.habit.reminder.length == 0
+                                  this.widget.habit.reminder.length == 0 ||
+                                  displayReminder == null
                               ? Text(
                                   this.widget.habit.timeOfDay == null
                                       ? 'All Day'
                                       : this.widget.habit.timeOfDay,
                                   style: subtitleStyle,
                                 )
-                              : displayReminder == null
-                                  ? Container()
-                                  : Row(
-                                      children: [
-                                        _getReminder() == null
-                                            ? null
-                                            : Icon(
-                                                Icons.alarm,
-                                                color: subtitleStyle.color,
-                                                size: subtitleStyle.fontSize,
-                                              ),
-                                        Text(_getReminder(),
-                                            style: subtitleStyle)
-                                      ],
-                                    ),
+                              : Row(
+                                  children: [
+                                    _getReminder() == null
+                                        ? null
+                                        : Icon(
+                                            Icons.alarm,
+                                            color: subtitleStyle.color,
+                                            size: subtitleStyle.fontSize,
+                                          ),
+                                    Text(_getReminder(), style: subtitleStyle)
+                                  ],
+                                ),
                           this.widget.habit.isSkipped
                               ? Padding(
                                   padding: EdgeInsets.only(left: 20),

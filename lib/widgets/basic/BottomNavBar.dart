@@ -24,12 +24,15 @@ class BottomNavBar extends StatelessWidget {
   _handleNavChange(context, index) {
     switch (index) {
       case 0:
-        Navigator.pushNamed(context, '/');
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.popAndPushNamed(context, '/');
         break;
       case 1:
+        Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.pushNamed(context, '/progress');
         break;
       case 2:
+        Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.pushNamed(context, '/settings');
         break;
     }
