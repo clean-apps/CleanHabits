@@ -1,15 +1,13 @@
-package com.example.CleanHabits
+package com.babanomania.CleanHabits
 
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 class SingleHabitWidgetRemoteViewsFactory: RemoteViewsService.RemoteViewsFactory  {
 

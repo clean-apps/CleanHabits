@@ -141,19 +141,6 @@ class _EditHabitState extends State<EditHabit> {
     );
   }
 
-  Widget _chip(text) {
-    return Padding(
-      padding: EdgeInsets.only(left: 3.0, right: 3.0),
-      child: InputChip(
-        backgroundColor: Colors.grey.withOpacity(0.25),
-        label: Text(text),
-        onPressed: () => setState(() {
-          title = text;
-        }),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (srcHabit == null) {

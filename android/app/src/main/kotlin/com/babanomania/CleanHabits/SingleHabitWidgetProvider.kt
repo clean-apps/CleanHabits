@@ -1,9 +1,8 @@
-package com.example.CleanHabits
+package com.babanomania.CleanHabits
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -16,13 +15,16 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 import io.flutter.view.FlutterCallbackInformation
 import io.flutter.view.FlutterMain
 import java.io.Serializable
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.*
 
-class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
+class SingleHabitWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
 
     private val TAG = this::class.java.simpleName
 
     companion object {
-        private var channel: MethodChannel? = null;
+        var channel: MethodChannel? = null;
     }
 
     private lateinit var context: Context
@@ -32,9 +34,10 @@ class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
 
         initializeFlutter()
 
-        for (appWidgetId in appWidgetIds)
-            channel?.invokeMethod("getTodayAppWidgetData", appWidgetId, this)
-
+        for (appWidgetId in appWidgetIds){
+            val fetchType = loadTypePref(context, appWidgetId)
+            channel?.invokeMethod("getSingleHabitAppWidgetData", "$appWidgetId#$fetchType", this)
+        }
     }
 
     private fun initializeFlutter() {
@@ -71,11 +74,12 @@ class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
     override fun success(result: Any?) {
 
         val args = result as HashMap<*, *>
-        val id = args["id"] as Int
+        val id = args["id"] as String
+        val type = args["type"] as String
         val habits = args["habits"] as List<Map<String, *>>
-        val progress = args["progress"] as List<Map<String, *>>
+        val progress = args["progress"] as Map<String, Int>
 
-        updateTodayWidget(id, habits, progress, context)
+        updateSingleHabitWidget(id.toInt(), type, habits, progress, context)
     }
 
     override fun notImplemented() {
@@ -90,35 +94,40 @@ class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
         super.onDisabled(context)
         channel = null
     }
-
 }
 
-internal fun updateTodayWidget(id: Int, habits: List<Map<String, *>>, progress: List<Map<String, *>>, context: Context) {
+internal fun updateSingleHabitWidget(appWidgetId: Int, type: String, habits: List<Map<String, *>>, progress: Map<String, Int>, context: Context) {
+    val views = RemoteViews(context.packageName, R.layout.single_habit_widget).apply{
 
-    val views = RemoteViews(context.packageName, R.layout.today_habits_widget).apply {
-        val widgetText: CharSequence = context.getString(R.string.todayWidgetHeaderText)
-        setTextViewText(R.id.todayWidgetHeaderText, widgetText)
+        setTextViewText(R.id.singleHabitWidgetHeaderText, type)
 
-        val intent = Intent(context, TodayWidgetRemoteViewsService::class.java)
-        intent.putExtra("habits", habits as Serializable)
+        val now = LocalDate.now()
+        var month = now.month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        var year = now.year
+
+        val monthText = "$month, $year"
+        setTextViewText(R.id.singleHabitWidgetMonthText, monthText)
+
+        ///////////////////////////////////////////////////
+//        val intentMain = Intent(context, MainActivity::class.java)
+//        val pendingIntentMain = PendingIntent.getActivity(context, 0, intentMain, 0)
+//        setOnClickPendingIntent( R.id.todayWidget, pendingIntentMain )
+
+        ///////////////////////////////////////////////////
+        val intentConfig = Intent(context, SingleHabitWidgetConfigureActivity::class.java)
+        intentConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId) //set widget id
+        val pendingIntentConfig = PendingIntent.getActivity(context, 0, intentConfig, 0)
+        setOnClickPendingIntent(R.id.singleHabitWidgetHeaderIcon, pendingIntentConfig)
+
+        ///////////////////////////////////////////////////////////
+        val intent = Intent(context, SingleHabitWidgetRemoteViewsService::class.java)
         intent.putExtra("progress", progress as Serializable)
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)))
-        intent.setAction( System.currentTimeMillis().toString() )
-
-        setOnClickPendingIntent(
-                R.id.todayWidget,
-                PendingIntent.getActivity(
-                        context,
-                        0,
-                        Intent(context, MainActivity::class.java),
-                        0
-                )
-        )
-
-        setRemoteAdapter(R.id.todayWidgetListView, intent)
+        intent.setAction(System.currentTimeMillis().toString())
+        setRemoteAdapter(R.id.singleHabitCalenderGridView, intent)
     }
 
     val manager = AppWidgetManager.getInstance(context)
-    manager.updateAppWidget(id, views)
+    manager.updateAppWidget(appWidgetId, views)
 }

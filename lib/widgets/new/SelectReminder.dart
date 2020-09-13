@@ -27,10 +27,18 @@ class _SelectReminderState extends State<SelectReminder> {
       helpText: 'Select Reminder Time',
       context: context,
     ).then((val) => {
-          setState(() {
-            _data.add(val);
-          }),
-          this.widget.onChange(_data),
+          if (_data
+                  .where((el) =>
+                      (el.hour + el.minute / 60.0) ==
+                      (val.hour + val.minute / 60.0))
+                  .length ==
+              0)
+            {
+              setState(() {
+                _data.add(val);
+              }),
+              this.widget.onChange(_data),
+            }
         });
   }
 

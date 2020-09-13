@@ -1,4 +1,4 @@
-package com.example.CleanHabits
+package com.babanomania.CleanHabits
 
 import android.app.Activity
 import android.appwidget.AppWidgetManager

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="com.example.CleanHabits.SingleHabitWidgetConfigureActivity"
+    android:configure="com.babanomania.CleanHabits.SingleHabitWidgetConfigureActivity"
     android:initialKeyguardLayout="@layout/single_habit_widget"
     android:initialLayout="@layout/single_habit_widget"
     android:minWidth="250dp"

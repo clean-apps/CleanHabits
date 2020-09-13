@@ -2,7 +2,7 @@ name: CleanHabits
 description: The Minimal, Clean, Habit Tracker
 
 publish_to: "none"
-version: 1.0.0+1
+version: 1.0.20200913+2
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

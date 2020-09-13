@@ -1,10 +1,9 @@
-package com.example.CleanHabits
+package com.babanomania.CleanHabits
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.AdapterView
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService

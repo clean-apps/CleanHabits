@@ -1,4 +1,4 @@
-package com.example.CleanHabits
+package com.babanomania.CleanHabits
 
 import android.content.Intent
 import android.widget.RemoteViewsService
