@@ -3,4 +3,8 @@
     <color name="accent">#FF056676</color>
     <color name="lightAccent">#FF4db6ac</color>
     <color name="lighterAccent">#604db6ac</color>
+    <color name="accentDark">#FFde0000</color>
+    <color name="darkAccent">#FFffaaaa</color>
+    <color name="darkerAccent">#60ffd5d5</color>
+    <color name="darkBackground">#FF272727</color>
 </resources>

@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.widget.AdapterView
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
@@ -18,9 +19,14 @@ class TodayWidgetRemoteViewsFactory : RemoteViewsService.RemoteViewsFactory {
     private var habits: List<Map<String, *>> = emptyList()
     private var progress: List<Map<String, *>> = emptyList()
 
+    private var isDark:Boolean = false
+
     constructor(mContext: Context, intent: Intent?) {
         this.mContext = mContext
         appWidgetId = intent?.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID)!!;
+
+        var prefs: SharedPreferences = mContext.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+        isDark = prefs.getBoolean("flutter.dark-mode", false);
 
         this.habits = intent?.getSerializableExtra("habits") as List<Map<String, *>>
         this.progress = intent?.getSerializableExtra("progress") as List<Map<String, *>>
@@ -61,14 +67,15 @@ class TodayWidgetRemoteViewsFactory : RemoteViewsService.RemoteViewsFactory {
 
         var complete = target == progress
 
-        return RemoteViews(mContext.packageName, R.layout.today_widget_listitem).apply {
+        val layout = if(isDark) R.layout.today_widget_listitem else R.layout.today_widget_listitem_dark
+        return RemoteViews(mContext.packageName, layout).apply {
             setTextViewText(R.id.todayWidgetListItemHabitTitle, title)
             setTextViewText(R.id.todayWidgetListItemHabitSubtitle1, timeOfDay)
 
             var listSubtitle2 = if (isYNType) " " else "$progress/$target $targetType"
             setTextViewText(R.id.todayWidgetListItemHabitSubtitle2, listSubtitle2)
 
-            var listIcon = if (complete) R.drawable.ic_baseline_check_24 else R.drawable.ic_baseline_check_24_white
+            var listIcon = if (complete) ( if(isDark)R.drawable.ic_baseline_check_24_white else R.drawable.ic_baseline_check_24 ) else (if(isDark)  R.drawable.ic_baseline_check_24_dark else R.drawable.ic_baseline_check_24_white)
             setImageViewResource(R.id.todayWidgetListItemHabitProgress, listIcon)
 
             setOnClickPendingIntent(

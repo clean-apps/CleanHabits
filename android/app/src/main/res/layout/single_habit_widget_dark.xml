@@ -4,12 +4,11 @@
     android:layout_height="wrap_content"
     android:id="@+id/singleHabitWidget"
     android:orientation="vertical"
-    android:background="@android:color/background_light"
-    android:theme="@android:style/ThemeOverlay.Material.Light"
+    android:background="@android:color/background_dark"
+    android:theme="@android:style/ThemeOverlay.Material.Dark"
     android:scrollbars="none">
 
     <RelativeLayout android:layout_width="wrap_content"
-        android:background="@color/accent"
         android:id="@+id/singleHabitWidgetHeader"
         android:layout_height="@dimen/widget_title_min_height">
         <TextView
@@ -34,14 +33,15 @@
             android:paddingRight="@dimen/widget_listview_padding_title"
             android:textAlignment="textEnd"
             android:gravity="center|end"
-            android:textColor="@color/lightAccent"
+            android:textColor="#FAFAFA"
             android:textSize="16dp"></TextView>
     </RelativeLayout>
 
     <RelativeLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|center_horizontal"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:background="@color/darkBackground">
         <GridView
             android:id="@+id/singleHabitCalenderGridView"
             android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,6 +22,7 @@ import java.util.*
 class SingleHabitWidgetConfigureActivity : Activity(), MethodChannel.Result {
 
     private val TAG = this::class.java.simpleName
+    private var isDark:Boolean = false
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private lateinit var context: Context
@@ -33,6 +35,9 @@ class SingleHabitWidgetConfigureActivity : Activity(), MethodChannel.Result {
 
         // It is the responsibility of the configuration activity to update the app widget
         initializeFlutter()
+
+        var prefs: SharedPreferences = context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+        isDark = prefs.getBoolean("flutter.dark-mode", false);
 
         var fetchType:String = loadTypePref(context, appWidgetId)
         SingleHabitWidgetProvider.channel?.invokeMethod("getSingleHabitAppWidgetData", "$appWidgetId#$fetchType", this)
@@ -151,14 +156,14 @@ class SingleHabitWidgetConfigureActivity : Activity(), MethodChannel.Result {
                 val id = args["id"] as String
                 val progress = args["progress"] as Map<String, Int>
 
-                updateSingleHabitWidget(id.toInt(), type, habits, progress, context)
+                updateSingleHabitWidget(id.toInt(), type, habits, progress, context, isDark)
             }
             //
         } else {
             val id = args["id"] as String
             val progress = args["progress"] as Map<String, Int>
 
-            updateSingleHabitWidget(id.toInt(), type, habits, progress, context)
+            updateSingleHabitWidget(id.toInt(), type, habits, progress, context, isDark)
 
         }
     }

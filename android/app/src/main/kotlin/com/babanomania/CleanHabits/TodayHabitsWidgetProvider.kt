@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.widget.RemoteViews
@@ -19,6 +20,7 @@ import java.io.Serializable
 class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
 
     private val TAG = this::class.java.simpleName
+    private var isDark:Boolean = false
 
     companion object {
         private var channel: MethodChannel? = null;
@@ -30,6 +32,9 @@ class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
         this.context = context
 
         initializeFlutter()
+
+        var prefs: SharedPreferences = context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+        isDark = prefs.getBoolean("flutter.dark-mode", false);
 
         for (appWidgetId in appWidgetIds)
             channel?.invokeMethod("getTodayAppWidgetData", appWidgetId, this)
@@ -74,7 +79,7 @@ class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
         val habits = args["habits"] as List<Map<String, *>>
         val progress = args["progress"] as List<Map<String, *>>
 
-        updateTodayWidget(id, habits, progress, context)
+        updateTodayWidget(id, habits, progress, context, isDark)
     }
 
     override fun notImplemented() {
@@ -92,9 +97,10 @@ class TodayHabitsWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
 
 }
 
-internal fun updateTodayWidget(id: Int, habits: List<Map<String, *>>, progress: List<Map<String, *>>, context: Context) {
+internal fun updateTodayWidget(id: Int, habits: List<Map<String, *>>, progress: List<Map<String, *>>, context: Context, isDark: Boolean) {
 
-    val views = RemoteViews(context.packageName, R.layout.today_habits_widget).apply {
+    val layout = if(isDark) R.layout.today_habits_widget_dark else R.layout.today_habits_widget
+    val views = RemoteViews(context.packageName, layout).apply {
         val widgetText: CharSequence = context.getString(R.string.todayWidgetHeaderText)
         setTextViewText(R.id.todayWidgetHeaderText, widgetText)
 
@@ -103,7 +109,7 @@ internal fun updateTodayWidget(id: Int, habits: List<Map<String, *>>, progress: 
         intent.putExtra("progress", progress as Serializable)
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id)
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)))
-        intent.setAction( System.currentTimeMillis().toString() )
+        intent.setAction(System.currentTimeMillis().toString())
 
         setOnClickPendingIntent(
                 R.id.todayWidget,

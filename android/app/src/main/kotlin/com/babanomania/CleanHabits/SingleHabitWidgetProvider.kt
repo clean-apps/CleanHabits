@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.widget.RemoteViews
@@ -22,6 +23,7 @@ import java.util.*
 class SingleHabitWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
 
     private val TAG = this::class.java.simpleName
+    private var isDark:Boolean = false
 
     companion object {
         var channel: MethodChannel? = null;
@@ -33,6 +35,9 @@ class SingleHabitWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
         this.context = context
 
         initializeFlutter()
+
+        var prefs:SharedPreferences = context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
+        isDark = prefs.getBoolean("flutter.dark-mode", false);
 
         for (appWidgetId in appWidgetIds){
             val fetchType = loadTypePref(context, appWidgetId)
@@ -79,7 +84,7 @@ class SingleHabitWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
         val habits = args["habits"] as List<Map<String, *>>
         val progress = args["progress"] as Map<String, Int>
 
-        updateSingleHabitWidget(id.toInt(), type, habits, progress, context)
+        updateSingleHabitWidget(id.toInt(), type, habits, progress, context, isDark)
     }
 
     override fun notImplemented() {
@@ -96,8 +101,10 @@ class SingleHabitWidgetProvider : AppWidgetProvider(), MethodChannel.Result {
     }
 }
 
-internal fun updateSingleHabitWidget(appWidgetId: Int, type: String, habits: List<Map<String, *>>, progress: Map<String, Int>, context: Context) {
-    val views = RemoteViews(context.packageName, R.layout.single_habit_widget).apply{
+internal fun updateSingleHabitWidget(appWidgetId: Int, type: String, habits: List<Map<String, *>>, progress: Map<String, Int>, context: Context, isDark: Boolean) {
+
+    var layout = if(isDark) R.layout.single_habit_widget_dark else R.layout.single_habit_widget
+    val views = RemoteViews(context.packageName, layout).apply{
 
         setTextViewText(R.id.singleHabitWidgetHeaderText, type)
 

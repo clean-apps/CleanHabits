@@ -35,6 +35,18 @@ class HabitRunDataProvider {
           $columnHasSkipped integer not null
         )
         ''');
+
+        await db.execute('''
+        create index idx_rundata_1 on $tableHabitRunData ( 
+          $columnHabitId
+        )
+        ''');
+
+        await db.execute('''
+        create index idx_rundata_2 on $tableHabitRunData ( 
+          $columnTargetDate
+        )
+        ''');
       },
     );
   }

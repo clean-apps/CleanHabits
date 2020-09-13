@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
+    android:background="@color/darkBackground"
+    android:theme="@android:style/ThemeOverlay.Material.Dark"
     android:id="@+id/todayWidget"
     android:orientation="vertical">
 
@@ -13,7 +14,7 @@
             android:id="@+id/todayWidgetHeaderText"
             android:layout_width="match_parent"
             android:layout_height="@dimen/widget_title_min_height"
-            android:background="@color/accent"
+            android:background="#FF121212"
             android:gravity="center|left"
             android:paddingLeft="@dimen/widget_listview_padding_title"
             android:text="@string/todayWidgetHeaderText"
@@ -27,11 +28,11 @@
             android:id="@+id/todayWidgetListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/background_light"
+            android:background="@color/darkBackground"
             android:dividerHeight="1dp"
-            android:divider="#eeeeee"
+            android:divider="#363636"
             android:clickable="false"
-            tools:listitem="@layout/today_widget_listitem">
+            tools:listitem="@layout/today_widget_listitem_dark">
         </ListView>
     </LinearLayout>
 
