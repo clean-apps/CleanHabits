@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 class Habit {
   int id;
   String title;
-  String reminder;
+  List<TimeOfDay> reminder;
 
   bool isYNType;
   bool ynCompleted;
@@ -17,7 +19,7 @@ class Habit {
   static Habit newYNHabit({
     int id,
     String title,
-    String reminder,
+    List<TimeOfDay> reminder,
     bool completed,
     String timeOfDay,
   }) {
@@ -39,7 +41,7 @@ class Habit {
   static Habit newTimesHabit({
     int id,
     String title,
-    String reminder,
+    List<TimeOfDay> reminder,
     int target,
     int completed,
     String targetType,

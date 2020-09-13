@@ -19,7 +19,7 @@ class _EditHabitState extends State<EditHabit> {
   Repeats repeat;
   DateTime fromDate;
   ChecklistType type;
-  TimeOfDay reminder;
+  List<TimeOfDay> reminder;
   String timeOfDay;
   bool loading;
 
@@ -154,37 +154,6 @@ class _EditHabitState extends State<EditHabit> {
     );
   }
 
-  Widget _suggestionsTile(context) {
-    var suggestions = [
-      '📖 Read Book',
-      '🧘 Meditate',
-      '💤 Sleep Early',
-      '🏃 Go Running',
-      '🏋️ Hit The Gym',
-      '🚰 Drink Water',
-      '🙇 Yoga',
-      '📕 Learn a Langage',
-    ];
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        border: Border(
-          top: BorderSide(color: Colors.grey.withOpacity(0.5)),
-          bottom: BorderSide(color: Colors.grey.withOpacity(0.5)),
-        ),
-      ),
-      margin: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-      padding: EdgeInsets.all(5),
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: Wrap(
-          children: suggestions.map((e) => _chip(e)).toList(),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (srcHabit == null) {
@@ -232,7 +201,6 @@ class _EditHabitState extends State<EditHabit> {
             : ListView(
                 children: <Widget>[
                   _nameTile(context),
-                  _suggestionsTile(context),
                   SelectRepeat(
                     value: repeat,
                     onChange: (val) => {

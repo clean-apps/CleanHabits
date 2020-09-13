@@ -171,6 +171,31 @@ class _TimesListItemState extends State<TimesListItem> {
     );
   }
 
+  String toReminderString(TimeOfDay tod) {
+    if (tod == null) {
+      return '';
+    } else {
+      var _hour = tod.hour.toString().padLeft(2, '0');
+      var _minute = tod.minute.toString().padLeft(2, '0');
+      return "$_hour:$_minute";
+    }
+  }
+
+  String _getReminder() {
+    var now = DateTime.now();
+    var nowHour = (now.hour + now.minute / 60.0);
+    this.widget.habit.reminder.sort(
+          (a, b) =>
+              (a.hour + a.minute / 60.0).compareTo((b.hour + b.minute / 60.0)),
+        );
+    var thatReminder = this.widget.habit.reminder.firstWhere(
+          (rem) => (rem.hour + rem.minute / 60.0) > nowHour,
+          orElse: () => null,
+        );
+
+    return thatReminder == null ? null : toReminderString(thatReminder);
+  }
+
   @override
   Widget build(BuildContext context) {
     //
@@ -202,6 +227,8 @@ class _TimesListItemState extends State<TimesListItem> {
     var _progressTxt =
         "${timesProgress.toString()} / ${timesTarget.toString()} $timesTargetType Completed";
 
+    var displayReminder = _getReminder();
+
     return Container(
       margin: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
       padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 15.0),
@@ -230,24 +257,29 @@ class _TimesListItemState extends State<TimesListItem> {
                       ),
                       Row(
                         children: [
-                          this.widget.habit.reminder == null
+                          this.widget.habit.reminder == null ||
+                                  this.widget.habit.reminder.length == 0
                               ? Text(
                                   this.widget.habit.timeOfDay == null
                                       ? 'All Day'
                                       : this.widget.habit.timeOfDay,
                                   style: subtitleStyle,
                                 )
-                              : Row(
-                                  children: [
-                                    Icon(
-                                      Icons.alarm,
-                                      color: subtitleStyle.color,
-                                      size: subtitleStyle.fontSize,
+                              : displayReminder == null
+                                  ? Container()
+                                  : Row(
+                                      children: [
+                                        _getReminder() == null
+                                            ? null
+                                            : Icon(
+                                                Icons.alarm,
+                                                color: subtitleStyle.color,
+                                                size: subtitleStyle.fontSize,
+                                              ),
+                                        Text(_getReminder(),
+                                            style: subtitleStyle)
+                                      ],
                                     ),
-                                    Text(this.widget.habit.reminder,
-                                        style: subtitleStyle)
-                                  ],
-                                ),
                           this.widget.habit.isSkipped
                               ? Padding(
                                   padding: EdgeInsets.only(left: 20),

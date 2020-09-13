@@ -44,7 +44,7 @@ class HabitMasterService {
     Repeats repeat,
     DateTime fromDate,
     ChecklistType type,
-    TimeOfDay reminder,
+    List<TimeOfDay> reminder,
     String timeOfDay,
   }) async {
     //
@@ -83,7 +83,7 @@ class HabitMasterService {
     Repeats repeat,
     DateTime fromDate,
     ChecklistType type,
-    TimeOfDay reminder,
+    List<TimeOfDay> reminder,
     String timeOfDay,
   }) async {
     //
@@ -233,25 +233,28 @@ class HabitMasterService {
       this.rdp.insert(runData);
 
       //add reminder
-      var notifStarts = DateTime(
-        DateTime.now().year,
-        DateTime.now().month,
-        DateTime.now().day,
-        habit.reminder == null ? 0 : habit.reminder.hour,
-        habit.reminder == null ? 0 : habit.reminder.minute,
-      );
-      if (habit.reminder != null && notifStarts.isAfter(forDate)) {
-        this.wms.addHabitReminder(
-              habit.id,
-              DateTime(
-                forDate.year,
-                forDate.month,
-                forDate.day,
-                habit.reminder.hour,
-                habit.reminder.minute,
-              ),
-            );
-      }
+      habit.reminder.forEach((rem) {
+        var notifStarts = DateTime(
+          DateTime.now().year,
+          DateTime.now().month,
+          DateTime.now().day,
+          habit.reminder == null ? 0 : rem.hour,
+          habit.reminder == null ? 0 : rem.minute,
+        );
+
+        if (habit.reminder != null && notifStarts.isAfter(forDate)) {
+          this.wms.addHabitReminder(
+                habit.id,
+                DateTime(
+                  forDate.year,
+                  forDate.month,
+                  forDate.day,
+                  rem.hour,
+                  rem.minute,
+                ),
+              );
+        }
+      });
 
       // update last run data
       var lastRunData = await this.lrdp.getHabitData(habit.id);

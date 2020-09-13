@@ -19,7 +19,7 @@ class _NewHabitState extends State<NewHabit> {
   Repeats repeat;
   DateTime fromDate;
   ChecklistType type;
-  TimeOfDay reminder;
+  List<TimeOfDay> reminder;
   String timeOfDay;
   bool loading;
 
@@ -37,7 +37,7 @@ class _NewHabitState extends State<NewHabit> {
       times: 1,
       timesType: null,
     );
-    reminder = null;
+    reminder = [];
     timeOfDay = "All Day";
     loading = false;
   }
@@ -140,19 +140,6 @@ class _NewHabitState extends State<NewHabit> {
             hintText: 'Name',
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _chip(text) {
-    return Padding(
-      padding: EdgeInsets.only(left: 3.0, right: 3.0),
-      child: InputChip(
-        backgroundColor: Colors.grey.withOpacity(0.25),
-        label: Text(text),
-        onPressed: () => setState(() {
-          title = text;
-        }),
       ),
     );
   }

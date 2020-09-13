@@ -130,10 +130,12 @@ class MockDataFactory {
           title: title,
           fromDate: startDate,
           type: itrTypes.current,
-          reminder: TimeOfDay(
-            hour: rng.nextInt(24) - 1,
-            minute: rng.nextInt(60) - 1,
-          ),
+          reminder: <TimeOfDay>[
+            TimeOfDay(
+              hour: rng.nextInt(24) - 1,
+              minute: rng.nextInt(60) - 1,
+            )
+          ],
           repeat: itrRepeats.current,
           timeOfDay: "All Day",
         );

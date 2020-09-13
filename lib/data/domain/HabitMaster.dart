@@ -33,7 +33,7 @@ var fmt = DateFormat("HH:mm");
 class HabitMaster {
   int id;
   String title;
-  TimeOfDay reminder;
+  List<TimeOfDay> reminder;
 
   DateTime fromDate;
   String timeOfDay;
@@ -58,7 +58,7 @@ class HabitMaster {
     Repeats repeat,
     DateTime fromDate,
     ChecklistType type,
-    TimeOfDay reminder,
+    List<TimeOfDay> reminder,
     String timeOfDay,
   ) {
     //
@@ -90,7 +90,7 @@ class HabitMaster {
     var data = Habit();
     data.id = this.id;
     data.title = this.title;
-    data.reminder = this.reminderString;
+    data.reminder = reminder;
     data.isYNType = this.isYNType;
     data.timesTarget = this.isYNType ? 1 : this.timesTarget;
     data.timesTargetType = this.timesTargetType;
@@ -99,36 +99,30 @@ class HabitMaster {
     return data;
   }
 
-  String get reminderString {
-    final now = new DateTime.now();
-    final dt = reminder == null
+  String get reminderToString {
+    return reminder == null || reminder.length == 0
         ? null
-        : DateTime(
-            now.year,
-            now.month,
-            now.day,
-            reminder.hour,
-            reminder.minute,
-          );
+        : reminder.map((rem) => '${rem.hour}:${rem.minute}').join("#");
+  }
 
-    return dt == null ? null : fmt.format(dt);
+  List<TimeOfDay> reminderFromString(String ser) {
+    return ser == null || ser.indexOf("#") < 0 || ser.indexOf(":") < 0
+        ? List()
+        : ser
+            .split("#")
+            .map(
+              (tdSer) => TimeOfDay(
+                hour: int.parse(tdSer.split(":")[0]),
+                minute: int.parse(tdSer.split(":")[1]),
+              ),
+            )
+            .toList();
   }
 
   Map<String, dynamic> toMap() {
-    final now = new DateTime.now();
-    final dt = reminder == null
-        ? null
-        : DateTime(
-            now.year,
-            now.month,
-            now.day,
-            reminder.hour,
-            reminder.minute,
-          );
-
     var map = <String, dynamic>{
       columnTitle: title,
-      columnReminder: dt == null ? null : dt.millisecondsSinceEpoch,
+      columnReminder: reminderToString,
       //
       columnFromDate: fromDate == null ? null : fromDate.millisecondsSinceEpoch,
       columnTimeOfDay: timeOfDay,
@@ -161,14 +155,7 @@ class HabitMaster {
   HabitMaster.fromMap(Map<String, dynamic> map) {
     id = map[columnId];
     title = map[columnTitle];
-    reminder = map[columnReminder] == null
-        ? null
-        : TimeOfDay.fromDateTime(
-            DateTime.fromMillisecondsSinceEpoch(
-              map[columnReminder],
-              isUtc: false,
-            ),
-          );
+    reminder = reminderFromString(map[columnReminder]);
     //
     fromDate = map[columnFromDate] == null
         ? null
