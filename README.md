@@ -82,11 +82,17 @@ _Comfortaa Font by Johan Aakerlund_
       I hope that this kind of resource makes it easier for designers to show the value of illustration in their mockups. 
       Maybe you use these images as placeholders, before you're ready to hire an illustrator. 
       Or perhaps this will encourage others to create their own kit and share it with the world.
+      
+_Font Awesome by Dave Gandy - http://fontawesome.io_
+
+      Font Awesome is fully open source and is GPL friendly.
+      You can use it for commercial projects, open source projects, or really just about whatever you want. 
 
 # Credits
 
 * Logo Font [Comfortaa](https://github.com/googlefonts/comfortaa) made by [Johan Aakerlund](https://www.deviantart.com/aajohan)
 * Amazing [Open Doodles](https://www.opendoodles.com/) Illustrations by [Pablo Stanley](https://twitter.com/pablostanley)
+* Absolultely Stunning [Font Awesome](https://fontawesome.com/) by [Dave Gandy](https://twitter.com/davegandy?lang=en)
 * [Flutter Team](https://github.com/flutter/)
 * Below Flutter Plugins
   * [sqflite](https://pub.dev/packages/sqflite)
