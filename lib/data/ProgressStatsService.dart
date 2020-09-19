@@ -4,6 +4,7 @@ import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/LineChart.dart';
 import 'package:CleanHabits/widgets/progress/StatusSummary.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
+import 'package:flutter/material.dart';
 
 class ProgressStatsService {
   //
@@ -11,6 +12,7 @@ class ProgressStatsService {
   var lrdp = ProviderFactory.habitLastRunDataProvider;
   var rdp = ProviderFactory.habitRunDataProvider;
   var slrp = ProviderFactory.serviceLastRunProvider;
+  var sp = ProviderFactory.settingsProvider;
   //
   Future<List<LinearData>> getCompletionRateData(String type) async {
     return type == 'Weekly'
@@ -212,23 +214,22 @@ class ProgressStatsService {
         );
 
     var data = List<ChartData>();
-    for (var weekData in weekWiseData) {
-      data.add(ChartData(weekData[columnTargetDayInWeek], weekData['sum']));
-    }
+    var weeklyConst = sp.firstDayOfWeek == 'Mon'
+        ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    var weeklyId = {};
-    weeklyId['Sun'] = 0;
-    weeklyId['Mon'] = 1;
-    weeklyId['Tue'] = 2;
-    weeklyId['Wed'] = 3;
-    weeklyId['Thu'] = 4;
-    weeklyId['Fri'] = 5;
-    weeklyId['Sat'] = 6;
+    weeklyConst.forEach((wc) {
+      var filtered = weekWiseData.where(
+        (weekData) => weekData[columnTargetDayInWeek] == wc,
+      );
 
-    data.sort(
-      (prevDt, aftDt) =>
-          (weeklyId[prevDt.xValue]) < (weeklyId[aftDt.xValue]) ? -1 : 1,
-    );
+      data.add(
+        ChartData(
+          wc,
+          filtered.length > 0 ? filtered.first['sum'] : 0,
+        ),
+      );
+    });
 
     return data;
   }

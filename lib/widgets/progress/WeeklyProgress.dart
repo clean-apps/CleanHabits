@@ -27,16 +27,23 @@ class _WeeklyProgressState extends State<WeeklyProgress> {
     widget.statsService
         .getWeeklyProgressData()
         .then(
-          (value) => setState(() {
-            weeklyData = value;
-            weeksProgress = weeklyData.map((e) => e.timesProgress).reduce(sum);
-            weeksTarget = weeklyData.map((e) => e.timesTarget).reduce(sum);
-            loading = false;
-          }),
+          (value) => {
+            if (mounted)
+              setState(() {
+                weeklyData = value;
+                weeksProgress =
+                    weeklyData.map((e) => e.timesProgress).reduce(sum);
+                weeksTarget = weeklyData.map((e) => e.timesTarget).reduce(sum);
+                loading = false;
+              })
+          },
         )
-        .whenComplete(() => setState(() {
-              loading = false;
-            }));
+        .whenComplete(() => {
+              if (mounted)
+                setState(() {
+                  loading = false;
+                })
+            });
   }
 
   ListTile _weeklyTile(BuildContext context, Habit data) {

@@ -24,12 +24,13 @@ class _DailyTrackerState extends State<DailyTracker> {
   }
 
   void _loadData() {
-    widget.statsService.getHeatMapData(type).then(
-          (value) => setState(() {
-            data = value;
-            loading = false;
-          }),
-        );
+    widget.statsService.getHeatMapData(type).then((value) => {
+          if (mounted)
+            setState(() {
+              data = value;
+              loading = false;
+            }),
+        });
   }
 
   Widget _typeDropDown() {

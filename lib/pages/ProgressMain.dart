@@ -32,7 +32,6 @@ class ProgressMain extends StatelessWidget {
       CompletionRate(),
       DayWisePerfomance(),
       DailyTracker(),
-      new Text(' '),
     ];
 
     return new Scaffold(
