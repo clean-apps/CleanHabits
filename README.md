@@ -8,28 +8,27 @@
 
 <img src="https://github.com/clean-apps/CleanHabits/raw/master/marketing/gh-logo.png?raw=true" />
 
-Did you know that around 40% of everything we do on a daily basis is habitual? This means that a big part of our lives is almost entirely on autopilot! Think this through for a second and evaluate those habits of yours. Do they empower you or disempower you? Do they limit you or free you? or Do they help you or hinder you from reaching your goals?
+Did you know that around 40% of everything we do on a daily basis is habitual? This means that a big part of our lives is almost entirely on autopilot! Think this through for a second and evaluate those habits of yours. Do they empower you or dis-empower you? Do they limit you or free you? or Do they help you or hinder you from reaching your goals?
 
-In reality, successful people are simply those with successful habits. They give small efforts everyday, and stick to it, day in and day out. 
+In reality, successful people are simply those with successful habits. They give small efforts everyday, and stick to it, day in and day out.
 
 I've build an app around this idea to help you build great habits and sticking to it. Clean Habits is a Minimalist Habit Tracker that helps you to achieve good habits using data analytics
 
 ### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/external-link-alt.svg" width="22" align="left" /> &nbsp; Build Great Habits
 
-Clean Habits helps you to start with a habit, like "wake up early day" or "eat less suger everyday" or "visit the gym 3 times per week". It gives you many customizations over your habits like setting goals, repetations, etc.
+Clean Habits helps you to start with a habit, like "wake up early day" or "eat less sugar everyday" or "visit the gym 3 times per week". It gives you many customization over your habits like setting goals, repetitions, etc
 
-### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/chart-bar.svg" width="22" align="left" /> &nbsp; Learn Your Behaviour
+### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/chart-bar.svg" width="22" align="left" /> &nbsp; Learn Your Behavior
 
-Once you have the habits set, Clean Habits provides you with detailed charts to track your behaviour for every habit. Data Analytics can then help you showcase which habits you're easily sticking to and which ones you're avoiding. The idea is once you create a habit you should complete it everytime and maintain a completion streak.
+Once you have the habits set, Clean Habits provides you with detailed charts to track your behavior for every habit. Data Analytics can then help you showcase which habits you're easily sticking to and which ones you're avoiding. The idea is once you create a habit you should complete it every-time and maintain a completion streak.
 
 ### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/chart-line.svg" width="22" align="left" /> &nbsp; Your Own Progress Journal
 
-The reality is habits are not build in a day, it takes time and people do fail in the begining, but they slowly learn and then start reaching their goals. Clean Habits lets you see the bigger picture and visualize you far you've acheived in terms of habit completion using charts and analytics.
+The reality is habits are not build in a day, it takes time and people do fail in the beginning, but they slowly learn and then start reaching their goals. Clean Habits lets you see the bigger picture and visualize you far you've achieved in terms of habit completion using charts and analytics.
 
 ### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/regular/bell.svg" width="22" align="left" /> &nbsp; Timely Reminders
 
-There is nothing more bad than missing your streak and not completion your habit for the day. Clean Habits can send you timely reminders so that you remember to you don't miss your task and maintain your streak 
-
+There is nothing more bad than missing your streak and not completion your habit for the day. Clean Habits can send you timely reminders so that you remember to you don't miss your task and maintain your streak
 
 # Getting Started
 
