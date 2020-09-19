@@ -10,9 +10,9 @@
 
 Did you know that around 40% of everything we do on a daily basis is habitual? This means that a big part of our lives is almost entirely on autopilot! Think this through for a second and evaluate those habits of yours. Do they empower you or disempower you? Do they limit you or free you? or Do they help you or hinder you from reaching your goals?
 
-In reality, successful people are simply those with successful habits, and they give small efforts repeated day in and day out. I've build an app around this idea of building great habits and sticking to it. 
+In reality, successful people are simply those with successful habits. They give small efforts everyday, and stick to it, day in and day out. 
 
-Clean Habits is a Minimalist Habit Tracker that helps you to achieve good goals using data analytics
+I've build an app around this idea to help you build great habits and sticking to it. Clean Habits is a Minimalist Habit Tracker that helps you to achieve good habits using data analytics
 
 ### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/external-link-alt.svg" width="22" align="left" /> &nbsp; Build Great Habits
 
@@ -20,7 +20,7 @@ Clean Habits helps you to start with a habit, like "wake up early day" or "eat l
 
 ### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/chart-bar.svg" width="22" align="left" /> &nbsp; Learn Your Behaviour
 
-Once you have the habits set, clean habits can provide your detailed charts to track your behaviour for each habits. Data Analytics can then help you showcase which habits you're easily sticking to and which ones you're avoiding. The idea is once you create a habit you should complete it everytime and maintain a completion streak.
+Once you have the habits set, Clean Habits provides you with detailed charts to track your behaviour for every habit. Data Analytics can then help you showcase which habits you're easily sticking to and which ones you're avoiding. The idea is once you create a habit you should complete it everytime and maintain a completion streak.
 
 ### <img src="https://use.fontawesome.com/releases/v5.1.0/svgs/solid/chart-line.svg" width="22" align="left" /> &nbsp; Your Own Progress Journal
 
