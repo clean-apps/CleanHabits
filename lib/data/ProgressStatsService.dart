@@ -4,7 +4,6 @@ import 'package:CleanHabits/widgets/basic/BarChart.dart';
 import 'package:CleanHabits/widgets/basic/LineChart.dart';
 import 'package:CleanHabits/widgets/progress/StatusSummary.dart';
 import 'package:CleanHabits/data/domain/HabitRunData.dart';
-import 'package:flutter/material.dart';
 
 class ProgressStatsService {
   //
