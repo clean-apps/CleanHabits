@@ -15,6 +15,8 @@ import 'package:CleanHabits/pages/SelectTopic.dart';
 import 'package:CleanHabits/pages/TodayView.dart';
 import 'package:CleanHabits/pages/NewHabit.dart';
 import 'package:CleanHabits/pages/Welcome.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
@@ -97,10 +99,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    var analytics = FirebaseAnalytics();
+
     return loading
         ? Loading()
         : MaterialApp(
             theme: _theme(context),
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(analytics: analytics),
+            ],
             initialRoute: widget.sp.initDone ? '/' : '/welcome',
             routes: {
               '/': (context) => TodayView(),
