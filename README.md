@@ -33,11 +33,22 @@ There is nothing more bad than missing your streak and not completion your habit
 # Getting Started
 
 1. Follow the installation instructions on [www.flutter.io](www.flutter.io) to install Flutter.
-2. Start the android emulator or connect your phone, check using the below command if devices has been dectected
+2. You'll need to create a Firebase instance. Follow the instructions at https://console.firebase.google.com
+3. Once your Firebase instance is created, you'll need to enable anonymous authentication.
+    * Create an app within your Firebase instance for Android, with package name com.yourcompany.CleanHabits
+    * Follow instructions to download google-services.json, and place it into CleanHabits/android/app/
+    * Run the following command to get your SHA-1 key:
+    
+       ```
+       keytool -exportcert -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore
+       ```
+    * In the Firebase console, in the settings of your Android app, add your SHA-1 key by clicking "Add Fingerprint".
+
+4. Start the android emulator or connect your phone, check using the below command if devices has been dectected
 ```
 flutter devices
 ```
-3. Clean Habits can be run like any other Flutter app, either through the Android Studio/VSCode or through running the following command from within the CleanHabits directory:
+5. Clean Habits can be run like any other Flutter app, either through the Android Studio/VSCode or through running the following command from within the CleanHabits directory:
 ```
 flutter run
 ```
