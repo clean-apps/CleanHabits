@@ -30,25 +30,33 @@ The reality is habits are not build in a day, it takes time and people do fail i
 
 There is nothing more bad than missing your streak and not completion your habit for the day. Clean Habits can send you timely reminders so that you remember to you don't miss your task and maintain your streak
 
+<a href="https://play.google.com/store/apps/details?id=com.babanomania.CleanHabits" target="_blank">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="90"/></a>
+
 # Getting Started
 
 1. Follow the installation instructions on [www.flutter.io](www.flutter.io) to install Flutter.
 2. You'll need to create a Firebase instance. Follow the instructions at https://console.firebase.google.com
 3. Once your Firebase instance is created, you'll need to enable anonymous authentication.
-    * Create an app within your Firebase instance for Android, with package name com.yourcompany.CleanHabits
-    * Follow instructions to download google-services.json, and place it into CleanHabits/android/app/
-    * Run the following command to get your SHA-1 key:
-    
-       ```
-       keytool -exportcert -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore
-       ```
-    * In the Firebase console, in the settings of your Android app, add your SHA-1 key by clicking "Add Fingerprint".
+
+   - Create an app within your Firebase instance for Android, with package name com.yourcompany.CleanHabits
+   - Follow instructions to download google-services.json, and place it into CleanHabits/android/app/
+   - Run the following command to get your SHA-1 key:
+
+     ```
+     keytool -exportcert -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore
+     ```
+
+   - In the Firebase console, in the settings of your Android app, add your SHA-1 key by clicking "Add Fingerprint".
 
 4. Start the android emulator or connect your phone, check using the below command if devices has been dectected
+
 ```
 flutter devices
 ```
+
 5. Clean Habits can be run like any other Flutter app, either through the Android Studio/VSCode or through running the following command from within the CleanHabits directory:
+
 ```
 flutter run
 ```
@@ -57,57 +65,58 @@ flutter run
 
 Copyright 2020 Shouvik Basu
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
        http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
 limitations under the License.
 
 _Comfortaa Font by Johan Aakerlund_
 
-      Comfortaa is a rounded geometric sans-serif type design intended for large sizes. 
+      Comfortaa is a rounded geometric sans-serif type design intended for large sizes.
       It is absolutely free, both for personal and commercial use.
 
-      If you like it please visit my DeviantArt page and fav it (but obviously only if you like it.) 
-      You are also more than welcome to comment about anything you want (I'm open to critique). 
-      I obviously would love to see how my font is being used, 
+      If you like it please visit my DeviantArt page and fav it (but obviously only if you like it.)
+      You are also more than welcome to comment about anything you want (I'm open to critique).
+      I obviously would love to see how my font is being used,
       so feel free to comment with a link to your work, or send me a message.
 
       I hope you will enjoy using my font!
 
       — Johan Aakerlund
-   
- _Open Doodles Illustrations by Pablo Stanley_
- 
-      Open Doodles is a set of free illustrations that embraces the idea of Open Design. 
-      You can copy, edit, remix, share, or redraw these images for any purpose 
+
+_Open Doodles Illustrations by Pablo Stanley_
+
+      Open Doodles is a set of free illustrations that embraces the idea of Open Design.
+      You can copy, edit, remix, share, or redraw these images for any purpose
       without restriction under copyright or database law (CC0 license.)
 
-      I hope that this kind of resource makes it easier for designers to show the value of illustration in their mockups. 
-      Maybe you use these images as placeholders, before you're ready to hire an illustrator. 
+      I hope that this kind of resource makes it easier for designers to show the value of illustration in their mockups.
+      Maybe you use these images as placeholders, before you're ready to hire an illustrator.
       Or perhaps this will encourage others to create their own kit and share it with the world.
-      
+
+
 _Font Awesome by Dave Gandy - http://fontawesome.io_
 
       Font Awesome is fully open source and is GPL friendly.
-      You can use it for commercial projects, open source projects, or really just about whatever you want. 
+      You can use it for commercial projects, open source projects, or really just about whatever you want.
 
 # Credits
 
-* Logo Font [Comfortaa](https://github.com/googlefonts/comfortaa) made by [Johan Aakerlund](https://www.deviantart.com/aajohan)
-* Amazing [Open Doodles](https://www.opendoodles.com/) Illustrations by [Pablo Stanley](https://twitter.com/pablostanley)
-* Absolultely Stunning [Font Awesome](https://fontawesome.com/) by [Dave Gandy](https://twitter.com/davegandy?lang=en)
-* [Flutter Team](https://github.com/flutter/)
-* Below Flutter Plugins
-  * [sqflite](https://pub.dev/packages/sqflite)
-  * [workmanager](https://pub.dev/packages/workmanager)
-  * [settings_ui](https://pub.dev/packages/settings_ui)
-  * [timeline_tile](https://pub.dev/packages/timeline_tile)
-  * [charts_flutter](https://pub.dev/packages/charts_flutter)
-  * [heatmap_calendar](https://pub.dev/packages/heatmap_calendar)
+- Logo Font [Comfortaa](https://github.com/googlefonts/comfortaa) made by [Johan Aakerlund](https://www.deviantart.com/aajohan)
+- Amazing [Open Doodles](https://www.opendoodles.com/) Illustrations by [Pablo Stanley](https://twitter.com/pablostanley)
+- Absolultely Stunning [Font Awesome](https://fontawesome.com/) by [Dave Gandy](https://twitter.com/davegandy?lang=en)
+- [Flutter Team](https://github.com/flutter/)
+- Below Flutter Plugins
+  - [sqflite](https://pub.dev/packages/sqflite)
+  - [workmanager](https://pub.dev/packages/workmanager)
+  - [settings_ui](https://pub.dev/packages/settings_ui)
+  - [timeline_tile](https://pub.dev/packages/timeline_tile)
+  - [charts_flutter](https://pub.dev/packages/charts_flutter)
+  - [heatmap_calendar](https://pub.dev/packages/heatmap_calendar)
